@@ -1,2 +1,12 @@
 *.class
 *.log
+
+ek-cassandra/Dockerfile
+
+ek-nats-client/main
+
+ek-nats-server/Dockerfile
+
+ek-telegraf/Dockerfile
+
+properties/_configuration-telegraf-cassandra_count.properties
