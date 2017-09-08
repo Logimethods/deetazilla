@@ -16,7 +16,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.streaming.Duration
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.storage.StorageLevel;
-import io.nats.client.Constants._
+import io.nats.client.Nats._
 
 import org.apache.log4j.{Level, LogManager, PropertyConfigurator}
 
@@ -26,7 +26,7 @@ import com.logimethods.scala.connector.spark.to_nats._
 object SparkProcessor extends App {
   val log = LogManager.getRootLogger
   log.setLevel(Level.WARN)
-  
+
   Thread.sleep(5000)
 
   val inputSubject = args(0)
@@ -34,7 +34,7 @@ object SparkProcessor extends App {
   val outputSubject = args(1)
   val outputStreaming = outputSubject.toUpperCase.contains("STREAMING")
   println("Will process messages from " + inputSubject + " to " + outputSubject)
-  
+
   val logLevel = scala.util.Properties.envOrElse("LOG_LEVEL", "INFO")
   println("LOG_LEVEL = " + logLevel)
 
@@ -44,7 +44,7 @@ object SparkProcessor extends App {
   val sc = new SparkContext(conf);
 //  val jarFilesRegex = "java-nats-streaming-(.*)jar|guava(.*)jar|protobuf-java(.*)jar|jnats-(.*)jar|nats-connector-spark-(.*)jar|docker-nats-connector-spark(.*)jar"
   val jarFilesRegex = "(.*)jar"
-  for (file <- new File("/app/").listFiles.filter(_.getName.matches(jarFilesRegex))) 
+  for (file <- new File("/app/").listFiles.filter(_.getName.matches(jarFilesRegex)))
     { sc.addJar(file.getAbsolutePath) }
   val ssc = new StreamingContext(sc, new Duration(2000));
 
@@ -53,9 +53,9 @@ object SparkProcessor extends App {
   println("NATS_URI = " + natsUrl)
   properties.put("servers", natsUrl)
   properties.put(PROP_URL, natsUrl)
-  
+
   val clusterId = System.getenv("NATS_CLUSTER_ID")
-  
+
   val integers =
     if (inputStreaming) {
       NatsToSparkConnector
@@ -70,10 +70,10 @@ object SparkProcessor extends App {
         .withSubjects(inputSubject)
         .asStreamOf(ssc)
     }
-  
+
   val max = integers.reduce({ (int1, int2) => Math.max(int1, int2) })
 
-  if (logLevel.equals("DEBUG")) { 
+  if (logLevel.equals("DEBUG")) {
     max.print()
   }
 
@@ -88,8 +88,8 @@ object SparkProcessor extends App {
                             .withSubjects(outputSubject)
                             .publishToNats(max)
   }
-  
-  ssc.start();		
-  
+
+  ssc.start();
+
   ssc.awaitTermination()
 }
