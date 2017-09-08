@@ -13,7 +13,7 @@ appProperties := {
   prop
 }
 
-logLevel := Level.Debug
+// logLevel := Level.Debug
 
 val rootName = "smart-meter"
 name := "docker-" + rootName + "-inject"
