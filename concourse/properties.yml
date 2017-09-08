@@ -1,0 +1,7 @@
+github-uri: git@github.com:Logimethods/unnamed_bd.git
+
+github-compose-dockerfile-path: /compose
+docker-compose-repository: logimethods/compose
+
+docker-ek_cassandra-dockerfile-path: /ek-cassandra
+docker-ek_cassandra-repository: logimethods/ek_cassandra

@@ -1,0 +1,70 @@
+###### JOBS #######
+
+jobs:
+- name: build-docker-compose
+  public: true
+  serial: true
+  plan:
+  - get: github-repo
+    trigger: true
+  - put: docker-compose
+    params:
+      build: github-repo((github-compose-dockerfile-path))
+
+- name: build-docker-eureka
+  public: true
+  serial: true
+  plan:
+  - get: github-repo
+    trigger: true
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ubuntu
+          tag: "latest"
+      inputs:
+      - name: github-repo
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo/* complete_dockerfiles/
+          cd complete_dockerfiles/
+          ./set_properties_to_ek_templates.sh
+  - put: docker-ek_cassandra
+    params:
+      build: complete_dockerfiles((docker-ek_cassandra-dockerfile-path))
+
+
+###### RESOURCES ######
+
+resources:
+- name: github-repo
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: docker-compose
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-compose-repository))
+
+- name: docker-ek_cassandra
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-ek_cassandra-repository))
