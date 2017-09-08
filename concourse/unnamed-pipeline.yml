@@ -74,15 +74,9 @@ jobs:
         args:
         - -exc
         - |
-          echo "---------------------- MONITOR ----------------------"
-          pushd github-repo/integration/docker_monitor/
-          sbt --info clean assembly dockerFileTask
-          rm -Rf ./docker
-          mv target/docker .
-          popd
           echo "---------------------- INJECT ----------------------"
           pushd github-repo/integration/docker_inject/
-          sbt --info clean assembly dockerFileTask
+          echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
           cp ../../entrypoint_insert.sh .
@@ -93,7 +87,7 @@ jobs:
           popd
           echo "---------------------- STREAMING ----------------------"
           pushd github-repo/integration/docker_streaming/
-          sbt --info clean assembly dockerFileTask
+          echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
           cp ../../entrypoint_insert.sh .
@@ -102,9 +96,15 @@ jobs:
           rm -Rf ./docker
           mv target/docker .
           popd
-          cp -R github-repo/integration/* dockerfile_integration/
+          echo "---------------------- MONITOR ----------------------"
+          pushd github-repo/integration/docker_monitor/
+          echo "q" | sbt --info clean assembly dockerFileTask
+          rm -Rf ./docker
+          mv target/docker .
+          popd
           echo "---------------------- FINAL COPY ----------------------"
-          ls -als dockerfile_integration/*/*
+          cp -R github-repo/integration/* dockerfile_integration/
+          # ls -als dockerfile_integration/*/*
   - put: docker-int_monitor
     params:
       build: dockerfile_integration((docker-int_monitor-dockerfile-path))
