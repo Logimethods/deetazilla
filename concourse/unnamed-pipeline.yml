@@ -51,6 +51,39 @@ jobs:
       build: complete_dockerfiles((docker-ek_telegraf-dockerfile-path))
 
 
+- name: build-docker-integration
+  public: true
+  serial: true
+  plan:
+  - get: github-repo
+    trigger: true
+  - task: set-up_dockerfile_inject
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: hseeberger/scala-sbt
+          tag: "8u141-jdk_2.12.3_1.0.1"
+      inputs:
+      - name: github-repo
+      outputs:
+      - name: dockerfile_inject
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          sbt clean assembly dockerFileTask
+          pushd target/docker
+          mv Dockerfile Dockerfile_middle
+          cp ../../entrypoint_insert.sh .
+          cat ../../Dockerfile_pre Dockerfile_middle ../../Dockerfile_post >> Dockerfile
+  - put: docker-int_inject
+    params:
+      build: dockerfile_inject((docker-ek_cassandra-dockerfile-path))
+
+
 ###### RESOURCES ######
 
 resources:
@@ -69,6 +102,8 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-compose-repository))
+
+## Eureka Docker Images ##
 
 - name: docker-ek_cassandra
   type: docker-image
@@ -105,3 +140,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-ek_telegraf-repository))
     tag: ((docker-ek_telegraf-tag))
+
+## Integration Docker Images ##
+
+- name: docker-int_inject
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_inject-repository))
+    tag: ((docker-int_inject-tag))
+
