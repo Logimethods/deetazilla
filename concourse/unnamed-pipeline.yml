@@ -74,6 +74,13 @@ jobs:
         args:
         - -exc
         - |
+          echo "---------------------- MONITOR ----------------------"
+          pushd github-repo/integration/docker_monitor/
+          sbt --info clean assembly dockerFileTask
+          rm -Rf ./docker
+          mv target/docker .
+          popd
+          echo "---------------------- INJECT ----------------------"
           pushd github-repo/integration/docker_inject/
           sbt --info clean assembly dockerFileTask
           pushd target/docker
@@ -84,6 +91,7 @@ jobs:
           rm -Rf ./docker
           mv target/docker .
           popd
+          echo "---------------------- STREAMING ----------------------"
           pushd github-repo/integration/docker_streaming/
           sbt --info clean assembly dockerFileTask
           pushd target/docker
@@ -95,14 +103,17 @@ jobs:
           mv target/docker .
           popd
           cp -R github-repo/integration/* dockerfile_integration/
+          echo "---------------------- FINAL COPY ----------------------"
           ls -als dockerfile_integration/*/*
+  - put: docker-int_monitor
+    params:
+      build: dockerfile_integration((docker-int_monitor-dockerfile-path))
   - put: docker-int_streaming
     params:
       build: dockerfile_integration((docker-int_streaming-dockerfile-path))
   - put: docker-int_inject
     params:
       build: dockerfile_integration((docker-int_inject-dockerfile-path))
-
 
 ###### RESOURCES ######
 
@@ -180,4 +191,13 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-int_streaming-repository))
     tag: ((docker-int_streaming-tag))
+
+- name: docker-int_monitor
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_monitor-repository))
+    tag: ((docker-int_monitor-tag))
 
