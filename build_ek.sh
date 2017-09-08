@@ -33,9 +33,9 @@ clear
 echo "-----------------------------------------"
 echo "ek_nats-client"
 pushd ek-nats-client
-go get github.com/nats-io/go-nats
-env GOOS=linux GOARCH=amd64 go build main.go
-file main
+#go get github.com/nats-io/go-nats
+#env GOOS=linux GOARCH=amd64 go build main.go
+#file main
 docker build -t logimethods/ek_nats-client .
 docker push logimethods/ek_nats-client
 popd
