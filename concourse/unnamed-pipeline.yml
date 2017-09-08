@@ -40,6 +40,15 @@ jobs:
   - put: docker-ek_cassandra
     params:
       build: complete_dockerfiles((docker-ek_cassandra-dockerfile-path))
+  - put: docker-ek_nats-client
+    params:
+      build: complete_dockerfiles((docker-ek_nats-client-dockerfile-path))
+  - put: docker-ek_nats-server
+    params:
+      build: complete_dockerfiles((docker-ek_nats-server-dockerfile-path))
+  - put: docker-ek_telegraf
+    params:
+      build: complete_dockerfiles((docker-ek_telegraf-dockerfile-path))
 
 
 ###### RESOURCES ######
@@ -68,3 +77,31 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-ek_cassandra-repository))
+    tag: ((docker-ek_cassandra-tag))
+
+- name: docker-ek_nats-client
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-ek_nats-client-repository))
+    tag: ((docker-ek_nats-client-tag))
+
+- name: docker-ek_nats-server
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-ek_nats-server-repository))
+    tag: ((docker-ek_nats-server-tag))
+
+- name: docker-ek_telegraf
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-ek_telegraf-repository))
+    tag: ((docker-ek_telegraf-tag))
