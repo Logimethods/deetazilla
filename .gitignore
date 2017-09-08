@@ -10,3 +10,19 @@ ek-nats-server/Dockerfile
 ek-telegraf/Dockerfile
 
 properties/_configuration-telegraf-cassandra_count.properties
+
+scripts/docker-compose-merge.yml
+
+# sbt specific
+.cache
+.history
+.cache-tests
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+
+concourse/credentials.yml
