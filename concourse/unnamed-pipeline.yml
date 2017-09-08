@@ -64,24 +64,33 @@ jobs:
         type: docker-image
         source:
           repository: hseeberger/scala-sbt
-          tag: "8u141-jdk_2.12.3_1.0.1"
+          tag: "latest"
       inputs:
       - name: github-repo
       outputs:
       - name: dockerfile_inject
       run:
-        path: sh
+        path: bash
         args:
         - -exc
         - |
-          sbt clean assembly dockerFileTask
+          pushd github-repo/integration/docker_inject/
+          sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
           cp ../../entrypoint_insert.sh .
           cat ../../Dockerfile_pre Dockerfile_middle ../../Dockerfile_post >> Dockerfile
+          popd
+          rm -Rf ./docker
+          mv target/docker .
+          popd
+#          ls -als github-repo/integration/*/*
+#          echo "---------"
+          cp -R github-repo/integration/* dockerfile_inject/
+#          ls -als dockerfile_inject/*/*
   - put: docker-int_inject
     params:
-      build: dockerfile_inject((docker-ek_cassandra-dockerfile-path))
+      build: dockerfile_inject((docker-int_inject-dockerfile-path))
 
 
 ###### RESOURCES ######
