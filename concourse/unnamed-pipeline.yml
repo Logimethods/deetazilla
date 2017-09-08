@@ -68,7 +68,7 @@ jobs:
       inputs:
       - name: github-repo
       outputs:
-      - name: dockerfile_inject
+      - name: dockerfile_integration
       run:
         path: bash
         args:
@@ -84,13 +84,24 @@ jobs:
           rm -Rf ./docker
           mv target/docker .
           popd
-#          ls -als github-repo/integration/*/*
-#          echo "---------"
-          cp -R github-repo/integration/* dockerfile_inject/
-#          ls -als dockerfile_inject/*/*
+          pushd github-repo/integration/docker_streaming/
+          sbt --info clean assembly dockerFileTask
+          pushd target/docker
+          mv Dockerfile Dockerfile_middle
+          cp ../../entrypoint_insert.sh .
+          cat ../../Dockerfile_pre Dockerfile_middle ../../Dockerfile_post >> Dockerfile
+          popd
+          rm -Rf ./docker
+          mv target/docker .
+          popd
+          cp -R github-repo/integration/* dockerfile_integration/
+          ls -als dockerfile_integration/*/*
+  - put: docker-int_streaming
+    params:
+      build: dockerfile_integration((docker-int_streaming-dockerfile-path))
   - put: docker-int_inject
     params:
-      build: dockerfile_inject((docker-int_inject-dockerfile-path))
+      build: dockerfile_integration((docker-int_inject-dockerfile-path))
 
 
 ###### RESOURCES ######
@@ -160,4 +171,13 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-int_inject-repository))
     tag: ((docker-int_inject-tag))
+
+- name: docker-int_streaming
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_streaming-repository))
+    tag: ((docker-int_streaming-tag))
 
