@@ -115,6 +115,16 @@ jobs:
     params:
       build: dockerfile_integration((docker-int_inject-dockerfile-path))
 
+- name: build-docker-int_compose
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_compose
+    trigger: true
+  - put: docker-int_compose
+    params:
+      build: github-repo-int_compose((github-int_compose-dockerfile-path))
+
 ###### RESOURCES ######
 
 resources:
@@ -138,6 +148,18 @@ resources:
     branch: master
     paths:
       - integration/**
+    ignore_paths:
+      - integration/compose/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-int_compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    paths:
+      - integration/compose/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -198,6 +220,14 @@ resources:
     tag: ((docker-ek_telegraf-tag))
 
 ## Integration Docker Images ##
+
+- name: docker-int_compose
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_compose-repository))
 
 - name: docker-int_inject
   type: docker-image
