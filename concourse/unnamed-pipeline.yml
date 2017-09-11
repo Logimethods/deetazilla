@@ -9,7 +9,7 @@ jobs:
     trigger: true
   - put: docker-compose
     params:
-      build: github-repo((github-compose-dockerfile-path))
+      build: github-repo-compose((github-compose-dockerfile-path))
 
 - name: build-docker-eureka
   public: true
@@ -66,7 +66,7 @@ jobs:
           repository: hseeberger/scala-sbt
           tag: "latest"
       inputs:
-      - name: github-repo
+      - name: github-repo-integration
       outputs:
       - name: dockerfile_integration
       run:
@@ -75,7 +75,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- INJECT ----------------------"
-          pushd github-repo/integration/docker_inject/
+          pushd github-repo-integration/integration/docker_inject/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -86,7 +86,7 @@ jobs:
           mv target/docker .
           popd
           echo "---------------------- STREAMING ----------------------"
-          pushd github-repo/integration/docker_streaming/
+          pushd github-repo-integration/integration/docker_streaming/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -97,13 +97,13 @@ jobs:
           mv target/docker .
           popd
           echo "---------------------- MONITOR ----------------------"
-          pushd github-repo/integration/docker_monitor/
+          pushd github-repo-integration/integration/docker_monitor/
           echo "q" | sbt --info clean assembly dockerFileTask
           rm -Rf ./docker
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo/integration/* dockerfile_integration/
+          cp -R github-repo-integration/integration/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_monitor
     params:
