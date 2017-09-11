@@ -5,7 +5,7 @@
 SECRET_MODE="$1"
 shift 1
 
-source ./services_hierachy.sh
+source ./services_hierarchies.sh
 
 targets=$(echo "$@" | sed s/["^ "]*/'$'\&/g)
 

@@ -5,7 +5,7 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: github-repo
+  - get: github-repo-compose
     trigger: true
   - put: docker-compose
     params:
@@ -55,7 +55,7 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: github-repo
+  - get: github-repo-integration
     trigger: true
   - task: set-up_dockerfile_inject
     config:
@@ -123,6 +123,31 @@ resources:
   source:
     uri: ((github-uri))
     branch: master
+    ignore_paths:
+      - integration/**
+      - compose/**
+      - concourse/**
+      - README.md
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-integration
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    paths:
+      - integration/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    paths:
+      - compose/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
