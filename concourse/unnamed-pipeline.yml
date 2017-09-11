@@ -50,12 +50,11 @@ jobs:
     params:
       build: complete_dockerfiles((docker-ek_telegraf-dockerfile-path))
 
-
-- name: build-docker-integration
+- name: build-docker-int_inject
   public: true
   serial: true
   plan:
-  - get: github-repo-integration
+  - get: github-repo-int_inject
     trigger: true
   - task: set-up_dockerfile_inject
     config:
@@ -66,7 +65,7 @@ jobs:
           repository: hseeberger/scala-sbt
           tag: "latest"
       inputs:
-      - name: github-repo-integration
+      - name: github-repo-int_inject
       outputs:
       - name: dockerfile_integration
       run:
@@ -75,7 +74,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- INJECT ----------------------"
-          pushd github-repo-integration/integration/docker_inject/
+          pushd github-repo-int_inject/integration/docker_inject/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -85,8 +84,38 @@ jobs:
           rm -Rf ./docker
           mv target/docker .
           popd
+          echo "---------------------- FINAL COPY ----------------------"
+          cp -R github-repo-int_inject/integration/* dockerfile_integration/
+          # ls -als dockerfile_integration/*/*
+  - put: docker-int_inject
+    params:
+      build: dockerfile_integration((docker-int_inject-dockerfile-path))
+
+- name: build-docker-int_streaming
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_streaming
+    trigger: true
+  - task: set-up_dockerfile_inject
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: hseeberger/scala-sbt
+          tag: "latest"
+      inputs:
+      - name: github-repo-int_streaming
+      outputs:
+      - name: dockerfile_integration
+      run:
+        path: bash
+        args:
+        - -exc
+        - |
           echo "---------------------- STREAMING ----------------------"
-          pushd github-repo-integration/integration/docker_streaming/
+          pushd github-repo-int_streaming/integration/docker_streaming/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -96,24 +125,48 @@ jobs:
           rm -Rf ./docker
           mv target/docker .
           popd
+          echo "---------------------- FINAL COPY ----------------------"
+          cp -R github-repo-int_streaming/integration/* dockerfile_integration/
+          # ls -als dockerfile_integration/*/*
+  - put: docker-int_streaming
+    params:
+      build: dockerfile_integration((docker-int_streaming-dockerfile-path))
+
+- name: build-docker-int_monitor
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_monitor
+    trigger: true
+  - task: set-up_dockerfile_inject
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: hseeberger/scala-sbt
+          tag: "latest"
+      inputs:
+      - name: github-repo-int_monitor
+      outputs:
+      - name: dockerfile_integration
+      run:
+        path: bash
+        args:
+        - -exc
+        - |
           echo "---------------------- MONITOR ----------------------"
-          pushd github-repo-integration/integration/docker_monitor/
+          pushd github-repo-int_monitor/integration/docker_monitor/
           echo "q" | sbt --info clean assembly dockerFileTask
           rm -Rf ./docker
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-integration/integration/* dockerfile_integration/
+          cp -R github-repo-int_monitor/integration/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_monitor
     params:
       build: dockerfile_integration((docker-int_monitor-dockerfile-path))
-  - put: docker-int_streaming
-    params:
-      build: dockerfile_integration((docker-int_streaming-dockerfile-path))
-  - put: docker-int_inject
-    params:
-      build: dockerfile_integration((docker-int_inject-dockerfile-path))
 
 - name: build-docker-int_compose
   public: true
@@ -141,15 +194,33 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-integration
+- name: github-repo-int_inject
   type: git
   source:
     uri: ((github-uri))
     branch: master
     paths:
-      - integration/**
-    ignore_paths:
-      - integration/compose/**
+      - integration/docker_inject/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-int_streaming
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    paths:
+      - integration/docker_streaming/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-int_monitor
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: master
+    paths:
+      - integration/docker_monitor/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -173,6 +244,8 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
+## Eureka Docker Images ##
+
 - name: docker-compose
   type: docker-image
   source:
@@ -180,8 +253,6 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-compose-repository))
-
-## Eureka Docker Images ##
 
 - name: docker-ek_cassandra
   type: docker-image
