@@ -1,4 +1,4 @@
-source ./services_hierachy-main.sh
+source ./services_hierarchy-main.sh
 
 inject="inject inject${SECRET_MODE} $root $cassandra"
 inject_metrics="inject_metrics $inject $metrics"
