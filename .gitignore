@@ -28,3 +28,5 @@ project/plugins/project/
 concourse/credentials.yml
 
 concourse/credentials.properties
+
+docker-compose-merge.yml
