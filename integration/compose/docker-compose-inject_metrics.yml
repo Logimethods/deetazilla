@@ -1,7 +1,7 @@
 services:
   ### ["create_service_telegraf", "cassandra_count"],
   telegraf_cassandra_count:
-    image: logimethods/smart-meter:telegraf${postfix}
+    image: logimethods/ek_telegraf:1.0${postfix}
     deploy:
       replicas: 1
       placement:
