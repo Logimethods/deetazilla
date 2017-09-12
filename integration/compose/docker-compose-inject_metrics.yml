@@ -1,7 +1,7 @@
 services:
   ### ["create_service_telegraf", "cassandra_count"],
   telegraf_cassandra_count:
-    image: logimethods/ek_telegraf:1.0${postfix}
+    image: ((docker-ek_telegraf-repository)):((docker-ek_telegraf-tag))${postfix}
     deploy:
       replicas: 1
       placement:

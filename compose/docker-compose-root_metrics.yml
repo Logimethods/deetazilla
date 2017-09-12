@@ -1,7 +1,7 @@
 services:
   ### ["create_service_telegraf_on_master", "docker"],
   telegraf_docker:
-    image: logimethods/smart-meter:telegraf${postfix}
+    image: ((docker-ek_telegraf-repository)):((docker-ek_telegraf-tag))${postfix}
     deploy:
       replicas: 1
       placement:

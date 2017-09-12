@@ -7,7 +7,7 @@ services:
       - "81:80"
   #### run_metrics_prometheus
   prometheus:
-    image: logimethods/smart-meter:prometheus${postfix}
+    image: ((docker-ek_prometheus-repository)):((docker-ek_prometheus-tag))${postfix}
     deploy:
       placement:
         constraints:
