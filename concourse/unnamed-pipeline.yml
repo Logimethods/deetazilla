@@ -46,6 +46,9 @@ jobs:
   - put: docker-ek_nats-server
     params:
       build: complete_dockerfiles((docker-ek_nats-server-dockerfile-path))
+  - put: docker-ek_prometheus
+    params:
+      build: complete_dockerfiles((docker-ek_prometheus-dockerfile-path))
   - put: docker-ek_telegraf
     params:
       build: complete_dockerfiles((docker-ek_telegraf-dockerfile-path))
@@ -280,6 +283,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-ek_nats-server-repository))
     tag: ((docker-ek_nats-server-tag))
+
+- name: docker-ek_prometheus
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-ek_prometheus-repository))
+    tag: ((docker-ek_prometheus-tag))
 
 - name: docker-ek_telegraf
   type: docker-image
