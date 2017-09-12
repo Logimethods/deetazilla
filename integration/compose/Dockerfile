@@ -1,3 +1,4 @@
 FROM logimethods/compose
 
-COPY *.yml services_hierarch*.sh ./
+#+ COPY properties/*.properties ./properties/
+COPY *.yml services_hierarch*.sh scripts/*.sh ./
