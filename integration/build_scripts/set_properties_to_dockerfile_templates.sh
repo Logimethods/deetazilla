@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a # turn on auto-export
-. properties/configuration.properties
+. ../properties/configuration.properties
 set -a # turn off auto-export
 
 while IFS= read -r -d '' filename; do
@@ -11,4 +11,4 @@ eval "cat <<EOF
 $(<$filename)
 EOF
 " > "${filename%.*}"
-done < <(find ./ek-*/* -name 'Dockerfile.tpl' -print0)
+done < <(find ./dockerfile-*/* -name 'Dockerfile.tpl' -print0)

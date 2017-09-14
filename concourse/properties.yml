@@ -3,25 +3,25 @@ github-uri: git@github.com:Logimethods/unnamed_bd.git
 github-compose-dockerfile-path: /compose
 docker-compose-repository: logimethods/compose
 
-docker-ek_cassandra-dockerfile-path: /ek-cassandra
-docker-ek_cassandra-repository: logimethods/ek_cassandra
-docker-ek_cassandra-tag: "1.0"
+docker-dz_cassandra-dockerfile-path: /dz-cassandra
+docker-dz_cassandra-repository: logimethods/dz_cassandra
+docker-dz_cassandra-tag: "1.0"
 
-docker-ek_nats-client-dockerfile-path: /ek-nats-client
-docker-ek_nats-client-repository: logimethods/ek_nats-client
-docker-ek_nats-client-tag: "1.0"
+docker-dz_nats-client-dockerfile-path: /dz-nats-client
+docker-dz_nats-client-repository: logimethods/dz_nats-client
+docker-dz_nats-client-tag: "1.0"
 
-docker-ek_nats-server-dockerfile-path: /ek-nats-server
-docker-ek_nats-server-repository: logimethods/ek_nats-server
-docker-ek_nats-server-tag: "1.0"
+docker-dz_nats-server-dockerfile-path: /dz-nats-server
+docker-dz_nats-server-repository: logimethods/dz_nats-server
+docker-dz_nats-server-tag: "1.0"
 
-docker-ek_telegraf-dockerfile-path: /ek-telegraf
-docker-ek_telegraf-repository: logimethods/ek_telegraf
-docker-ek_telegraf-tag: "1.0"
+docker-dz_telegraf-dockerfile-path: /dz-telegraf
+docker-dz_telegraf-repository: logimethods/dz_telegraf
+docker-dz_telegraf-tag: "1.0"
 
-docker-ek_prometheus-dockerfile-path: /ek-prometheus
-docker-ek_prometheus-repository: logimethods/ek_prometheus
-docker-ek_prometheus-tag: "1.0"
+docker-dz_prometheus-dockerfile-path: /dz-prometheus
+docker-dz_prometheus-repository: logimethods/dz_prometheus
+docker-dz_prometheus-tag: "1.0"
 
 github-int_compose-dockerfile-path: /integration/compose
 docker-int_compose-repository: logimethods/int_compose

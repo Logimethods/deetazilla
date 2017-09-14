@@ -2,7 +2,7 @@ services:
   ### TODO: ["create_volume", "cassandra"],
   ### create_service_cassandra,
   cassandra_cluster_main:
-    image: ((docker-ek_cassandra-repository)):((docker-ek_cassandra-tag))${postfix}
+    image: ((docker-dz_cassandra-repository)):((docker-dz_cassandra-tag))${postfix}
     deploy:
       placement:
         constraints:
@@ -15,7 +15,7 @@ services:
       - "${CASSANDRA_COUNT_PORT}:6161"
 
   cassandra_cluster_node:
-    image: ((docker-ek_cassandra-repository)):((docker-ek_cassandra-tag))${postfix}
+    image: ((docker-dz_cassandra-repository)):((docker-dz_cassandra-tag))${postfix}
     deploy:
       mode: global
       placement:
