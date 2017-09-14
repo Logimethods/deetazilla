@@ -4,7 +4,7 @@ set -e
 
 source build_functions.sh
 
-# ./build_ek.sh
+# ./build_dz.sh
 
 clear
 echo "-----------------------------------------"

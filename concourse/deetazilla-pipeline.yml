@@ -36,22 +36,22 @@ jobs:
         - |
           cp -R github-repo/* complete_dockerfiles/
           cd complete_dockerfiles/
-          ./set_properties_to_ek_templates.sh
-  - put: docker-ek_cassandra
+          ./set_properties_to_dz_templates.sh
+  - put: docker-dz_cassandra
     params:
-      build: complete_dockerfiles((docker-ek_cassandra-dockerfile-path))
-  - put: docker-ek_nats-client
+      build: complete_dockerfiles((docker-dz_cassandra-dockerfile-path))
+  - put: docker-dz_nats-client
     params:
-      build: complete_dockerfiles((docker-ek_nats-client-dockerfile-path))
-  - put: docker-ek_nats-server
+      build: complete_dockerfiles((docker-dz_nats-client-dockerfile-path))
+  - put: docker-dz_nats-server
     params:
-      build: complete_dockerfiles((docker-ek_nats-server-dockerfile-path))
-  - put: docker-ek_prometheus
+      build: complete_dockerfiles((docker-dz_nats-server-dockerfile-path))
+  - put: docker-dz_prometheus
     params:
-      build: complete_dockerfiles((docker-ek_prometheus-dockerfile-path))
-  - put: docker-ek_telegraf
+      build: complete_dockerfiles((docker-dz_prometheus-dockerfile-path))
+  - put: docker-dz_telegraf
     params:
-      build: complete_dockerfiles((docker-ek_telegraf-dockerfile-path))
+      build: complete_dockerfiles((docker-dz_telegraf-dockerfile-path))
 
 - name: build-docker-int_inject
   public: true
@@ -247,7 +247,7 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-## Eureka Docker Images ##
+## Deetazilla Docker Images ##
 
 - name: docker-compose
   type: docker-image
@@ -257,50 +257,50 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-compose-repository))
 
-- name: docker-ek_cassandra
+- name: docker-dz_cassandra
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-ek_cassandra-repository))
-    tag: ((docker-ek_cassandra-tag))
+    repository: ((docker-dz_cassandra-repository))
+    tag: ((docker-dz_cassandra-tag))
 
-- name: docker-ek_nats-client
+- name: docker-dz_nats-client
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-ek_nats-client-repository))
-    tag: ((docker-ek_nats-client-tag))
+    repository: ((docker-dz_nats-client-repository))
+    tag: ((docker-dz_nats-client-tag))
 
-- name: docker-ek_nats-server
+- name: docker-dz_nats-server
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-ek_nats-server-repository))
-    tag: ((docker-ek_nats-server-tag))
+    repository: ((docker-dz_nats-server-repository))
+    tag: ((docker-dz_nats-server-tag))
 
-- name: docker-ek_prometheus
+- name: docker-dz_prometheus
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-ek_prometheus-repository))
-    tag: ((docker-ek_prometheus-tag))
+    repository: ((docker-dz_prometheus-repository))
+    tag: ((docker-dz_prometheus-tag))
 
-- name: docker-ek_telegraf
+- name: docker-dz_telegraf
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-ek_telegraf-repository))
-    tag: ((docker-ek_telegraf-tag))
+    repository: ((docker-dz_telegraf-repository))
+    tag: ((docker-dz_telegraf-tag))
 
 ## Integration Docker Images ##
 
