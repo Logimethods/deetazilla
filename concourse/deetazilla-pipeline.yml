@@ -274,7 +274,7 @@ resources:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-compose-repository))
+    repository: ((docker-dz_compose-repository))
     tag: ((docker-dz_compose-tag))((docker-additional-tag))
 
 - name: docker-dz_cassandra
