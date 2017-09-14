@@ -1,6 +1,9 @@
 How-To:
 =====
 
+First install Pyyaml:
+`pip install pyyaml`
+
 To run from the cmd line:
 `python templater.py input_file properties_file`
 
