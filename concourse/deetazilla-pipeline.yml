@@ -9,7 +9,7 @@ jobs:
     trigger: true
   - put: docker-dz_compose
     params:
-      build: github-repo-dz_compose((github-compose-dockerfile-path))
+      build: github-repo-dz_compose((github-dz_compose-dockerfile-path))
 
 - name: build-docker-dz_images
   public: true
