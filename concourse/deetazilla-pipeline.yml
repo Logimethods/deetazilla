@@ -331,6 +331,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-int_compose-repository))
+    tag: ((docker-int_compose-tag))((docker-additional-tag))
 
 - name: docker-int_inject
   type: docker-image
