@@ -24,11 +24,12 @@ jobs:
         args:
         - -exc
         - |
+          mkdir added_properties/compose/
           cp -R github-repo-dz_compose/compose/* added_properties/compose/
-          cp added_properties/concourse/properties.yml added_properties/compose/
+          cp github-repo-dz_compose/concourse/properties.yml added_properties/compose/
   - put: docker-dz_compose
     params:
-      build: add_properties((github-dz_compose-dockerfile-path))
+      build: added_properties((github-dz_compose-dockerfile-path))
 
 - name: build-docker-dz_images
   public: true
