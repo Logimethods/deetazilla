@@ -16,7 +16,7 @@ jobs:
           repository: ubuntu
           tag: "latest"
       inputs:
-      - name: github-repo-int_compose
+      - name: github-repo-dz_compose
       outputs:
       - name: added_properties
       run:
