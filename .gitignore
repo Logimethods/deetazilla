@@ -1,13 +1,13 @@
 *.class
 *.log
 
-ek-cassandra/Dockerfile
+dz-cassandra/Dockerfile
 
-ek-nats-client/main
+dz-nats-client/main
 
-ek-nats-server/Dockerfile
+dz-nats-server/Dockerfile
 
-ek-telegraf/Dockerfile
+dz-telegraf/Dockerfile
 
 properties/_configuration-telegraf-cassandra_count.properties
 

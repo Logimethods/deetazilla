@@ -7,7 +7,7 @@ services:
       - "81:80"
   #### run_metrics_prometheus
   prometheus:
-    image: ((docker-ek_prometheus-repository)):((docker-ek_prometheus-tag))${postfix}
+    image: ((docker-dz_prometheus-repository)):((docker-dz_prometheus-tag))${postfix}
     deploy:
       placement:
         constraints:
