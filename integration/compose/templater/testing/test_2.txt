@@ -1,0 +1,9 @@
+services:
+  ### ["create_service_telegraf", "cassandra_count"],
+  telegraf_cassandra_count:
+    image: ((docker-ek_telegraf-repository)):((docker-ek_telegraf-tag))${postfix}
+    environment:
+      # - SETUP_LOCAL_CONTAINERS=true
+      - EUREKA_URL=${EUREKA_NAME}
+      - NODE_ID={{.Node.ID}}
+      - SERVICE_ID={{.Service.ID}}
