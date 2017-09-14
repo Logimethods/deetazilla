@@ -1,4 +1,4 @@
-github-uri: git@github.com:Logimethods/unnamed_bd.git
+github-uri: git@github.com:Logimethods/deetazilla.git
 github-branch: python_templater
 
 docker-additional-tag: "-dev"
