@@ -1,6 +1,6 @@
 import yaml
 import re
-import sys  
+import sys
 
 pattern = '\({2}.*?\){2}'
 
@@ -17,7 +17,7 @@ def file_to_string(path):
     return data
 
 def find_and_replace(inp, inp_dict):
-    new_data = re.sub(pattern, lambda x : inp_dict[x.group().strip().strip("()")], inp)
+    new_data = re.sub(pattern, lambda x : inp_dict.get(x.group().strip().strip("()"), x.group()), inp)
     return new_data
 
 def replace(inp_path, properties_path):
