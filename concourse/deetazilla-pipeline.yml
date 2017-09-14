@@ -1,17 +1,17 @@
 ###### JOBS #######
 
 jobs:
-- name: build-docker-compose
+- name: build-docker-dz_compose
   public: true
   serial: true
   plan:
-  - get: github-repo-compose
+  - get: github-repo-dz_compose
     trigger: true
-  - put: docker-compose
+  - put: docker-dz_compose
     params:
-      build: github-repo-compose((github-compose-dockerfile-path))
+      build: github-repo-dz_compose((github-compose-dockerfile-path))
 
-- name: build-docker-eureka
+- name: build-docker-dz_images
   public: true
   serial: true
   plan:
@@ -216,6 +216,16 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
+- name: github-repo-dz_compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - compose/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo-int_inject
   type: git
   source:
@@ -256,19 +266,9 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-compose
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: ((github-branch))
-    paths:
-      - compose/**
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
 ## Deetazilla Docker Images ##
 
-- name: docker-compose
+- name: docker-dz_compose
   type: docker-image
   source:
     email: ((docker-hub-email))
