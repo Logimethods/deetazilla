@@ -7,9 +7,29 @@ jobs:
   plan:
   - get: github-repo-dz_compose
     trigger: true
+  - task: add_properties
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ubuntu
+          tag: "latest"
+      inputs:
+      - name: github-repo-dz_compose
+      outputs:
+      - name: added_properties
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          mkdir added_properties/compose/
+          cp -R github-repo-dz_compose/compose/* added_properties/compose/
+          cp github-repo-dz_compose/concourse/properties.yml added_properties/compose/
   - put: docker-dz_compose
     params:
-      build: github-repo-dz_compose((github-dz_compose-dockerfile-path))
+      build: added_properties((github-dz_compose-dockerfile-path))
 
 - name: build-docker-dz_images
   public: true
@@ -177,28 +197,9 @@ jobs:
   plan:
   - get: github-repo-int_compose
     trigger: true
-  - task: add_properties
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: ubuntu
-          tag: "latest"
-      inputs:
-      - name: github-repo-int_compose
-      outputs:
-      - name: added_properties
-      run:
-        path: sh
-        args:
-        - -exc
-        - |
-          cp -R github-repo-int_compose/* added_properties/
-          cp added_properties/concourse/properties.yml added_properties/integration/compose/
   - put: docker-int_compose
     params:
-      build: added_properties((github-int_compose-dockerfile-path))
+      build: github-repo-int_compose((github-int_compose-dockerfile-path))
 
 ###### RESOURCES ######
 
