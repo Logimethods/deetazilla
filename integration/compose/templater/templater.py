@@ -24,5 +24,7 @@ def replace(inp_path, properties_path):
     my_dict = yaml_to_dict(properties_path)
     my_data = file_to_string(inp_path)
     new_data = find_and_replace(my_data, my_dict)
-    with open(inp_path, 'w') as f:
-        f.write(new_data)
+    return new_data
+
+
+print(replace(sys.argv[1], sys.argv[2]))
