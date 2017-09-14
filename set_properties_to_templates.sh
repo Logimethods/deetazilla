@@ -10,5 +10,6 @@ eval "cat <<EOF
 # GENERATED FILE, please do not modify nor store into Git #
 $(<$filename)
 EOF
-" > "${filename%.*}"
-done < <(find ./dz-*/* -name 'Dockerfile.tpl' -print0)
+" > "${filename%.*}.tmp"
+python3 compose/templater/templater.py "${filename%.*}.tmp" concourse/properties.yml > "${filename%.*}"
+done < <(find . -name '*.tpl' -print0)

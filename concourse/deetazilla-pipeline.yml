@@ -197,9 +197,32 @@ jobs:
   plan:
   - get: github-repo-int_compose
     trigger: true
+  - get: docker-dz_compose
+    trigger: true
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: python
+          tag: "latest"
+      inputs:
+      - name: github-repo
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          pip install pyyaml
+          cp -R github-repo-int_compose/* complete_dockerfiles/
+          cd complete_dockerfiles/
+          ./set_properties_to_int_templates.sh
   - put: docker-int_compose
     params:
-      build: github-repo-int_compose((github-int_compose-dockerfile-path))
+      build: complete_dockerfiles((github-int_compose-dockerfile-path))
 
 ###### RESOURCES ######
 
