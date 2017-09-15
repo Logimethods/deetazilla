@@ -9,7 +9,7 @@ jobs:
     trigger: true
   - put: docker-dz_templater
     params:
-      build: github-repo-dz_templater((github-dz_templater-dockerfile-path))
+      build: github-repo-dz_templater/((docker-dz_templater-dockerfile-path))
 
 - name: build-docker-dz_compose
   public: true
@@ -43,7 +43,7 @@ jobs:
           ls /tmp/build/*/added_properties/dz_compose/
   - put: docker-dz_compose
     params:
-      build: added_properties((github-dz_compose-dockerfile-path))
+      build: added_properties/((docker-dz_compose-dockerfile-path))
 
 - name: build-docker-dz_images
   public: true
@@ -75,19 +75,19 @@ jobs:
           ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
     params:
-      build: complete_dockerfiles((docker-dz_cassandra-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_cassandra-dockerfile-path))
   - put: docker-dz_nats-client
     params:
-      build: complete_dockerfiles((docker-dz_nats-client-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_nats-client-dockerfile-path))
   - put: docker-dz_nats-server
     params:
-      build: complete_dockerfiles((docker-dz_nats-server-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_nats-server-dockerfile-path))
   - put: docker-dz_prometheus
     params:
-      build: complete_dockerfiles((docker-dz_prometheus-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_prometheus-dockerfile-path))
   - put: docker-dz_telegraf
     params:
-      build: complete_dockerfiles((docker-dz_telegraf-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
 
 - name: build-docker-int_compose
   public: true
@@ -119,7 +119,7 @@ jobs:
           ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_compose
     params:
-      build: complete_dockerfiles((github-int_compose-dockerfile-path))
+      build: complete_dockerfiles/((docker-int_compose-dockerfile-path))
 
 - name: build-docker-int_inject
   public: true
@@ -145,7 +145,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- INJECT ----------------------"
-          pushd github-repo-int_inject/integration((docker-int_inject-path))/
+          pushd github-repo-int_inject/((github-int_inject-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -156,11 +156,11 @@ jobs:
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_inject/integration/* dockerfile_integration/
+          cp -R github-repo-int_inject/((github-integration-path))/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_inject
     params:
-      build: dockerfile_integration((docker-int_inject-dockerfile-path))
+      build: dockerfile_integration/((docker-int_inject-dockerfile-path))
 
 - name: build-docker-int_streaming
   public: true
@@ -186,7 +186,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- STREAMING ----------------------"
-          pushd github-repo-int_streaming/integration((docker-int_streaming-path))/
+          pushd github-repo-int_streaming/((github-int_streaming-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -201,7 +201,7 @@ jobs:
           # ls -als dockerfile_integration/*/*
   - put: docker-int_streaming
     params:
-      build: dockerfile_integration((docker-int_streaming-dockerfile-path))
+      build: dockerfile_integration/((docker-int_streaming-dockerfile-path))
 
 - name: build-docker-int_monitor
   public: true
@@ -227,17 +227,17 @@ jobs:
         - -exc
         - |
           echo "---------------------- MONITOR ----------------------"
-          pushd github-repo-int_monitor/integration((docker-int_monitor-path))/
+          pushd github-repo-int_monitor/((github-int_monitor-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           rm -Rf ./docker
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_monitor/integration/* dockerfile_integration/
+          cp -R github-repo-int_monitor/((github-integration-path))/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_monitor
     params:
-      build: dockerfile_integration((docker-int_monitor-dockerfile-path))
+      build: dockerfile_integration/((docker-int_monitor-dockerfile-path))
 
 ###### RESOURCES ######
 
@@ -281,7 +281,7 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration/compose/**
+      - ((github-int_compose-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -291,7 +291,7 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration((docker-int_inject-path))/**
+      - ((github-int_inject-path))/**
       - dz_templater/**
     git_user: ((github-username))
     private_key: ((github-private-key))
@@ -302,8 +302,8 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration((docker-int_streaming-path))/**
-      - dz_templater/**
+      - ((github-int_streaming-path))/**
+      - ((github-dz_templater-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -313,8 +313,8 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration((docker-int_monitor-path))/**
-      - dz_templater/**
+      - ((github-int_monitor-path))/**
+      - ((github-dz_templater-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
