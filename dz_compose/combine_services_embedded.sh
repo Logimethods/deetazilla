@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## docker run logimethods/smart-meter:compose "_secrets" inject_metrics
 
