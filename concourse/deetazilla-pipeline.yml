@@ -51,6 +51,8 @@ jobs:
   plan:
   - get: github-repo
     trigger: true
+  - get: docker-dz_templater
+    trigger: true
   - task: complete_dockerfiles
     config:
       platform: linux
