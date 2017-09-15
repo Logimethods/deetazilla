@@ -111,7 +111,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- INJECT ----------------------"
-          pushd github-repo-int_inject/integration/docker_inject/
+          pushd github-repo-int_inject/integration((docker-int_inject-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -152,7 +152,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- STREAMING ----------------------"
-          pushd github-repo-int_streaming/integration/docker_streaming/
+          pushd github-repo-int_streaming/integration((docker-int_streaming-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -193,7 +193,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- MONITOR ----------------------"
-          pushd github-repo-int_monitor/integration/docker_monitor/
+          pushd github-repo-int_monitor/integration((docker-int_monitor-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           rm -Rf ./docker
           mv target/docker .
@@ -279,7 +279,7 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration/docker_inject/**
+      - integration((docker-int_inject-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -289,7 +289,7 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration/docker_streaming/**
+      - integration((docker-int_streaming-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -299,7 +299,7 @@ resources:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - integration/docker_monitor/**
+      - integration((docker-int_monitor-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
