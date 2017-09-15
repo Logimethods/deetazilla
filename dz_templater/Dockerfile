@@ -2,7 +2,7 @@
 
 FROM python:3.6.2-alpine3.6
 
-RUN pip install yamlreader
+RUN pip install bash yamlreader
 
 WORKDIR /templater
 
