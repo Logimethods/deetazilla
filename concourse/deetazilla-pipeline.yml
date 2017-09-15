@@ -247,7 +247,7 @@ resources:
     branch: ((github-branch))
     ignore_paths:
       - integration/**
-      - compose/**
+      - dz_compose/**
       - concourse/**
       - README.md
     git_user: ((github-username))
