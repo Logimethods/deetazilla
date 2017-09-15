@@ -242,6 +242,16 @@ jobs:
 ###### RESOURCES ######
 
 resources:
+- name: github-repo-dz_compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - dz_compose/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo
   type: git
   source:
@@ -265,13 +275,13 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-dz_compose
+- name: github-repo-int_compose
   type: git
   source:
     uri: ((github-uri))
     branch: ((github-branch))
     paths:
-      - dz_compose/**
+      - integration/compose/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -282,6 +292,7 @@ resources:
     branch: ((github-branch))
     paths:
       - integration((docker-int_inject-path))/**
+      - dz_templater/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -292,6 +303,7 @@ resources:
     branch: ((github-branch))
     paths:
       - integration((docker-int_streaming-path))/**
+      - dz_templater/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -302,16 +314,7 @@ resources:
     branch: ((github-branch))
     paths:
       - integration((docker-int_monitor-path))/**
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
-- name: github-repo-int_compose
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: ((github-branch))
-    paths:
-      - integration/compose/**
+      - dz_templater/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
