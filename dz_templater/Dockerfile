@@ -1,8 +1,8 @@
 ## https://github.com/ImmobilienScout24/yamlreader
 
-FROM python:3.6.2-alpine3.6
+FROM python:3.6.2-jessie
 
-RUN pip install bash yamlreader
+RUN pip install yamlreader
 
 WORKDIR /templater
 
