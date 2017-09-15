@@ -89,6 +89,38 @@ jobs:
     params:
       build: complete_dockerfiles((docker-dz_telegraf-dockerfile-path))
 
+- name: build-docker-int_compose
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_compose
+    trigger: true
+  - get: docker-dz_compose
+    trigger: true
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-int_compose
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-int_compose/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+  - put: docker-int_compose
+    params:
+      build: complete_dockerfiles((github-int_compose-dockerfile-path))
+
 - name: build-docker-int_inject
   public: true
   serial: true
@@ -206,38 +238,6 @@ jobs:
   - put: docker-int_monitor
     params:
       build: dockerfile_integration((docker-int_monitor-dockerfile-path))
-
-- name: build-docker-int_compose
-  public: true
-  serial: true
-  plan:
-  - get: github-repo-int_compose
-    trigger: true
-  - get: docker-dz_compose
-    trigger: true
-  - task: complete_dockerfiles
-    config:
-      platform: linux
-      image_resource:
-        type: docker-image
-        source:
-          repository: ((docker-dz_templater-repository))
-          tag: ((docker-dz_templater-tag))((docker-additional-tag))
-      inputs:
-      - name: github-repo-int_compose
-      outputs:
-      - name: complete_dockerfiles
-      run:
-        path: sh
-        args:
-        - -exc
-        - |
-          cp -R github-repo-int_compose/* complete_dockerfiles/
-          cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
-  - put: docker-int_compose
-    params:
-      build: complete_dockerfiles((github-int_compose-dockerfile-path))
 
 ###### RESOURCES ######
 
