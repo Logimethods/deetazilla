@@ -11,5 +11,5 @@ eval "cat <<EOF
 $(<$filename)
 EOF
 " > "${filename%.*}.tmp"
-python3 compose/templater/templater.py "${filename%.*}.tmp" concourse/properties.yml > "${filename%.*}"
-done < <(find . -name '*.tpl' -print0)
+python3 templater.py "${filename%.*}.tmp" properties/properties.yml > "${filename%.*}"
+done < <(find $1 -name '*.tpl' -print0)

@@ -3,7 +3,11 @@ github-branch: python_templater
 
 docker-additional-tag: "-dev"
 
-github-dz_compose-dockerfile-path: /compose
+github-dz_templater-dockerfile-path: /dz_templater
+docker-dz_templater-repository: logimethods/dz_templater
+docker-dz_templater-tag: "1.0"
+
+github-dz_compose-dockerfile-path: /dz_compose
 docker-dz_compose-repository: logimethods/dz_compose
 docker-dz_compose-tag: "1.0"
 
