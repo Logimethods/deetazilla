@@ -2,7 +2,7 @@ services:
   ### create_service_app_streaming,
   # TODO: Check
   app_streaming:
-    image: ((docker-int_streaming-repository)):((docker-int_streaming-tag))${postfix}
+    image: ((docker-int_streaming-repository)):((docker-int_streaming-tag))((docker-additional-tag))${postfix}
     deploy:
       replicas: 1
       placement:

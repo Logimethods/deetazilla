@@ -1,7 +1,7 @@
 services:
   ### ["create_service_telegraf_on_master", "docker"],
   telegraf_docker:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
     deploy:
       replicas: 1
       placement:
