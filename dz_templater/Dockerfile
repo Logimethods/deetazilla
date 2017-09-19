@@ -4,6 +4,10 @@ FROM python:3.6.2-jessie
 
 RUN pip install yamlreader
 
+RUN groupadd docker \
+    && useradd -r -g docker docker
+
+
 USER docker:docker
 
 WORKDIR /templater
