@@ -30,3 +30,7 @@ concourse/credentials.yml
 concourse/credentials.properties
 
 docker-compose-merge.yml
+
+integration/compose/Dockerfile
+
+integration/int_compose/Dockerfile

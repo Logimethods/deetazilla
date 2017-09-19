@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## docker run logimethods/smart-meter:compose "_secrets" inject_metrics
 
@@ -13,8 +13,11 @@ eval echo "$targets" \
   | xargs -n1 | sort -u | xargs \
   | sed s/["^ "]*/"## "\&/g
 
+temp_file=$(mktemp)
+
 yamlreader \
   $( eval echo "$targets" \
   | xargs -n1 | sort -u | xargs \
-  | sed s/["^ "]*/docker-compose-\&.yml/g )
+  | sed s/["^ "]*/docker-compose-\&.yml/g ) > "${temp_file}"
 
+python3 templater.py "${temp_file}" properties/properties.yml

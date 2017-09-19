@@ -1,21 +1,57 @@
 ###### JOBS #######
 
 jobs:
-- name: build-docker-compose
+- name: build-docker-dz_templater
   public: true
   serial: true
   plan:
-  - get: github-repo-compose
+  - get: github-repo-dz_templater
     trigger: true
-  - put: docker-compose
+  - put: docker-dz_templater
     params:
-      build: github-repo-compose((github-compose-dockerfile-path))
+      build: github-repo-dz_templater/((docker-dz_templater-dockerfile-path))
 
-- name: build-docker-eureka
+- name: build-docker-dz_compose
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-dz_compose
+    trigger: true
+  - get: docker-dz_templater
+    trigger: true
+  - task: add_properties
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_compose
+      outputs:
+      - name: added_properties
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          mkdir added_properties/dz_compose/
+          cp -R github-repo-dz_compose/dz_compose/* added_properties/dz_compose/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/added_properties
+          ls /tmp/build/*/added_properties/dz_compose/
+  - put: docker-dz_compose
+    params:
+      build: added_properties/((docker-dz_compose-dockerfile-path))
+
+- name: build-docker-dz_images
   public: true
   serial: true
   plan:
   - get: github-repo
+    trigger: true
+  - get: docker-dz_templater
     trigger: true
   - task: complete_dockerfiles
     config:
@@ -23,8 +59,8 @@ jobs:
       image_resource:
         type: docker-image
         source:
-          repository: ubuntu
-          tag: "latest"
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
       inputs:
       - name: github-repo
       outputs:
@@ -35,23 +71,55 @@ jobs:
         - -exc
         - |
           cp -R github-repo/* complete_dockerfiles/
-          cd complete_dockerfiles/
-          ./set_properties_to_dz_templates.sh
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
     params:
-      build: complete_dockerfiles((docker-dz_cassandra-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_cassandra-dockerfile-path))
   - put: docker-dz_nats-client
     params:
-      build: complete_dockerfiles((docker-dz_nats-client-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_nats-client-dockerfile-path))
   - put: docker-dz_nats-server
     params:
-      build: complete_dockerfiles((docker-dz_nats-server-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_nats-server-dockerfile-path))
   - put: docker-dz_prometheus
     params:
-      build: complete_dockerfiles((docker-dz_prometheus-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_prometheus-dockerfile-path))
   - put: docker-dz_telegraf
     params:
-      build: complete_dockerfiles((docker-dz_telegraf-dockerfile-path))
+      build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
+
+- name: build-docker-int_compose
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_compose
+    trigger: true
+  - get: docker-dz_compose
+    trigger: true
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-int_compose
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-int_compose/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+  - put: docker-int_compose
+    params:
+      build: complete_dockerfiles/((docker-int_compose-dockerfile-path))
 
 - name: build-docker-int_inject
   public: true
@@ -77,7 +145,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- INJECT ----------------------"
-          pushd github-repo-int_inject/integration/docker_inject/
+          pushd github-repo-int_inject/((github-int_inject-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -88,11 +156,11 @@ jobs:
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_inject/integration/* dockerfile_integration/
+          cp -R github-repo-int_inject/((github-integration-path))/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_inject
     params:
-      build: dockerfile_integration((docker-int_inject-dockerfile-path))
+      build: dockerfile_integration/((docker-int_inject-dockerfile-path))
 
 - name: build-docker-int_streaming
   public: true
@@ -118,7 +186,7 @@ jobs:
         - -exc
         - |
           echo "---------------------- STREAMING ----------------------"
-          pushd github-repo-int_streaming/integration/docker_streaming/
+          pushd github-repo-int_streaming/((github-int_streaming-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           pushd target/docker
           mv Dockerfile Dockerfile_middle
@@ -133,7 +201,7 @@ jobs:
           # ls -als dockerfile_integration/*/*
   - put: docker-int_streaming
     params:
-      build: dockerfile_integration((docker-int_streaming-dockerfile-path))
+      build: dockerfile_integration/((docker-int_streaming-dockerfile-path))
 
 - name: build-docker-int_monitor
   public: true
@@ -159,71 +227,51 @@ jobs:
         - -exc
         - |
           echo "---------------------- MONITOR ----------------------"
-          pushd github-repo-int_monitor/integration/docker_monitor/
+          pushd github-repo-int_monitor/((github-int_monitor-path))/
           echo "q" | sbt --info clean assembly dockerFileTask
           rm -Rf ./docker
           mv target/docker .
           popd
           echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_monitor/integration/* dockerfile_integration/
+          cp -R github-repo-int_monitor/((github-integration-path))/* dockerfile_integration/
           # ls -als dockerfile_integration/*/*
   - put: docker-int_monitor
     params:
-      build: dockerfile_integration((docker-int_monitor-dockerfile-path))
-
-- name: build-docker-int_compose
-  public: true
-  serial: true
-  plan:
-  - get: github-repo-int_compose
-    trigger: true
-  - put: docker-int_compose
-    params:
-      build: github-repo-int_compose((github-int_compose-dockerfile-path))
+      build: dockerfile_integration/((docker-int_monitor-dockerfile-path))
 
 ###### RESOURCES ######
 
 resources:
+- name: github-repo-dz_compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - dz_compose/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo
   type: git
   source:
     uri: ((github-uri))
-    branch: master
+    branch: ((github-branch))
     ignore_paths:
       - integration/**
-      - compose/**
+      - dz_compose/**
       - concourse/**
       - README.md
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-int_inject
+- name: github-repo-dz_templater
   type: git
   source:
     uri: ((github-uri))
-    branch: master
+    branch: ((github-branch))
     paths:
-      - integration/docker_inject/**
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
-- name: github-repo-int_streaming
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: master
-    paths:
-      - integration/docker_streaming/**
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
-- name: github-repo-int_monitor
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: master
-    paths:
-      - integration/docker_monitor/**
+      - dz_templater/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -231,31 +279,64 @@ resources:
   type: git
   source:
     uri: ((github-uri))
-    branch: master
+    branch: ((github-branch))
     paths:
-      - integration/compose/**
+      - ((github-int_compose-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-compose
+- name: github-repo-int_inject
   type: git
   source:
     uri: ((github-uri))
-    branch: master
+    branch: ((github-branch))
     paths:
-      - compose/**
+      - ((github-int_inject-path))/**
+      - dz_templater/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-int_streaming
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-int_streaming-path))/**
+      - ((github-dz_templater-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-int_monitor
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-int_monitor-path))/**
+      - ((github-dz_templater-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
 ## Deetazilla Docker Images ##
 
-- name: docker-compose
+- name: docker-dz_templater
   type: docker-image
   source:
     email: ((docker-hub-email))
     username: ((docker-hub-username))
     password: ((docker-hub-password))
-    repository: ((docker-compose-repository))
+    repository: ((docker-dz_templater-repository))
+    tag: ((docker-dz_templater-tag))((docker-additional-tag))
+
+- name: docker-dz_compose
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-dz_compose-repository))
+    tag: ((docker-dz_compose-tag))((docker-additional-tag))
 
 - name: docker-dz_cassandra
   type: docker-image
@@ -264,7 +345,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-dz_cassandra-repository))
-    tag: ((docker-dz_cassandra-tag))
+    tag: ((docker-dz_cassandra-tag))((docker-additional-tag))
 
 - name: docker-dz_nats-client
   type: docker-image
@@ -273,7 +354,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-dz_nats-client-repository))
-    tag: ((docker-dz_nats-client-tag))
+    tag: ((docker-dz_nats-client-tag))((docker-additional-tag))
 
 - name: docker-dz_nats-server
   type: docker-image
@@ -282,7 +363,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-dz_nats-server-repository))
-    tag: ((docker-dz_nats-server-tag))
+    tag: ((docker-dz_nats-server-tag))((docker-additional-tag))
 
 - name: docker-dz_prometheus
   type: docker-image
@@ -291,7 +372,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-dz_prometheus-repository))
-    tag: ((docker-dz_prometheus-tag))
+    tag: ((docker-dz_prometheus-tag))((docker-additional-tag))
 
 - name: docker-dz_telegraf
   type: docker-image
@@ -300,7 +381,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-dz_telegraf-repository))
-    tag: ((docker-dz_telegraf-tag))
+    tag: ((docker-dz_telegraf-tag))((docker-additional-tag))
 
 ## Integration Docker Images ##
 
@@ -311,6 +392,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-int_compose-repository))
+    tag: ((docker-int_compose-tag))((docker-additional-tag))
 
 - name: docker-int_inject
   type: docker-image
@@ -319,7 +401,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-int_inject-repository))
-    tag: ((docker-int_inject-tag))
+    tag: ((docker-int_inject-tag))((docker-additional-tag))
 
 - name: docker-int_streaming
   type: docker-image
@@ -328,7 +410,7 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-int_streaming-repository))
-    tag: ((docker-int_streaming-tag))
+    tag: ((docker-int_streaming-tag))((docker-additional-tag))
 
 - name: docker-int_monitor
   type: docker-image
@@ -337,5 +419,5 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
     repository: ((docker-int_monitor-repository))
-    tag: ((docker-int_monitor-tag))
+    tag: ((docker-int_monitor-tag))((docker-additional-tag))
 

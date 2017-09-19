@@ -1,7 +1,7 @@
 services:
   ### create_service_cassandra_inject,
   cassandra_inject:
-    image: ((docker-int_cassandra_inject-repository)):((docker-int_cassandra_inject-tag))${postfix}
+    image: ((docker-int_cassandra_inject-repository)):((docker-int_cassandra_inject-tag))((docker-additional-tag))${postfix}
     deploy:
       mode: global
       placement:

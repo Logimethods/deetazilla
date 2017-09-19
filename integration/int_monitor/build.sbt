@@ -9,46 +9,40 @@ import java.util.Properties
 val appProperties = settingKey[Properties]("The application properties")
 appProperties := {
   val prop = new Properties()
-  IO.load(prop, new File("../../properties/configuration.properties"))
+  IO.load(prop, new File("../../dz_templater/properties/configuration.properties"))
   prop
 }
 
-// logLevel := Level.Debug
+logLevel := Level.Debug
 
 val rootName = "smart-meter"
-name := "docker-" + rootName + "-inject"
+name := "docker-" + rootName + "-monitor"
 organization := "logimethods"
-val tag = "inject-DEV"
+val tag = "monitor-DEV"
 
 version := "0.4.0-SNAPSHOT"
 scalaVersion := "2.11.8"
 
-lazy val gatlingVersion = settingKey[String]("gatlingVersion")
-gatlingVersion := {
+lazy val scalaNatsVersion = settingKey[String]("scalaNatsVersion")
+scalaNatsVersion := {
   try {
-    appProperties.value.getProperty("gatling_version")
+    appProperties.value.getProperty("scala_nats_version")
   } catch {
     case _: Exception => "<empty>"
   }
 }
 
-lazy val natsConnectorGatlingVersion = settingKey[String]("natsConnectorGatlingVersion")
-natsConnectorGatlingVersion := {
+lazy val javaNatsStreamingVersion = settingKey[String]("javaNatsStreamingVersion")
+javaNatsStreamingVersion := {
   try {
-    appProperties.value.getProperty("nats_connector_gatling_version")
+    appProperties.value.getProperty("java_nats_streaming_version")
   } catch {
     case _: Exception => "<empty>"
   }
 }
 
-libraryDependencies += "com.logimethods" %% "nats-connector-gatling" % natsConnectorGatlingVersion.value changing()
-// https://mvnrepository.com/artifact/org.scalanlp/breeze_2.11
-libraryDependencies += "org.scalanlp" % "breeze_2.11" % "0.12"
-libraryDependencies += "io.gatling" % "gatling-core" % gatlingVersion.value
-
-// http://www.scalatest.org/install
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.0"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+libraryDependencies += "com.github.tyagihas" % "scala_nats_2.11" 			% scalaNatsVersion.value
+libraryDependencies += "io.nats"     		 		 % "java-nats-streaming" 	% javaNatsStreamingVersion.value
 
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 resolvers += "Sonatype OSS Release" at "https://oss.sonatype.org/content/groups/public/"
@@ -63,21 +57,22 @@ imageNames in docker := Seq(
 dockerfile in docker := {
   val jarFile: File = sbt.Keys.`package`.in(Compile, packageBin).value
   val classpath = (managedClasspath in Compile).value
-  val jarTarget = s"./lib/${jarFile.getName}"
+  val mainclass = mainClass.in(Compile, packageBin).value.getOrElse(sys.error("Expected exactly one main class"))
+  val jarTarget = s"/app/${jarFile.getName}"
+  // Make a colon separated classpath with the JAR file
+  val classpathString = classpath.files.map("/app/" + _.getName)
+    .mkString(":") + ":" + jarTarget
 
   new Dockerfile {
-    // Use a base image that contain Gatling
-	from("denvazh/gatling:" + gatlingVersion.value)
-    // Add all files on the classpath
-    add(classpath.files, "./lib/")
-    // Add the JAR file
-    copy(jarFile, jarTarget)
-    // Add Gatling User Files
-    add(baseDirectory.value / "user-files", "./user-files")
-    // Add Gatling Configuration Files
-    add(baseDirectory.value / "conf", "./conf")
+    // Use a base image that contain Scala
+	from("frolvlad/alpine-scala:2.11")
 
-//    cmd("--no-reports", "-s", "com.logimethods.smartmeter.inject.NatsInjection")
+    // Add all files on the classpath
+    add(classpath.files, "/app/")
+    // Add the JAR file
+    add(jarFile, jarTarget)
+    // On launch run Scala with the classpath and the main class
+    entryPoint("scala", "-cp", classpathString, mainclass)
   }
 }
 
@@ -93,21 +88,22 @@ dockerFileTask := {
 
   val jarFile: File = sbt.Keys.`package`.in(Compile, packageBin).value
   val classpath = (managedClasspath in Compile).value
-  val jarTarget = s"./lib/${jarFile.getName}"
+  val mainclass = mainClass.in(Compile, packageBin).value.getOrElse(sys.error("Expected exactly one main class"))
+  val jarTarget = s"/app/${jarFile.getName}"
+  // Make a colon separated classpath with the JAR file
+  val classpathString = classpath.files.map("/app/" + _.getName)
+    .mkString(":") + ":" + jarTarget
 
   val dockerFile = new Dockerfile {
-    // Use a base image that contain Gatling
-	from("denvazh/gatling:" + gatlingVersion.value)
-    // Add all files on the classpath
-    add(classpath.files, "./lib/")
-    // Add the JAR file
-    copy(jarFile, jarTarget)
-    // Add Gatling User Files
-    add(baseDirectory.value / "user-files", "./user-files")
-    // Add Gatling Configuration Files
-    add(baseDirectory.value / "conf", "./conf")
+    // Use a base image that contain Scala
+	from("frolvlad/alpine-scala:2.11")
 
-//    cmd("--no-reports", "-s", "com.logimethods.smartmeter.inject.NatsInjection")
+    // Add all files on the classpath
+    add(classpath.files, "/app/")
+    // Add the JAR file
+    add(jarFile, jarTarget)
+    // On launch run Scala with the classpath and the main class
+    entryPoint("scala", "-cp", classpathString, mainclass)
   }
 
   val stagedDockerfile =  sbtdocker.staging.DefaultDockerfileProcessor(dockerFile, dockerDir)
