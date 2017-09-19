@@ -3,7 +3,7 @@ FROM ((docker-dz_compose-repository)):((docker-dz_compose-tag))((docker-addition
 ## Install Docker
 RUN curl -sSL https://get.docker.com/ | sh \
     && useradd -r -u 1001 -g docker docker \
-    && sudo usermod -aG docker docker
+    && usermod -aG docker docker
 
 USER docker
 
