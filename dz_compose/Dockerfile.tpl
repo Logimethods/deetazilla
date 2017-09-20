@@ -5,8 +5,7 @@ COPY *.yml *.sh ./
 ## Install Docker
 RUN curl -sSL https://get.docker.com/ | sh
 
-RUN groupadd docker \
-    && useradd -r -g docker docker
+RUN useradd -r -g docker docker
 
 USER docker:docker
 
