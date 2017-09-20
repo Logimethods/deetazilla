@@ -5,7 +5,8 @@ COPY *.yml *.sh ./
 ## Install Docker
 RUN curl -sSL https://get.docker.com/ | sh
 
-RUN usermod -aG docker docker
+RUN useradd -r -g docker docker \
+    && usermod -aG docker docker
 
 USER docker:docker
 
