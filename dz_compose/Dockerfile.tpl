@@ -5,9 +5,6 @@ COPY *.yml *.sh ./
 ## Install Docker
 RUN curl -sSL https://get.docker.com/ | sh
 
-RUN useradd -r -g docker docker \
-    && usermod -aG docker docker
-
-USER docker:docker
+RUN usermod -aG docker root
 
 ENTRYPOINT ["./combine_services_embedded.sh"]
