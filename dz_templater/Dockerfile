@@ -4,17 +4,13 @@ FROM python:3.6.2-jessie
 
 RUN pip install yamlreader
 
-RUN groupadd docker \
-    && useradd -r -g docker docker
-
-
-USER docker:docker
-
 WORKDIR /templater
+
+RUN chmod 777 /templater
 
 COPY *.yml *.sh *.py ./
 COPY properties/* ./properties/
 
-VOLUME /files
+## VOLUME /files
 
 ENTRYPOINT ["yamlreader"]
