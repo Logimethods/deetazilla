@@ -46,6 +46,8 @@ include "${properties_path}/configuration-mode-${cluster_mode}.properties"
 include "properties/configuration-mode-${cluster_mode}-debug.properties"
 include "${properties_path}/configuration-mode-${cluster_mode}-debug.properties"
 
+# TODO Include ALL configuration-telegraf[...].properties Files
+
 include "properties/configuration-telegraf.properties"
 include "${properties_path}/configuration-telegraf.properties"
 

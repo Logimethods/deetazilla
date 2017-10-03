@@ -13,7 +13,7 @@ services:
       - ZEPPELIN_LOG_DIR=${ZEPPELIN_LOG_DIR}
       - ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_NOTEBOOK_DIR}
     ports:
-      - "${ZEPPELIN_UI_PORT}:8080"
+      - "${ZEPPELIN_WEB_PORT}:8080"
     volumes:
-      - "${logs_dir}:/logs"
-      - "${notebook_dir}:/notebook"
+      - "${zeppelin_logs_dir}:/logs"
+      - "${zeppelin_notebook_dir}:/notebook"
