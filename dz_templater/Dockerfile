@@ -6,9 +6,11 @@ RUN pip install yamlreader
 
 WORKDIR /templater
 
+RUN chmod 777 /templater
+
 COPY *.yml *.sh *.py ./
 COPY properties/* ./properties/
 
-VOLUME /files
+## VOLUME /files
 
 ENTRYPOINT ["yamlreader"]

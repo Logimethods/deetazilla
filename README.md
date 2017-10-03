@@ -14,3 +14,9 @@ All you need to build your own (Big) Data &amp; IOT oriented application
 .../...
 ./docker-[local | remote]-down.sh
 ```
+
+```
+> docker run -it -v /var/run/docker.sock:/var/run/docker.sock  --entrypoint="bash" logimethods/int_compose:1.0-dev
+root@a0bd979b0402:/templater# ./combine_services_embedded.sh "_no-secrets" root_metrics > docker-compose-merge.yml
+root@a0bd979b0402:/templater# ./docker-local-single-up.sh
+```
