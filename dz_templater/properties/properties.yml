@@ -1,7 +1,7 @@
 github-uri: git@github.com:Logimethods/deetazilla.git
-github-branch: integration_app
+github-branch: master
 
-docker-additional-tag: "-dev"
+docker-additional-tag: "-SNAPSHOT"
 
 github-dz_templater-path: dz_templater
 docker-dz_templater-dockerfile-path: dz_templater
