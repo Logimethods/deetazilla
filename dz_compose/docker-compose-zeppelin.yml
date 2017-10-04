@@ -15,5 +15,12 @@ services:
     ports:
       - "${ZEPPELIN_WEB_PORT}:8080"
     volumes:
-      - "${zeppelin_logs_dir}:/logs"
-      - "${zeppelin_notebook_dir}:/notebook"
+      - "${zeppelin_logs_volume}:/logs"
+      - "${zeppelin_notebook_volume}:/notebook"
+
+# https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+volumes:
+  zeppelin_logs:
+    name: "${zeppelin_logs_volume}"
+  zeppelin_notebook:
+    name: "${zeppelin_notebook_volume}"
