@@ -1,3 +1,6 @@
 #!/bin/bash
 
-exec "./$@"
+command="$1"
+shift 1
+
+exec "./${command}.sh $@"

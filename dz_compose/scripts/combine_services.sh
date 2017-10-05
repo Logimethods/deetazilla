@@ -1,7 +1,7 @@
 #!/bin/bash
 
-## docker run logimethods/smart-meter:compose "_secrets" root cassandra
-## docker run logimethods/smart-meter:compose -e "local" "single" "-DEV" "_secrets" root cassandra
+## ./combine_services.sh "_secrets" root cassandra
+## ./combine_services.sh -e "local" "single" "-DEV" "_secrets" root cassandra
 
 # https://github.com/docker/compose/issues/3435#issuecomment-232353235
 
