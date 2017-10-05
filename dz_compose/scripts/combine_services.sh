@@ -1,31 +1,32 @@
 #!/bin/bash
 
-## docker run logimethods/smart-meter:compose "local" "single" "-DEV" "_secrets" inject_metrics
+## docker run logimethods/smart-meter:compose "_secrets" root cassandra
+## docker run logimethods/smart-meter:compose -e "local" "single" "-DEV" "_secrets" root cassandra
 
 # https://github.com/docker/compose/issues/3435#issuecomment-232353235
 
-
+shift_nb=0
 while getopts ":p:e" opt; do
   case $opt in
     p) properties_path="$OPTARG"
-    # echo "postfix: $postfix"
     ((shift_nb+=2))
     ;;
     e) env_set="true"
-    # echo "postfix: $postfix"
-    ((shift_nb+=2))
+    echo "# -e to set properties"
+    ((shift_nb+=1))
     ;;
     \?) echo "Invalid option $OPTARG"
     ((shift_nb+=1))
     ;;
   esac
 done
+shift $shift_nb
 
 ## Set the properties when the '-e' option is provided
-[ -n "$env_set" ] && ./set_properties.sh "$1" "$2" "$3" "$properties_path"
+[ -n "$env_set" ] && source set_properties.sh "$1" "$2" "$3" "${properties_path:=_NONE_}" && shift 3
 
-SECRET_MODE="$4"
-shift 4
+SECRET_MODE="$1"
+shift 1
 
 echo "# SECRET_MODE: $SECRET_MODE"
 

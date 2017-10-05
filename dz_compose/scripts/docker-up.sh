@@ -13,7 +13,7 @@ while getopts ":p:" opt; do
   esac
 done
 
-./set_properties.sh "$1" "$2" "$3" "$properties_path"
+source set_properties.sh "$1" "$2" "$3" "$properties_path"
 
 echo "DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_FILE}"
 
