@@ -10,4 +10,4 @@ RUN curl -sSL https://get.docker.com/ | sh
 
 RUN usermod -aG docker root
 
-ENTRYPOINT ["./combine_services_embedded.sh"]
+### ENTRYPOINT ["./combine_services_embedded.sh"]
