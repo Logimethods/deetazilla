@@ -1,20 +1,9 @@
 #!/usr/bin/env bash
-# https://github.com/docker/compose/issues/3435#issuecomment-232353235
 
-while getopts ":p:" opt; do
-  case $opt in
-    p) properties_path="$OPTARG"
-    # echo "postfix: $postfix"
-    ((shift_nb+=2))
-    ;;
-    \?) echo "Invalid option $OPTARG"
-    ((shift_nb+=1))
-    ;;
-  esac
-done
+temp_file=$(mktemp)
 
-source set_properties.sh "$1" "$2" "$3" "$properties_path"
+./combine_services.sh -e "$@" > "${temp_file}"
 
-echo "DOCKER_COMPOSE_FILE: ${DOCKER_COMPOSE_FILE}"
+echo "DOCKER_COMPOSE_FILE: ${temp_file}"
 
-docker ${remote} stack deploy -c ${DOCKER_COMPOSE_FILE} "${STACK_NAME}"
+docker ${remote} stack deploy -c "${temp_file}" "${STACK_NAME}"

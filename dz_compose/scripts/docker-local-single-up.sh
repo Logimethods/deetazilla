@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-. ./docker-up.sh "local" "single" ""
+. ./docker-up.sh "local" "single" "" "$@"

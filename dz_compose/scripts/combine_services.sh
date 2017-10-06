@@ -29,6 +29,7 @@ SECRET_MODE="$1"
 shift 1
 
 echo "# SECRET_MODE: $SECRET_MODE"
+echo "# TARGETS: $@"
 
 source ./services_hierarchies.sh
 

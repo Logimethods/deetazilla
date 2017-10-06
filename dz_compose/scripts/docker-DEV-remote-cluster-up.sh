@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-. ./docker-up.sh "remote" "cluster" "-DEV"
+. ./docker-up.sh "remote" "cluster" "-DEV" "$@"
