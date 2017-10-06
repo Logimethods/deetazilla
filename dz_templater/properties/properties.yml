@@ -1,8 +1,8 @@
 github-uri: git@github.com:Logimethods/deetazilla.git
-github-branch: zeppelin
+github-branch: master
 
-#docker-additional-tag: "-SNAPSOT"
-docker-additional-tag: "-dev"
+docker-additional-tag: "-SNAPSOT"
+#docker-additional-tag: "-dev"
 
 github-dz_templater-path: dz_templater
 docker-dz_templater-dockerfile-path: dz_templater
