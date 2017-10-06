@@ -10,4 +10,6 @@ RUN curl -sSL https://get.docker.com/ | sh
 
 RUN usermod -aG docker root
 
+VOLUME ["./devsecrets"]
+
 ENTRYPOINT ["./entrypoint.sh"]

@@ -26,6 +26,10 @@ All you need to build your own (Big) Data &amp; IOT oriented application
 
     * Then, to stop the stack:
       ```
+      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev stack-down "stack_name" "local"
+      ```
+      Or
+      ```
       > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev local-down "stack_name"
       ```
       Or
