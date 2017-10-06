@@ -17,11 +17,15 @@ All you need to build your own (Big) Data &amp; IOT oriented application
 
     * To directly start the services:
       ```
-      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev stack-up "stack_name" "local" "single" "_secrets" root_metrics spark
+      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev stack-up "stack_name" "local" "single" "_no-secrets" root_metrics spark
+      ```
+      Or with Docker secrets
+      ```
+      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`/devsecrets:/templater/devsecrets logimethods/int_compose:1.0-dev stack-up "stack_name" "local" "single" "_secrets" root_metrics spark
       ```
       You might also use a shortcut (`local-single-up`, `local-cluster-up`, `remote-single-up` or `remote-cluster-up`):
       ```
-      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev local-single-up "stack_name" "_secrets" root_metrics spark
+      > docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0-dev local-single-up "stack_name" "_no-secrets" root_metrics spark
       ```
 
     * Then, to stop the stack:
