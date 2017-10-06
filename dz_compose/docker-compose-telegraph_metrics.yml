@@ -1,7 +1,7 @@
 services:
   ### ["create_service_telegraf_on_master", "max_voltage"],
   telegraf_max_voltage:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:
@@ -31,7 +31,7 @@ services:
 
   ### ["create_service_telegraf_on_master", "temperature"],
   telegraf_temperature:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:
@@ -60,7 +60,7 @@ services:
 
   ### ["create_service_telegraf_on_master", "prediction"],
   telegraf_prediction:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:
@@ -94,7 +94,7 @@ services:
 
   ### ["create_service_telegraf_on_master", "docker"],
   telegraf_docker:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:
@@ -123,7 +123,7 @@ services:
 
   ### ["create_service_telegraf", "cassandra_count"],
   telegraf_cassandra_count:
-    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))${postfix}
+    image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:
@@ -156,7 +156,7 @@ services:
 
   ### ["create_service", "prometheus_nats_exporter", 1],
   prometheus_nats_exporter:
-    image: ${prometheus_nats_exporter_image}:${prometheus_nats_exporter_tag}${postfix}
+    image: ${prometheus_nats_exporter_image}:${prometheus_nats_exporter_tag}
     deploy:
       replicas: 1
       placement:
