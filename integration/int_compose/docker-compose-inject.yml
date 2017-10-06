@@ -1,7 +1,7 @@
 services:
   ### create_service_inject
   inject:
-    image: ((docker-int_inject-repository)):((docker-int_inject-tag))((docker-additional-tag))${postfix}
+    image: ((docker-int_inject-repository)):((docker-int_inject-tag))((docker-additional-tag))
     deploy:
       replicas: 1
       placement:

@@ -4,12 +4,10 @@
 set -a
 location="$1"
 cluster_mode="$2"
-postfix="$3"
-properties_path="$4"
+properties_path="$3"
 
 echo "# location: $location"
 echo "# cluster_mode: $cluster_mode"
-echo "# postfix: $postfix"
 echo "# properties_path: $properties_path"
 
 # https://stackoverflow.com/questions/10735574/include-source-script-if-it-exists-in-bash
