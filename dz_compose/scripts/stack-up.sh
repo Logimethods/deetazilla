@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+STACK_NAME="$1"
+shift 1
+echo "STACK_NAME: ${STACK_NAME}"
+
 temp_file=$(mktemp)
 
 ./combine_services.sh -e "$@" > "${temp_file}"

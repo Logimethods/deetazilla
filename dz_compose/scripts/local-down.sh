@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-. ./stack-down.sh "local"
+. ./stack-down.sh "$1" "local"

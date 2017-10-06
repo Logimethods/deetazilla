@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-. ./stack-down.sh "remote"
+. ./stack-down.sh "$1" "remote"
