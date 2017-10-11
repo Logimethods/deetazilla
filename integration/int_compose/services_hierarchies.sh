@@ -9,3 +9,6 @@ streaming_metrics="streaming_metrics streaming_metrics${SECRET_MODE} $streaming 
 monitoring="monitoring monitoring${SECRET_MODE} $root"
 monitoring_metrics="monitoring_metrics $monitoring $metrics"
 
+integration_app="$inject $streaming $monitoring"
+integration_app_monitoring="$inject_monitoring $streaming_monitoring $monitoring_monitoring"
+
