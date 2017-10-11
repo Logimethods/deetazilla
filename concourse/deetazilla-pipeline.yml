@@ -162,6 +162,16 @@ jobs:
     params:
       build: dockerfile_integration/((docker-int_inject-dockerfile-path))
 
+- name: build-docker-int_cassandra_inject
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_cassandra_inject
+    trigger: true
+  - put: docker-int_cassandra_inject
+    params:
+      build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
+
 - name: build-docker-int_streaming
   public: true
   serial: true
@@ -296,6 +306,16 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
+- name: github-repo-int_cassandra_inject
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-int_cassandra_inject-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo-int_streaming
   type: git
   source:
@@ -402,6 +422,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-int_inject-repository))
     tag: ((docker-int_inject-tag))((docker-additional-tag))
+
+- name: docker-int_cassandra_inject
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_cassandra_inject-repository))
+    tag: ((docker-int_cassandra_inject-tag))((docker-additional-tag))
 
 - name: docker-int_streaming
   type: docker-image
