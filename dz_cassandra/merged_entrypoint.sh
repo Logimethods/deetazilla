@@ -4,11 +4,17 @@ set -e
 #### EUREKA ###
 
 if [ $(whoami) = 'root' ]; then
+  # https://stackoverflow.com/questions/39162846/what-does-set-e-and-set-a-do-in-bash-what-are-other-options-that-i-can-use-wit
+  if [ -n "${EUREKA_DEBUG}" ]; then
+    echo "EUREKA_DEBUG MODE, no exit on exception"
+  else
+    set -e
+  fi
+
   source /eureka_utils.sh
 
-  include /entrypoint_insert.sh
-
   cmdpid=$BASHPID ;
+  include /entrypoint_insert.sh
   desable_availability ;
   setup_local_containers ;
   initial_check $cmdpid ;
@@ -90,4 +96,11 @@ if [ "$1" = 'cassandra' ]; then
 	done
 fi
 
+### EXEC CMD ###
+
 exec "$@" 2>&1
+
+if [ -n "${EUREKA_DEBUG}" ]; then
+  echo "sleep infinity"
+  while true; do sleep 10000; done
+fi
