@@ -162,6 +162,38 @@ jobs:
     params:
       build: dockerfile_integration/((docker-int_inject-dockerfile-path))
 
+- name: build-docker-int_cassandra
+  public: true
+  serial: true
+  plan:
+  - get: github-repo-int_cassandra
+    trigger: true
+  - get: docker-dz_compose
+    trigger: true
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-int_cassandra
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-int_cassandra/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+  - put: docker-int_cassandra
+    params:
+      build: complete_dockerfiles/((docker-int_cassandra-dockerfile-path))
+
 - name: build-docker-int_cassandra_inject
   public: true
   serial: true
@@ -306,6 +338,16 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
+- name: github-repo-int_cassandra
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-int_cassandra-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo-int_cassandra_inject
   type: git
   source:
@@ -422,6 +464,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-int_inject-repository))
     tag: ((docker-int_inject-tag))((docker-additional-tag))
+
+- name: docker-int_cassandra
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-int_cassandra-repository))
+    tag: ((docker-int_cassandra-tag))((docker-additional-tag))
 
 - name: docker-int_cassandra_inject
   type: docker-image
