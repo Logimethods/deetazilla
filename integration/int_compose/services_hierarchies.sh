@@ -3,7 +3,7 @@ source ./services_hierarchy-main.sh
 inject="inject inject${SECRET_MODE} $root"
 inject_metrics="$inject $metrics"
 
-cassandra_inject="$root $cassandra cassandra_inject${SECRET_MODE}"
+cassandra_inject="cassandra_inject cassandra_inject${SECRET_MODE} $cassandra $root"
 cassandra_inject_metrics="cassandra_inject_metrics $cassandra $metrics"
 
 streaming="streaming streaming${SECRET_MODE} $root $spark"
