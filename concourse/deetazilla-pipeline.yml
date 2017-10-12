@@ -49,9 +49,9 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: github-repo
-    trigger: true
   - get: docker-dz_templater
+    trigger: true
+  - get: github-repo-dz_images
     trigger: true
   - task: complete_dockerfiles
     config:
@@ -93,9 +93,9 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: github-repo-int_compose
-    trigger: true
   - get: docker-dz_compose
+    trigger: true
+  - get: github-repo-int_compose
     trigger: true
   - task: complete_dockerfiles
     config:
@@ -125,6 +125,10 @@ jobs:
   public: true
   serial: true
   plan:
+  - get: github-repo-dz_templater
+    trigger: true
+  - get: github-repo-int_compose
+    trigger: true
   - get: github-repo-int_inject
     trigger: true
   - task: set-up_dockerfile_inject
@@ -166,9 +170,9 @@ jobs:
   public: true
   serial: true
   plan:
-  - get: github-repo-int_cassandra
+  - get: docker-int_compose
     trigger: true
-  - get: docker-dz_compose
+  - get: github-repo-int_cassandra
     trigger: true
   - task: complete_dockerfiles
     config:
@@ -208,6 +212,10 @@ jobs:
   public: true
   serial: true
   plan:
+  - get: github-repo-dz_templater
+    trigger: true
+  - get: github-repo-int_compose
+    trigger: true
   - get: github-repo-int_streaming
     trigger: true
   - task: set-up_dockerfile_inject
@@ -249,6 +257,10 @@ jobs:
   public: true
   serial: true
   plan:
+  - get: github-repo-dz_templater
+    trigger: true
+  - get: github-repo-int_compose
+    trigger: true
   - get: github-repo-int_monitor
     trigger: true
   - task: set-up_dockerfile_inject
@@ -284,29 +296,6 @@ jobs:
 ###### RESOURCES ######
 
 resources:
-- name: github-repo-dz_compose
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: ((github-branch))
-    paths:
-      - dz_compose/**
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
-- name: github-repo
-  type: git
-  source:
-    uri: ((github-uri))
-    branch: ((github-branch))
-    ignore_paths:
-      - integration/**
-      - dz_compose/**
-      - concourse/**
-      - README.md
-    git_user: ((github-username))
-    private_key: ((github-private-key))
-
 - name: github-repo-dz_templater
   type: git
   source:
@@ -314,6 +303,30 @@ resources:
     branch: ((github-branch))
     paths:
       - dz_templater/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_compose
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_compose-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_images
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    ignore_paths:
+      - integration/**
+      - ((github-dz_compose-path))/**
+      - ((github-dz_templater-path))/**
+      - concourse/**
+      - README.md
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -334,8 +347,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_inject-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
+#      - ((github-dz_templater-path))/properties/**
+#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -366,8 +379,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_streaming-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
+#      - ((github-dz_templater-path))/properties/**
+#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -378,8 +391,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_monitor-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
+#      - ((github-dz_templater-path))/properties/**
+#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
