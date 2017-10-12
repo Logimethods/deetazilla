@@ -62,7 +62,7 @@ jobs:
           repository: ((docker-dz_templater-repository))
           tag: ((docker-dz_templater-tag))((docker-additional-tag))
       inputs:
-      - name: github-repo
+      - name: github-repo-dz_images
       outputs:
       - name: complete_dockerfiles
       run:
@@ -70,7 +70,7 @@ jobs:
         args:
         - -exc
         - |
-          cp -R github-repo/* complete_dockerfiles/
+          cp -R github-repo-dz_images/* complete_dockerfiles/
           cd /templater/
           ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
