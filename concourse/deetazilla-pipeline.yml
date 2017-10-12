@@ -176,8 +176,8 @@ jobs:
       image_resource:
         type: docker-image
         source:
-          repository: ((docker-dz_templater-repository))
-          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+          repository: ((docker-int_compose-repository))
+          tag: ((docker-int_compose-tag))((docker-additional-tag))
       inputs:
       - name: github-repo-int_cassandra
       outputs:
@@ -334,7 +334,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_inject-path))/**
-      - dz_templater/**
+      - ((github-dz_templater-path))/properties/**
+      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -365,7 +366,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_streaming-path))/**
-      - ((github-dz_templater-path))/**
+      - ((github-dz_templater-path))/properties/**
+      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -376,7 +378,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_monitor-path))/**
-      - ((github-dz_templater-path))/**
+      - ((github-dz_templater-path))/properties/**
+      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 

@@ -8,7 +8,7 @@ WORKDIR /templater
 
 RUN chmod 777 /templater
 
-COPY *.yml *.sh *.py ./
+COPY *.yml *.sh templater/templater.py ./
 COPY properties/* ./properties/
 
 ## VOLUME /files

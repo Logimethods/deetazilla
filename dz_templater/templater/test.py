@@ -11,10 +11,10 @@ def compare_files(input_path, input_properties, verifier):
         result = True
     return result
 
-class TestFileOutput(unnittest.TestCase):
+class TestFileOutput(unittest.TestCase):
 
     def test_file_output(self):
-        self.assertTrue(compare_files('test_1.txt', 'test_1.yml', 'test_1_verification.txt'))
+        self.assertTrue(compare_files('test_1.txt', 'test_1*.yml', 'test_1_verification.txt'))
         self.assertTrue(compare_files('test_2.txt', 'test_2.yml', 'test_2_verification.txt'))
 
 if __name__ == '__main__':

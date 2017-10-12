@@ -1,13 +1,15 @@
 import yaml
 import re
 import sys
+import glob
 
 pattern = '\({2}.*?\){2}'
 
 def yaml_to_dict(path):
     dataMap = {}
-    with open(path) as f:
-        dataMap = yaml.safe_load(f)
+    for filename in glob.glob(path):
+        with open(filename, 'r') as f:
+            dataMap.update(yaml.safe_load(f))
     return dataMap
 
 def file_to_string(path):
@@ -26,5 +28,5 @@ def replace(inp_path, properties_path):
     new_data = find_and_replace(my_data, my_dict)
     return new_data
 
-
-print(replace(sys.argv[1], sys.argv[2]))
+if __name__ == '__main__':
+    print(replace(sys.argv[1], sys.argv[2]))

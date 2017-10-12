@@ -37,3 +37,6 @@ integration/int_compose/Dockerfile
 
 # Generated Files
 Dockerfile.tmp
+
+# Python Cache
+__pycache__

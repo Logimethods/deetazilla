@@ -11,5 +11,5 @@ eval "cat <<EOF
 $(<$filename)
 EOF
 " > "${filename%.*}.tmp"
-python3 templater.py "${filename%.*}.tmp" properties/properties.yml > "${filename%.*}"
+python3 templater.py "${filename%.*}.tmp" properties/properties*.yml > "${filename%.*}"
 done < <(find $1 -name '*.tpl' -print0)
