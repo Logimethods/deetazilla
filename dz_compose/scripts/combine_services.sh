@@ -49,7 +49,7 @@ yamlreader \
   | sed s/["^ "]*/docker-compose-\&.yml/g ) > "${temp_file}"
 
 if [ -n "$env_set" ]; then
-  python3 templater.py "${temp_file}" properties/properties*.yml | envsubst
+  python3 templater.py "${temp_file}" "properties/properties*.yml" | envsubst
 else
-  python3 templater.py "${temp_file}" properties/properties*.yml
+  python3 templater.py "${temp_file}" "properties/properties*.yml"
 fi
