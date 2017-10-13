@@ -2,23 +2,23 @@
 
 jobs:
 - name: build-docker-dz_templater
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - put: docker-dz_templater
     params:
       build: github-repo-dz_templater/((docker-dz_templater-dockerfile-path))
 
 - name: build-docker-dz_compose
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: docker-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: add_properties
     config:
       platform: linux
@@ -46,13 +46,13 @@ jobs:
       build: added_properties/((docker-dz_compose-dockerfile-path))
 
 - name: build-docker-dz_images
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: docker-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-dz_images
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -90,13 +90,13 @@ jobs:
       build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
 
 - name: build-docker-int_compose
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: docker-dz_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -122,15 +122,15 @@ jobs:
       build: complete_dockerfiles/((docker-int_compose-dockerfile-path))
 
 - name: build-docker-int_inject
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_inject
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: set-up_dockerfile_inject
     config:
       platform: linux
@@ -167,13 +167,13 @@ jobs:
       build: dockerfile_integration/((docker-int_inject-dockerfile-path))
 
 - name: build-docker-int_cassandra
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: docker-int_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_cassandra
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -199,25 +199,25 @@ jobs:
       build: complete_dockerfiles/((docker-int_cassandra-dockerfile-path))
 
 - name: build-docker-int_cassandra_inject
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-int_cassandra_inject
-    trigger: true
+    trigger: ((concourse-trigger))
   - put: docker-int_cassandra_inject
     params:
       build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
 
 - name: build-docker-int_streaming
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_streaming
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: set-up_dockerfile_inject
     config:
       platform: linux
@@ -254,15 +254,15 @@ jobs:
       build: dockerfile_integration/((docker-int_streaming-dockerfile-path))
 
 - name: build-docker-int_monitor
-  public: true
-  serial: true
+  public: ((concourse-public))
+  serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_templater
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_compose
-    trigger: true
+    trigger: ((concourse-trigger))
   - get: github-repo-int_monitor
-    trigger: true
+    trigger: ((concourse-trigger))
   - task: set-up_dockerfile_inject
     config:
       platform: linux

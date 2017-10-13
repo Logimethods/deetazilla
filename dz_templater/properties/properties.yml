@@ -5,6 +5,10 @@ github-branch: integration_app
 #docker-additional-tag: "-SNAPSHOT"
 docker-additional-tag: "-dev"
 
+concourse-trigger: false
+concourse-serial: false
+concourse-public: true
+
 github-dz_templater-path: dz_templater
 docker-dz_templater-dockerfile-path: dz_templater
 docker-dz_templater-repository: logimethods/dz_templater
