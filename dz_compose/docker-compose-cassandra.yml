@@ -2,7 +2,6 @@ services:
   ### TODO: ["create_volume", "cassandra"],
   ### create_service_cassandra,
   cassandra_cluster_main:
-    image: ((docker-dz_cassandra-repository)):((docker-dz_cassandra-tag))((docker-additional-tag))
     deploy:
       placement:
         constraints:
