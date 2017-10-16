@@ -5,8 +5,8 @@ github-branch: integration_app
 #docker-additional-tag: "-SNAPSHOT"
 docker-additional-tag: "-dev"
 
-concourse-trigger: false
-concourse-serial: false
+concourse-trigger: true
+concourse-serial: true
 concourse-public: true
 
 github-dz_templater-path: dz_templater
