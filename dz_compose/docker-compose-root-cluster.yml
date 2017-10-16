@@ -1,7 +1,13 @@
 services:
   ### create_service_nats,
+  nats:
+    deploy:
+      placement:
+        constraints:
+          - node.role == ${MASTER_NODE}
+
   nats_cluster:
-    image: logimethods/dz_nats-server:${dz_nats_server_version}
+    image: ((docker-dz_nats-server-repository)):((docker-dz_nats-server-tag))((docker-additional-tag))
     deploy:
       mode: global
       placement:

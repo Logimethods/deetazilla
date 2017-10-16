@@ -36,11 +36,8 @@ services:
 
   ### create_service_nats,
   nats:
-    image: logimethods/dz_nats-server:${dz_nats_server_version}
-    deploy:
-      placement:
-        constraints:
-          - node.role == ${MASTER_NODE}
+    image: ((docker-dz_nats-server-repository)):((docker-dz_nats-server-tag))((docker-additional-tag))
+#    deploy:
 #      update_config:
 #        parallelism: 1
 #        delay: 10s
@@ -56,7 +53,7 @@ services:
 
   ## For TESTING/DEBUG ONLY! ##
   nats_client:
-    image: logimethods/dz_nats-client:${dz_nats_client_version}
+    image: ((docker-dz_nats-client-repository)):((docker-dz_nats-client-tag))((docker-additional-tag))
     environment:
       - WAIT_FOR=${NATS_NAME}
       - NATS_NAME=${NATS_NAME}
