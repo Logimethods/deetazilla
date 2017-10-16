@@ -2,9 +2,5 @@ services:
   ### ["create_service", "hadoop", 1],
   hadoop:
     image: sequenceiq/hadoop-docker:${hadoop_docker_version}
-    deploy:
-      placement:
-        constraints:
-          - node.role == ${MASTER_NODE}
     ports:
       - "50070:50070"

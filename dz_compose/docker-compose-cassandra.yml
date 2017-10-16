@@ -2,10 +2,6 @@ services:
   ### TODO: ["create_volume", "cassandra"],
   ### create_service_cassandra,
   cassandra_cluster_main:
-    deploy:
-      placement:
-        constraints:
-          - node.role == ${MASTER_NODE}
     environment:
 #      - LOCAL_JMX=no
       - CASSANDRA_SETUP_FILE=${CASSANDRA_SETUP_FILE}

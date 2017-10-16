@@ -3,9 +3,6 @@ services:
   spark-master:
     image: ${spark_image}:${spark_version}-hadoop-${hadoop_version}
     deploy:
-      placement:
-        constraints:
-          - node.role == ${MASTER_NODE}
       update_config:
         parallelism: 1
         delay: 10s

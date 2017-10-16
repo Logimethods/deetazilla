@@ -1,0 +1,7 @@
+services:
+  ### ["create_service", "hadoop", 1],
+  hadoop:
+    deploy:
+      placement:
+        constraints:
+          - node.role == ${MASTER_NODE}

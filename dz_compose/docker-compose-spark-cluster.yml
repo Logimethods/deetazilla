@@ -1,4 +1,12 @@
 services:
+  ### create_service_spark_master,
+  spark-master:
+    image: ${spark_image}:${spark_version}-hadoop-${hadoop_version}
+    deploy:
+      placement:
+        constraints:
+          - node.role == ${MASTER_NODE}
+
   ### create_service_spark_worker,
   spark-worker:
     image: ${spark_image}:${spark_version}-hadoop-${hadoop_version}
