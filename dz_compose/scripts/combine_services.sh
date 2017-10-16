@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## ./combine_services.sh "_secrets" root cassandra
+## ./combine_services.sh "single" "_secrets" root cassandra
 ## ./combine_services.sh -e "local" "single" "_secrets" root cassandra
 
 # https://github.com/docker/compose/issues/3435#issuecomment-232353235
@@ -23,12 +23,16 @@ done
 shift $shift_nb
 
 ## Set the properties when the '-e' option is provided
-[ -n "$env_set" ] && source set_properties.sh "$1" "$2" "${properties_path:=_NONE_}" && shift 2
+[ -n "$env_set" ] && source set_properties.sh "$1" "$2" "${properties_path:=_NONE_}" && shift 1
 
-SECRET_MODE="$1"
+CLUSTER_MODE="$1"
+echo "# CLUSTER_MODE: $CLUSTER_MODE"
 shift 1
 
+SECRET_MODE="$1"
 echo "# SECRET_MODE: $SECRET_MODE"
+shift 1
+
 echo "# TARGETS: $@"
 
 source ./services_hierarchies.sh

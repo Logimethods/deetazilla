@@ -1,0 +1,9 @@
+services:
+  ### create_service_inject
+  inject:
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == "manager"
+          #${MASTER_NODE} TODO
