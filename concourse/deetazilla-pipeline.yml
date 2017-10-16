@@ -6,7 +6,7 @@ jobs:
   serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_templater
-    trigger: ((concourse-trigger))
+    trigger: ((concourse-compose-trigger))
   - put: docker-dz_templater
     params:
       build: github-repo-dz_templater/((docker-dz_templater-dockerfile-path))
@@ -16,9 +16,9 @@ jobs:
   serial: ((concourse-serial))
   plan:
   - get: github-repo-dz_compose
-    trigger: ((concourse-trigger))
+    trigger: ((concourse-compose-trigger))
   - get: docker-dz_templater
-    trigger: ((concourse-trigger))
+    trigger: ((concourse-compose-trigger))
   - task: add_properties
     config:
       platform: linux
@@ -94,9 +94,9 @@ jobs:
   serial: ((concourse-serial))
   plan:
   - get: docker-dz_compose
-    trigger: ((concourse-trigger))
+    trigger: ((concourse-compose-trigger))
   - get: github-repo-int_compose
-    trigger: ((concourse-trigger))
+    trigger: ((concourse-compose-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
