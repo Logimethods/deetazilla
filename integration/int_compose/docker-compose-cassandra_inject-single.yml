@@ -1,8 +1,8 @@
 services:
-  ### create_service_inject
-  inject:
+  ### create_service_cassandra_inject,
+  cassandra_inject:
     deploy:
-      replicas: 1
+      mode: global
       placement:
         constraints:
           - node.role == ${MASTER_NODE}

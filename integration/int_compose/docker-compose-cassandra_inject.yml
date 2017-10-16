@@ -3,10 +3,6 @@ services:
   cassandra_inject:
     image: ((docker-int_cassandra_inject-repository)):((docker-int_cassandra_inject-tag))((docker-additional-tag))
     deploy:
-      mode: global
-      placement:
-        constraints:
-          - node.role != ${MASTER_NODE}
       restart_policy:
         condition: on-failure
         delay: 10s

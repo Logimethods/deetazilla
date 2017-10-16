@@ -1,0 +1,18 @@
+services:
+  ### create_service_nats,
+  nats_cluster:
+    image: logimethods/dz_nats-server:${dz_nats_server_version}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role != ${MASTER_NODE}
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+    environment:
+      - READY_WHEN=\"Server is ready\"
+      - NATS_NAME=${NATS_NAME}
+    volumes:
+      - "/proc:/writable-proc"
+    command: /gnatsd -c gnatsd.conf -m 8222 ${NATS_DEBUG} -cluster nats://0.0.0.0:6222 -routes nats://nats:6222

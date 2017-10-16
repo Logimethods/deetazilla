@@ -11,7 +11,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
     ports:
       - "9090:9090"
     command: -storage.local.path=/data -config.file=/etc/prometheus/prometheus.yml
@@ -21,7 +21,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
     ports:
       - "8083:8083"
       - "8086:8086"
@@ -32,7 +32,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
     ports:
       - "${METRICS_GRAFANA_WEB_PORT}:3000"
     environment:

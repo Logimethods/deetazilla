@@ -40,7 +40,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
 #      update_config:
 #        parallelism: 1
 #        delay: 10s
@@ -60,7 +60,7 @@ services:
       mode: global
       placement:
         constraints:
-          - node.role != manager
+          - node.role != ${MASTER_NODE}
 #      update_config:
 #        parallelism: 1
 #        delay: 10s

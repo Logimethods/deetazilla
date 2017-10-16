@@ -7,7 +7,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
     environment:
       - DEPENDS_ON=${NATS_NAME},${CASSANDRA_MAIN_NAME}
 #      - NATS_URI=${NATS_URI}

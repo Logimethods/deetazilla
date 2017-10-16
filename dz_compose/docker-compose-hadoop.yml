@@ -5,6 +5,6 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
     ports:
       - "50070:50070"

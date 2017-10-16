@@ -1,0 +1,15 @@
+services:
+  ### create_service_spark_worker,
+  spark-worker:
+    image: ${spark_image}:${spark_version}-hadoop-${hadoop_version}
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role != ${MASTER_NODE}
+      update_config:
+        parallelism: 1
+        delay: 10s
+    environment:
+      - SERVICE_NAME=${SPARK_WORKER_NAME}
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://${SPARK_MASTER_NAME}:7077
