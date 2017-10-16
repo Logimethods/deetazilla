@@ -1,11 +1,11 @@
 services:
-  ### create_service_spark_master,
+  ### zeppelin,
   zeppelin:
     image: ${zeppelin_image}:${zeppelin_tag}
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == ${MASTER_NODE}
       update_config:
         parallelism: 1
         delay: 10s
@@ -14,13 +14,3 @@ services:
       - ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_NOTEBOOK_DIR}
     ports:
       - "${ZEPPELIN_WEB_PORT}:8080"
-    volumes:
-      - "${zeppelin_logs_volume}:/logs"
-      - "${zeppelin_notebook_volume}:/notebook"
-
-# https://docs.docker.com/compose/compose-file/#volume-configuration-reference
-volumes:
-  zeppelin_logs:
-    name: "${zeppelin_logs_volume}"
-  zeppelin_notebook:
-    name: "${zeppelin_notebook_volume}"
