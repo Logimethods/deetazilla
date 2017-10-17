@@ -1,14 +1,26 @@
-FROM golang:1.9 as gobuild
+###############################
+# Builder container
+###############################
+
+From golang:1.9 as builder
+RUN apt-get update
+WORKDIR /go/src/app
 COPY main.go .
-RUN go get github.com/nats-io/go-nats \
-    && env GOOS=linux GOARCH=amd64 go build main.go
 
-FROM logimethods/eureka:entrypoint
-#FROM entrypoint_exp
+RUN go get github.com/nats-io/go-nats
 
-COPY entrypoint_insert.sh /entrypoint_insert.sh
+# Install dependencies...
+RUN go-wrapper download
+RUN go-wrapper install
 
-COPY --from=gobuild /go/main /
+# Compile
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o main .
 
-ENTRYPOINT ["/entrypoint.sh"]
+
+###############################
+# Exec container
+###############################
+
+From alpine:latest
+COPY --from=builder /go/src/app/main /main
 CMD ["/main"]
