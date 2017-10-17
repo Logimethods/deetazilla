@@ -1,0 +1,4 @@
+services:
+  ### create_service_nats,
+  nats:
+    command: /gnatsd -c gnatsd-${CLUSTER_MODE}.conf -m 8222 ${NATS_DEBUG}

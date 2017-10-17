@@ -49,7 +49,6 @@ services:
       - "8222:8222"
     volumes:
       - "/proc:/writable-proc"
-    command: /gnatsd -c gnatsd.conf -m 8222 ${NATS_DEBUG} -cluster nats://0.0.0.0:6222
 
   ## For TESTING/DEBUG ONLY! ##
   nats_client:

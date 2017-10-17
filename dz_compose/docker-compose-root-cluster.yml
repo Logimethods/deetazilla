@@ -5,6 +5,7 @@ services:
       placement:
         constraints:
           - node.role == ${MASTER_NODE}
+    command: /gnatsd -c gnatsd-${CLUSTER_MODE}.conf -m 8222 ${NATS_DEBUG} -cluster nats://0.0.0.0:6222
 
   nats_cluster:
     image: ((docker-dz_nats-server-repository)):((docker-dz_nats-server-tag))((docker-additional-tag))
@@ -21,4 +22,4 @@ services:
       - NATS_NAME=${NATS_NAME}
     volumes:
       - "/proc:/writable-proc"
-    command: /gnatsd -c gnatsd.conf -m 8222 ${NATS_DEBUG} -cluster nats://0.0.0.0:6222 -routes nats://nats:6222
+    command: /gnatsd -c gnatsd-${CLUSTER_MODE}.conf -m 8222 ${NATS_DEBUG} -cluster nats://0.0.0.0:6222 -routes nats://nats:6222
