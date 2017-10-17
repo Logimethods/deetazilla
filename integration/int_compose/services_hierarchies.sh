@@ -1,6 +1,6 @@
 source ./services_hierarchy-main.sh
 
-inject="inject inject${SECRET_MODE} inject-${CLUSTER_MODE} $root"
+inject="inject inject${SECRET_MODE} inject-${CLUSTER_MODE} $metrics $root"
 inject_metrics="$inject $metrics"
 
 cassandra_inject="cassandra_inject cassandra_inject-${CLUSTER_MODE} cassandra_inject${SECRET_MODE} $cassandra $root"
