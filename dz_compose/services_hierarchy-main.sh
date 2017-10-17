@@ -5,7 +5,7 @@ spark="spark spark-${CLUSTER_MODE} $root"
 cassandra="cassandra cassandra-image cassandra-${CLUSTER_MODE} $root"
 hadoop="hadoop hadoop-${CLUSTER_MODE} $root"
 zeppelin="zeppelin $root"
-zeppelin-external_volumes="$zeppelin zeppelin-external_volumes $root"
+zeppelin_external_volumes="$zeppelin zeppelin-external_volumes"
 
 root_metrics="root_metrics $root $metrics"
 
