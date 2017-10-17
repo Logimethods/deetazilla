@@ -1,4 +1,4 @@
-root="root root-${CLUSTER_MODE} root${SECRET_MODE}"
+root="root root-${CLUSTER_MODE} root${SECRET_MODE} root${SECRET_MODE}-${CLUSTER_MODE}"
 
 metrics="metrics $root"
 spark="spark spark-${CLUSTER_MODE} $root"
