@@ -25,6 +25,7 @@ shift $shift_nb
 ## Set the properties when the '-e' option is provided
 [ -n "$env_set" ] && source set_properties.sh "$1" "$2" "${properties_path:=_NONE_}" && shift 1
 
+set -a
 CLUSTER_MODE="$1"
 echo "# CLUSTER_MODE: $CLUSTER_MODE"
 shift 1
@@ -32,6 +33,7 @@ shift 1
 SECRET_MODE="$1"
 echo "# SECRET_MODE: $SECRET_MODE"
 shift 1
+set +a
 
 echo "# TARGETS: $@"
 
