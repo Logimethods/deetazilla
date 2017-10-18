@@ -34,7 +34,8 @@ func main() {
   	fmt.Println("NATS Subject: ", nats_subject)
 
     // Simple Async Subscriber
-  	nc.QueueSubscribe(nats_subject, "cassandra_inject", func(m *nats.Msg) {
+    // https://github.com/nats-io/go-nats#queue-groups
+  	nc.QueueSubscribe(nats_subject, "nats_client", func(m *nats.Msg) {
   		fmt.Println(">", m)
   	})
   } else {
