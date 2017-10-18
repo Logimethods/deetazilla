@@ -1,6 +1,5 @@
 FROM ((docker-dz_templater-repository)):((docker-dz_templater-tag))((docker-additional-tag))
 
-COPY *.yml *.sh scripts/*.sh ./
 
 ## To install envsubst
 RUN apt-get update &&  apt-get install -y gettext-base
@@ -11,5 +10,9 @@ RUN curl -sSL https://get.docker.com/ | sh
 RUN usermod -aG docker root
 
 VOLUME ["./devsecrets"]
+
+COPY *.sh scripts/*.sh ./
+COPY compose/*.yml ./
+COPY properties/* ./properties/
 
 ENTRYPOINT ["./entrypoint.sh"]
