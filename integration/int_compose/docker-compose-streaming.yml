@@ -17,4 +17,4 @@ services:
       - LOG_LEVEL=${APP_STREAMING_LOG_LEVEL}
       - TARGETS=${APP_STREAMING_TARGETS}
       - SPARK_CORES_MAX=${APP_STREAMING_SPARK_CORES_MAX}
-    command: com.logimethods.nats.connector.spark.app.SparkMaxProcessor "smartmeter.voltage.raw" "smartmeter.voltage.extract.max" "Smartmeter MAX Streaming"
+    command: ${APP_STREAMING_MAIN_CLASS} ${APP_STREAMING_SUBJECT_INPUT} ${APP_STREAMING_SUBJECT_OUTPUT} ${APP_STREAMING_APP_NAME}
