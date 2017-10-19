@@ -9,22 +9,25 @@
 package com.logimethods.nats.connector.spark.app
 
 import java.util.Properties
+import org.nats._
 
 // @see https://github.com/tyagihas/scala_nats
-object DummyNatsTransmiter /*extends App*/ {
-/*  Thread.sleep(2000)
-  
+object DummyNatsTransmiter extends App {
   val properties = new Properties()
-  //@see https://github.com/tyagihas/java_nats/blob/master/src/main/java/org/nats/Connection.java
-  properties.put("servers", "nats://nats-main:4222")
+  val natsUrl = System.getenv("NATS_URI")
+  println("NATS_URI = " + natsUrl)
+  properties.put("servers", natsUrl)
   val conn = Conn.connect(properties)
 
   val inputSubject = args(0)
-  val outputSubject = args(1)  
+  val outputSubject = args(1)
   println("Will transmit messages from " + inputSubject + " to " + outputSubject)
 
-  conn.subscribe(inputSubject, (msg:Msg) => {
-    println("Transmiting message from " + inputSubject + " to " + outputSubject + ": " + msg.body)
-    conn.publish(outputSubject, msg.body)
-    })*/
+  conn.subscribe(inputSubject, (msg:MsgB) => {
+    import java.nio.ByteBuffer
+    val buffer = ByteBuffer.wrap(msg.body)
+    val value = new java.lang.Float(buffer.getFloat())
+    println("Transmiting message from " + inputSubject + " to " + outputSubject + ": " + value)
+    conn.publish(outputSubject, value.toString)
+    })
 }

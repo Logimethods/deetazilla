@@ -23,6 +23,7 @@ val tag = "app-streaming-DEV"
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 resolvers += "Sonatype OSS Release" at "https://oss.sonatype.org/content/groups/public/"
 
+// TODO -> property
 version := "0.4.0-SNAPSHOT"
 scalaVersion := "2.11.8"
 
@@ -59,7 +60,7 @@ libraryDependencies += "org.apache.spark" %% "spark-mllib" % sparkVersion.value
 libraryDependencies += "com.logimethods"  %% "nats-connector-spark-scala" % natsConnectorSparkVersion.value changing()
 libraryDependencies += "org.apache.spark" %% "spark-sql" % sparkVersion.value % "provided"
 libraryDependencies += "com.datastax.spark" %% "spark-cassandra-connector" % sparkCassandraConnectorVersion.value
-// libraryDependencies += "com.github.tyagihas" % "scala_nats_2.11" % "0.3.0"
+libraryDependencies += "com.github.tyagihas" % "scala_nats_2.11" % "0.3.0"
 
 // @see http://stackoverflow.com/questions/30446984/spark-sbt-assembly-deduplicate-different-file-contents-found-in-the-followi
 assemblyMergeStrategy in assembly := {
