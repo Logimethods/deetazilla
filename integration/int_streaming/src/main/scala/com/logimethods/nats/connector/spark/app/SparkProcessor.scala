@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Logimethods
+ * Copyright (c) 2016-17 Logimethods
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the MIT License (MIT)
  * which accompanies this distribution, and is available at
