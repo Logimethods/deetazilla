@@ -71,9 +71,9 @@ object SparkProcessor extends App {
         .asStreamOf(ssc)
     }
 
-  if (logLevel.contains("MESSAGES")) {
+//  if (logLevel.contains("MESSAGES")) {
     messages.print()
-  }
+/*  }
 
   val max = messages.reduce(Math.max(_,_))
 
@@ -92,7 +92,7 @@ object SparkProcessor extends App {
                             .withSubjects(outputSubject)
                             .publishToNats(max)
   }
-
+*/
   ssc.start();
 
   ssc.awaitTermination()
