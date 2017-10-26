@@ -16,4 +16,4 @@ COPY entrypoint_insert.sh /entrypoint_insert.sh
 
 EXPOSE 5005 4040
 
-CMD ["bash"]
+ENTRYPOINT ["./bin/spark-submit"]
