@@ -5,7 +5,7 @@ FROM maven:3-jdk-8-onbuild-alpine as mvn
 FROM logimethods/eureka:entrypoint as entrypoint
 
 ##- FROM gettyimages/spark:2.2.0-hadoop-2.7
-FROM ${spark_image}:${spark_version}-${hadoop_version}
+FROM ${spark_image}:${spark_version}-hadoop-${hadoop_version}
 
 COPY --from=mvn /usr/src/app/target/*.jar ./
 
