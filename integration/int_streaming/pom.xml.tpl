@@ -10,7 +10,6 @@
 	<packaging>jar</packaging>
 	<version>latest</version>
 	<name>int_streaming</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,16 +120,6 @@
 	                    </goals>
 	                    <configuration>
 	                        <minimizeJar>true</minimizeJar>
-	                        <createDependencyReducedPom>true</createDependencyReducedPom>
-	                       <!--  <dependencyReducedPomLocation>
-	                            ${java.io.tmpdir}/dependency-reduced-pom.xml
-	                        </dependencyReducedPomLocation>
-	                        <relocations>
-	                            <relocation>
-	                                <pattern>com.acme.coyote</pattern>
-	                                <shadedPattern>hidden.coyote</shadedPattern>
-	                            </relocation>
-	                        </relocations> -->
 	                    </configuration>
 	                </execution>
 	            </executions>

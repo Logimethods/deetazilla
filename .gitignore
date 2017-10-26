@@ -49,3 +49,5 @@ __pycache__
 
 # Maven
 dependency-reduced-pom.xml
+integration/int_streaming/pom.xml.tmp
+integration/int_streaming/pom.xml
