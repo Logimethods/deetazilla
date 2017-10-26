@@ -1,0 +1,140 @@
+# -e to set properties
+# location: local
+# cluster_mode: single
+# properties_path: alt_properties
+# source properties/configuration.properties
+# source properties/configuration-application.properties
+# source alt_properties/configuration-application.properties
+# source properties/configuration-location-local-debug.properties
+# source properties/configuration-mode-single.properties
+# source properties/configuration-mode-single-debug.properties
+# source properties/configuration-telegraf.properties
+# source properties/configuration-telegraf-debug.properties
+# CLUSTER_MODE: single
+# SECRET_MODE: _no-secrets
+# TARGETS: inject_metrics streaming
+
+## inject ## inject-single ## inject_no-secrets ## metrics ## root ## root-single ## root_no-secrets ## root_no-secrets-single ## spark ## spark-single ## streaming ## streaming_no-secrets
+networks:
+    default:
+        external:
+            name: deetazilla
+services:
+    app_streaming:
+###        ports:
+###        - 4040:4040
+###        - 5005:5005
+        image: test
+        command: ./bin/spark-submit --class org.deetazilla.app.SparkProcessor --master local[*] int_streaming-1.0-SNAPSHOT.jar smartmeter.voltage.raw smartmeter.voltage.extract.max "Deetazilla MAX Streaming"
+###3        image: logimethods/int_streaming:1.0-local
+####        entrypoint: ./bin/spark-class
+###        command: com.logimethods.nats.connector.spark.app.SparkProcessor smartmeter.voltage.raw smartmeter.voltage.extract.max Deetazilla MAX Streaming
+###        command: -Dagentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n  com.logimethods.nats.connector.spark.app.SparkProcessor INPUT smartmeter.voltage.extract.max Deetazilla MAX Streaming
+###        command: -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n com.logimethods.nats.connector.spark.app.SparkProcessor INPUT smartmeter.voltage.extract.max Deetazilla MAX Streaming
+####        command: -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 com.logimethods.nats.connector.spark.app.SparkProcessor INPUT smartmeter.voltage.extract.max Deetazilla MAX Streaming
+###        deploy:
+###            placement:
+###                constraints:
+###                - node.role == manager
+###            replicas: 1
+        environment:
+###        - DEPENDS_ON=nats
+        - NATS_NAME=nats
+        - SPARK_MASTER_URL=local[*]
+#        - SPARK_MASTER_URL=spark://spark-master:7077
+        - STREAMING_DURATION=5000
+        - LOG_LEVEL=MAX_MESSAGES
+        - TARGETS=ALL
+        - SPARK_CORES_MAX=2
+        - NATS_USERNAME=deetazilla
+        - NATS_PASSWORD=xyz1234
+#        - EUREKA_DEBUG=true
+        #####
+###        - LOG_LEVEL=DEBUG
+        - NATS_URI=nats://nats:4222
+####        - "JAVA_OPTS=\"-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n\""
+###        - NATS_URI=nats://deetazilla:xyz1234@nats:4222
+####      image: logimethods/int_streaming:1.0-local
+###        image: logimethods/nats-connector-spark:app_0.4.0
+###        command: "INPUT smartmeter.voltage.extract.max"
+####        command: "smartmeter.voltage.raw smartmeter.voltage.extract.max"
+    eureka:
+        deploy:
+            placement:
+                constraints:
+                - node.role == manager
+        environment:
+        - FLASK_DEBUG=0
+        image: logimethods/eureka:latest
+#        ports:
+#        - 5000:5001
+        volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+    inject:
+        command: --no-reports -s com.logimethods.nats.demo.NatsInjection
+        deploy:
+            placement:
+                constraints:
+                - node.role == manager
+            replicas: 1
+        environment:
+        - DEPENDS_ON=nats
+        - WAIT_FOR=metrics
+###        - GATLING_TO_NATS_SUBJECT=smartmeter.voltage.raw
+        - NATS_NAME=nats
+        - GATLING_USERS_PER_SEC=5
+        - GATLING_DURATION=50
+        - STREAMING_DURATION=5000
+        - NODE_ID={{.Node.ID}}
+        - SERVICE_ID={{.Service.ID}}
+        - SERVICE_NAME={{.Service.Name}}
+        - SERVICE_LABELS={{.Service.Labels}}
+        - TASK_ID={{.Task.ID}}
+        - TASK_NAME={{.Task.Name}}
+        - TASK_SLOT={{.Task.Slot}}
+        - RANDOMNESS=0.2
+        - PREDICTION_LENGTH=12
+        - TIME_ROOT=1508507269
+        - NATS_USERNAME=deetazilla
+        - NATS_PASSWORD=xyz1234
+###        image: logimethods/int_inject:1.0-dev
+        - NATS_URI=nats://@nats:4222
+        - GATLING_TO_NATS_SUBJECT=smartmeter.voltage.raw
+        image: logimethods/nats-connector-spark:inject_0.4.0
+
+    metrics:
+        image: hopsoft/graphite-statsd:v0.9.15-phusion0.9.18
+        ports:
+        - 81:80
+    nats:
+###        command: /gnatsd -c gnatsd-single.conf -m 8222
+        environment:
+        - READY_WHEN=\"Server is ready\"
+        - NATS_NAME=nats
+        - NATS_USERNAME=deetazilla
+        - NATS_PASSWORD=xyz1234
+        - NATS_CLUSTER_USERNAME=nats_cluster
+        - NATS_CLUSTER_PASSWORD=1234xyz
+###        image: logimethods/dz_nats-server:1.0-dev
+        image: nats
+        ports:
+        - 4222:4222
+        - 8222:8222
+###        volumes:
+###        - /proc:/writable-proc
+    nats_client:
+        command: /main
+        environment:
+        - WAIT_FOR=nats
+        - NATS_NAME=nats
+        - EUREKA_DEBUG=true
+        - NATS_SUBJECT=smartmeter.voltage.extract.max
+        - NATS_USERNAME=deetazilla
+        - NATS_PASSWORD=xyz1234
+        image: logimethods/dz_nats-client:1.0-dev
+version: '3.1'
+volumes:
+    grafana-volume:
+        external: true
+
+

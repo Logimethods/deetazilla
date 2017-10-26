@@ -1,0 +1,1 @@
+./bin/spark-submit --class org.deetazilla.app.SparkProcessor --master local[*] int_streaming-1.0-SNAPSHOT.jar INPUT OUTPUT  "Deetazilla MAX Streaming"

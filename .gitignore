@@ -40,3 +40,12 @@ Dockerfile.tmp
 
 # Python Cache
 __pycache__
+
+# Eclipse
+.cache-main
+.classpath
+.project
+.settings
+
+# Maven
+dependency-reduced-pom.xml

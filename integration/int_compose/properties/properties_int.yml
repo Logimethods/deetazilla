@@ -21,7 +21,7 @@ docker-int_cassandra_inject-repository: logimethods/int_cassandra_inject
 docker-int_cassandra_inject-tag: "1.0"
 
 github-int_streaming-path: integration/int_streaming
-docker-int_streaming-dockerfile-path: int_streaming/docker
+docker-int_streaming-dockerfile-path: integration/int_streaming
 docker-int_streaming-repository: logimethods/int_streaming
 docker-int_streaming-tag: "1.0"
 

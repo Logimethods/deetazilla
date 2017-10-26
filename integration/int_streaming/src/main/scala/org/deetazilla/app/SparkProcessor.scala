@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *******************************************************************************/
 
-package com.logimethods.nats.connector.spark.app
+package org.deetazilla.app
 
 import java.util.Properties;
 import java.io.File
@@ -17,17 +17,15 @@ import org.apache.spark.streaming.Duration
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.storage.StorageLevel;
 import io.nats.client.Nats._
+//import io.nats.client.Constants.PROP_URL
 
 import org.apache.log4j.{Level, LogManager, PropertyConfigurator}
 
 import com.logimethods.connector.nats.to_spark._
 import com.logimethods.scala.connector.spark.to_nats._
 
-object SparkProcessor extends App {
-  val log = LogManager.getRootLogger
-  log.setLevel(Level.WARN)
 
-  Thread.sleep(5000)
+object SparkProcessor extends App {
 
   val inputSubject = args(0)
   val inputStreaming = inputSubject.toUpperCase.contains("STREAMING")
@@ -38,15 +36,12 @@ object SparkProcessor extends App {
   val logLevel = scala.util.Properties.envOrElse("LOG_LEVEL", "INFO")
   println("LOG_LEVEL = " + logLevel)
 
-  val sparkMasterUrl = System.getenv("SPARK_MASTER_URL")
-  println("SPARK_MASTER_URL = " + sparkMasterUrl)
-  val conf = new SparkConf().setAppName(args(2)).setMaster(sparkMasterUrl);
+  val conf = new SparkConf()
+                .setAppName(args(2))
   val sc = new SparkContext(conf);
-//  val jarFilesRegex = "java-nats-streaming-(.*)jar|guava(.*)jar|protobuf-java(.*)jar|jnats-(.*)jar|nats-connector-spark-(.*)jar|docker-nats-connector-spark(.*)jar"
-  val jarFilesRegex = "(.*)jar"
-  for (file <- new File("/app/").listFiles.filter(_.getName.matches(jarFilesRegex)))
-    { sc.addJar(file.getAbsolutePath) }
   val ssc = new StreamingContext(sc, new Duration(2000));
+
+  println("===================== v18")
 
   val properties = new Properties();
   val natsUrl = System.getenv("NATS_URI")
@@ -59,26 +54,29 @@ object SparkProcessor extends App {
   val messages =
     if (inputStreaming) {
       NatsToSparkConnector
-        .receiveFromNatsStreaming(classOf[Float], StorageLevel.MEMORY_ONLY, clusterId)
+        .receiveFromNatsStreaming(classOf[java.lang.Float], StorageLevel.MEMORY_ONLY, clusterId)
         .withNatsURL(natsUrl)
         .withSubjects(inputSubject)
         .asStreamOf(ssc)
     } else {
       NatsToSparkConnector
-        .receiveFromNats(classOf[Float], StorageLevel.MEMORY_ONLY)
+        .receiveFromNats(classOf[java.lang.Float], StorageLevel.MEMORY_ONLY)
         .withProperties(properties)
         .withSubjects(inputSubject)
         .asStreamOf(ssc)
     }
 
-//  if (logLevel.contains("MESSAGES")) {
-    messages.print()
-/*  }
+  if (logLevel.contains("MESSAGES")) {
+    println(">>> MESSAGES")
+    messages.count.print()
+    messages.map(_.toString).print()
+  }
 
-  val max = messages.reduce(Math.max(_,_))
+  val max = messages.reduce(Math.max(_,_)).map(_.toString)
 
   if (logLevel.contains("MAX")) {
-    max.print()
+    println(">>> MAX")
+    max.map(_.toString).print()
   }
 
   if (outputStreaming) {
@@ -92,7 +90,7 @@ object SparkProcessor extends App {
                             .withSubjects(outputSubject)
                             .publishToNats(max)
   }
-*/
+
   ssc.start();
 
   ssc.awaitTermination()
