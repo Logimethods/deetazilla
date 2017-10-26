@@ -20,5 +20,5 @@ services:
     command: ./bin/spark-submit \
       --class ${APP_STREAMING_MAIN_CLASS} \
       --master ${SPARK_MASTER_URL_STREAMING} \
-      int_streaming-1.0-SNAPSHOT.jar \
+      int_streaming-latest.jar \
       ${APP_STREAMING_SUBJECT_INPUT} ${APP_STREAMING_SUBJECT_OUTPUT} \"${APP_STREAMING_APP_NAME}\"

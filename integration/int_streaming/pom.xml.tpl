@@ -8,41 +8,38 @@
 	<groupId>org.deetazilla.app</groupId>
 	<artifactId>int_streaming</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>latest</version>
 	<name>int_streaming</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<scala.version>2.11.8</scala.version>
-		<java.version>1.8</java.version>
-		<spark.version>2.1.0</spark.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
-			<version>${scala.version}</version>
+			<version>${scala_version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_2.11</artifactId>
-			<version>${spark.version}</version>
+			<version>${spark_version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-streaming_2.11</artifactId>
-			<version>${spark.version}</version>
+			<version>${spark_version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 		  <groupId>com.logimethods</groupId>
 		  <artifactId>nats-connector-spark-scala_2.11</artifactId>
-		  <version>0.4.0-SNAPSHOT</version>
+		  <version>${nats_connector_spark_version}</version>
 		</dependency>
 	</dependencies>
 
