@@ -93,7 +93,7 @@ jobs:
   public: ((concourse-public))
   serial: ((concourse-serial))
   plan:
-  - get: docker-dz_compose
+  - get: docker-dz_templater
     trigger: ((concourse-compose-trigger))
   - get: github-repo-int_compose
     trigger: ((concourse-compose-trigger))
@@ -206,6 +206,8 @@ jobs:
   public: ((concourse-public))
   serial: ((concourse-serial))
   plan:
+  - get: docker-int_compose
+    trigger: ((concourse-trigger))
   - get: github-repo-int_streaming
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
@@ -358,8 +360,8 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_streaming-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
+#      - ((github-dz_templater-path))/properties/**
+#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
