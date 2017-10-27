@@ -41,7 +41,7 @@ object SparkProcessor extends App {
   val sc = new SparkContext(conf);
   val ssc = new StreamingContext(sc, new Duration(2000));
 
-  println("===================== v18")
+  println("===================== v19")
 
   val properties = new Properties();
   val natsUrl = System.getenv("NATS_URI")
