@@ -19,6 +19,8 @@ COPY --from=entrypoint entrypoint.sh /entrypoint.sh
 
 COPY entrypoint_insert.sh /entrypoint_insert.sh
 
+COPY spark/conf/*.properties ./conf/
+
 EXPOSE 5005 4040
 
 ENTRYPOINT ["/entrypoint.sh", "./bin/spark-submit"]
