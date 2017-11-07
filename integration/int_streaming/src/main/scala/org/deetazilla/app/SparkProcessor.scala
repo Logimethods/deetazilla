@@ -33,8 +33,8 @@ object SparkProcessor extends App {
   val outputStreaming = outputSubject.toUpperCase.contains("STREAMING")
   println("Will process messages from " + inputSubject + " to " + outputSubject)
 
-  val logLevel = scala.util.Properties.envOrElse("LOG_LEVEL", "INFO")
-  println("LOG_LEVEL = " + logLevel)
+  val targets = scala.util.Properties.envOrElse("TARGETS", "DEFAULT")
+  println("TARGETS = " + targets)
 
   val conf = new SparkConf()
                 .setAppName(args(2))
@@ -66,7 +66,7 @@ object SparkProcessor extends App {
         .asStreamOf(ssc)
     }
 
-  if (logLevel.contains("MESSAGES")) {
+  if (targets.contains("MESSAGES")) {
     println(">>> MESSAGES")
     messages.count.print()
     messages.map(_.toString).print()
@@ -74,7 +74,7 @@ object SparkProcessor extends App {
 
   val max = messages.reduce(Math.max(_,_)).map(_.toString)
 
-  if (logLevel.contains("MAX")) {
+  if (targets.contains("MAX")) {
     println(">>> MAX")
     max.map(_.toString).print()
   }
