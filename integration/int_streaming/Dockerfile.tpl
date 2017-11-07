@@ -7,6 +7,11 @@ FROM logimethods/eureka:entrypoint as entrypoint
 ##- FROM gettyimages/spark:2.2.0-hadoop-2.7
 FROM ${spark_image}:${spark_version}-hadoop-${hadoop_version}
 
+# https://stedolan.github.io/jq/
+RUN apt-get update && apt-get install -y \
+  jq netcat-openbsd dnsutils
+  # bash iputils-ping curl
+
 COPY --from=mvn /usr/src/app/target/*.jar ./
 
 COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
