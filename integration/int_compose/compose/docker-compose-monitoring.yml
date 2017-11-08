@@ -4,6 +4,5 @@ services:
     environment:
       - WAIT_FOR=${NATS_NAME}
       - EUREKA_DEBUG=true
-#-      - NATS_NAME=${NATS_NAME}
-#-      - NATS_SUBJECT=${NATS_CLIENT_SUBJECT}
+      - NATS_NAME=${NATS_NAME}
     command: ${MONITOR_MAIN_CLASS} ${MONITOR_SUBJECT_INPUT}
