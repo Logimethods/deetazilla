@@ -36,7 +36,7 @@ object NatsOutputMonitor extends App {
       println("Is especting a value equals to " + espectedValue)
 
       var iterations = 3
-      conn.subscribe(inputSubject, (msg: Msg) => {
+      conn.subscribe(inputSubject, (msg: MsgB) => {
         val receivedValue = ByteBuffer.wrap(msg.body).getFloat()
         println("Received value: " + receivedValue)
         iterations -= 1
