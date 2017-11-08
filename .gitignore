@@ -53,3 +53,5 @@ __pycache__
 dependency-reduced-pom.xml
 integration/int_streaming/pom.xml.tmp
 integration/int_streaming/pom.xml
+
+integration/int_monitor/pom.xml

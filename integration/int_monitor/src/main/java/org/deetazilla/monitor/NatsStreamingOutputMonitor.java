@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/MIT
  *******************************************************************************/
 
-package com.logimethods.nats.connector.spark.monitor;
+package org.deetazilla.monitor;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
