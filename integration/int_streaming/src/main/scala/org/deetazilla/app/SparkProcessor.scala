@@ -72,7 +72,7 @@ object SparkProcessor extends App {
     messages.map(_.toString).print()
   }
 
-  val max = messages.reduce(Math.max(_,_)).map(_.toString)
+  val max = messages.reduce(Math.max(_,_))
 
   if (targets.contains("MAX")) {
     println(">>> MAX")
