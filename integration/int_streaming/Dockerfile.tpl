@@ -12,14 +12,14 @@ RUN apt-get update && apt-get install -y \
   jq netcat-openbsd dnsutils
   # bash iputils-ping curl
 
-COPY --from=mvn /usr/src/app/target/*.jar ./
-
 COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY --from=entrypoint entrypoint.sh /entrypoint.sh
 
 COPY entrypoint_insert.sh /entrypoint_insert.sh
 
 COPY spark/conf/*.properties ./conf/
+
+COPY --from=mvn /usr/src/app/target/*.jar ./
 
 EXPOSE 5005 4040
 

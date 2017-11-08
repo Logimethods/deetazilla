@@ -12,10 +12,12 @@ RUN apk --no-cache add \
   jq netcat-openbsd>1.130
   #bash
 
-COPY --from=mvn /usr/src/app/target/*.jar ./
-
 COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY --from=entrypoint entrypoint.sh /entrypoint.sh
+
+COPY entrypoint_insert.sh /entrypoint_insert.sh
+
+COPY --from=mvn /usr/src/app/target/*.jar ./
 
 # EXPOSE 5005 4040
 
