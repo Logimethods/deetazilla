@@ -8,19 +8,15 @@ FROM logimethods/eureka:entrypoint as entrypoint
 FROM ${scala_image}:${scala_main_version}
 
 # https://stedolan.github.io/jq/
-RUN apt-get update && apt-get install -y \
-  jq netcat-openbsd dnsutils
-  # bash iputils-ping curl
+RUN apk --no-cache add \
+  jq netcat-openbsd>1.130
+  #bash
 
 COPY --from=mvn /usr/src/app/target/*.jar ./
 
 COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY --from=entrypoint entrypoint.sh /entrypoint.sh
 
-COPY entrypoint_insert.sh /entrypoint_insert.sh
-
-COPY spark/conf/*.properties ./conf/
-
 # EXPOSE 5005 4040
 
-ENTRYPOINT ["scala", "-cp", "int_monitor-latest.jar"]
+ENTRYPOINT ["/entrypoint.sh", "scala", "-cp", "int_monitor-latest.jar"]
