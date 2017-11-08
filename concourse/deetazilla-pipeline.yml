@@ -238,37 +238,33 @@ jobs:
   public: ((concourse-public))
   serial: ((concourse-serial))
   plan:
+  - get: docker-int_compose
+    trigger: ((concourse-trigger))
   - get: github-repo-int_monitor
     trigger: ((concourse-trigger))
-  - task: set-up_dockerfile_inject
+  - task: complete_dockerfiles
     config:
       platform: linux
       image_resource:
         type: docker-image
         source:
-          repository: hseeberger/scala-sbt
-          tag: "latest"
+          repository: ((docker-int_compose-repository))
+          tag: ((docker-int_compose-tag))((docker-additional-tag))
       inputs:
       - name: github-repo-int_monitor
       outputs:
-      - name: dockerfile_integration
+      - name: complete_dockerfiles
       run:
-        path: bash
+        path: sh
         args:
         - -exc
         - |
-          echo "---------------------- MONITOR ----------------------"
-          pushd github-repo-int_monitor/((github-int_monitor-path))/
-          echo "q" | sbt --info clean assembly dockerFileTask
-          rm -Rf ./docker
-          mv target/docker .
-          popd
-          echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_monitor/((github-integration-path))/* dockerfile_integration/
-          # ls -als dockerfile_integration/*/*
+          cp -R github-repo-int_monitor/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_monitor
     params:
-      build: dockerfile_integration/((docker-int_monitor-dockerfile-path))
+      build: complete_dockerfiles/((docker-int_monitor-dockerfile-path))
 
 ###### RESOURCES ######
 

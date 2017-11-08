@@ -26,6 +26,6 @@ docker-int_streaming-repository: logimethods/int_streaming
 docker-int_streaming-tag: "1.0"
 
 github-int_monitor-path: integration/int_monitor
-docker-int_monitor-dockerfile-path: int_monitor/docker
+docker-int_monitor-dockerfile-path: integration/int_monitor
 docker-int_monitor-repository: logimethods/int_monitor
 docker-int_monitor-tag: "1.0"
