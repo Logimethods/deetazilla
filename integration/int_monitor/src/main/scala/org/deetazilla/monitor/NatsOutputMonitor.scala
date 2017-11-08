@@ -32,16 +32,15 @@ object NatsOutputMonitor extends App {
     val conn = Conn.connect(properties)
 
     if (args.length > 1) {// TEST mode
-			// TODO Consider Integers & Floats
-      val espectedValue = args(1).toInt
+      val espectedValue = args(1).toFloat
       println("Is especting a value equals to " + espectedValue)
 
       var iterations = 3
       conn.subscribe(inputSubject, (msg: Msg) => {
-        println("Received message: " + msg.body)
+        val receivedValue = ByteBuffer.wrap(msg.body).getFloat()
+        println("Received value: " + receivedValue)
         iterations -= 1
         if (iterations <= 0) {
-          val receivedValue = msg.body.toInt
           if (receivedValue == espectedValue) { // "Tests passed!"
             System.exit(0)
           } else { // "Tests failed!"
@@ -52,7 +51,6 @@ object NatsOutputMonitor extends App {
     } else { // REGULAR mode
       conn.subscribe(inputSubject, (msg: MsgB) => {
         import java.time._
-
         val f = ByteBuffer.wrap(msg.body)
         if (msg.subject.contains("max")) {
           println(s"Received message: (${msg.subject}, ${f.getFloat()})")
