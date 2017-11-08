@@ -42,8 +42,10 @@ object NatsOutputMonitor extends App {
         iterations -= 1
         if (iterations <= 0) {
           if (receivedValue == espectedValue) { // "Tests passed!"
+            println("Test OK")
             System.exit(0)
           } else { // "Tests failed!"
+            println("Test KO!!!")
             System.exit(1)
           }
         }
