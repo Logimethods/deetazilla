@@ -37,13 +37,3 @@ services:
       - "8222:8222"
     volumes:
       - "/proc:/writable-proc"
-
-  ## For TESTING/DEBUG ONLY! ##
-  nats_client:
-    image: ((docker-dz_nats-client-repository)):((docker-dz_nats-client-tag))((docker-additional-tag))
-    environment:
-      - WAIT_FOR=${NATS_NAME}
-      - NATS_NAME=${NATS_NAME}
-      - EUREKA_DEBUG=true
-      - NATS_SUBJECT=${NATS_CLIENT_SUBJECT}
-    command: /main
