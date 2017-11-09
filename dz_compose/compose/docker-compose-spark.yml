@@ -1,0 +1,12 @@
+services:
+  ### create_service_spark_master,
+  spark-master:
+    image: ${spark_image}:${spark_version}-hadoop-${hadoop_version}
+    deploy:
+      update_config:
+        parallelism: 1
+        delay: 10s
+    environment:
+      - SERVICE_NAME=${SPARK_MASTER_NAME}
+    ports:
+      - "${SPARK_UI_PORT}:8080"

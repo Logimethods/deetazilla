@@ -1,0 +1,15 @@
+services:
+  ### zeppelin,
+  zeppelin:
+    volumes:
+      - "${zeppelin_logs_volume}:/logs"
+      - "${zeppelin_notebook_volume}:/notebook"
+
+# https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+volumes:
+  zeppelin_logs:
+    external:
+      name: "${zeppelin_logs_volume}"
+  zeppelin_notebook:
+    external:
+      name: "${zeppelin_notebook_volume}"

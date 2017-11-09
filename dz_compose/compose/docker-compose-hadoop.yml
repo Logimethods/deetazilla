@@ -1,0 +1,6 @@
+services:
+  ### ["create_service", "hadoop", 1],
+  hadoop:
+    image: sequenceiq/hadoop-docker:${hadoop_docker_version}
+    ports:
+      - "50070:50070"

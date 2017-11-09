@@ -5,7 +5,7 @@ First install Pyyaml:
 `pip install pyyaml`
 
 To run from the cmd line:
-`python templater.py input_file properties_file`
+`python3 python/templater.py input_file properties_file`
 
 To use in your own project, import:
 

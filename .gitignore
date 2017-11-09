@@ -1,17 +1,7 @@
 *.class
 *.log
 
-dz-cassandra/Dockerfile
-
-dz-nats-client/main
-
-dz-nats-server/Dockerfile
-
-dz-telegraf/Dockerfile
-
 properties/_configuration-telegraf-cassandra_count.properties
-
-scripts/docker-compose-merge.yml
 
 # sbt specific
 .cache
@@ -25,12 +15,43 @@ src_managed/
 project/boot/
 project/plugins/project/
 
-concourse/credentials.yml
+# credential
 
+concourse/credentials.yml
 concourse/credentials.properties
 
+# merged files
+
 docker-compose-merge.yml
+scripts/docker-compose-merge.yml
 
+# Generated Files
+
+Dockerfile.tmp
+integration/int_streaming/Dockerfile
 integration/compose/Dockerfile
-
 integration/int_compose/Dockerfile
+dz-cassandra/Dockerfile
+dz-nats-server/Dockerfile
+dz-telegraf/Dockerfile
+
+# Builded files
+
+dz-nats-client/main
+
+
+# Python Cache
+__pycache__
+
+# Eclipse
+.cache-main
+.classpath
+.project
+.settings
+
+# Maven
+dependency-reduced-pom.xml
+integration/int_streaming/pom.xml.tmp
+integration/int_streaming/pom.xml
+
+integration/int_monitor/pom.xml

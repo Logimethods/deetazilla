@@ -1,0 +1,10 @@
+services:
+  ### TODO: ["create_volume", "cassandra"],
+  ### create_service_cassandra,
+  cassandra_cluster_main:
+    environment:
+#      - LOCAL_JMX=no
+      - CASSANDRA_SETUP_FILE=${CASSANDRA_SETUP_FILE}
+      - CASSANDRA_COUNT_PORT=${CASSANDRA_COUNT_PORT}
+    ports:
+      - "${CASSANDRA_COUNT_PORT}:6161"

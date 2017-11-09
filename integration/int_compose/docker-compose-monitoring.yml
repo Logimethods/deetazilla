@@ -1,9 +1,0 @@
-services:
-  nats_monitor:
-    image: ((docker-int_monitor-repository)):((docker-int_monitor-tag))
-    environment:
-      - WAIT_FOR=${NATS_NAME}
-      - NATS_NAME=${NATS_NAME}
-      - EUREKA_DEBUG=true
-      - NATS_SUBJECT=${NATS_CLIENT_SUBJECT}
-    command: /main

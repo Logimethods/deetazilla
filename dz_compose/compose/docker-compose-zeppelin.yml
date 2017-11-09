@@ -1,0 +1,16 @@
+services:
+  ### zeppelin,
+  zeppelin:
+    image: ${zeppelin_image}:${zeppelin_tag}
+    deploy:
+      placement:
+        constraints:
+          - node.role == ${MASTER_NODE}
+      update_config:
+        parallelism: 1
+        delay: 10s
+    environment:
+      - ZEPPELIN_LOG_DIR=${ZEPPELIN_LOG_DIR}
+      - ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_NOTEBOOK_DIR}
+    ports:
+      - "${ZEPPELIN_WEB_PORT}:8080"
