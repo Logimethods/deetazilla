@@ -8,18 +8,6 @@ networks:
       name: ${NETWORK_NAME}
 
 services:
-  ### ["create_service", "visualizer", 1],
-  visualizer:
-    image: dockersamples/visualizer
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    ports:
-      - "8080:8080/tcp"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
   ### ["create_service", "eureka", 1],
   eureka:
     image: logimethods/eureka:${eureka_version}

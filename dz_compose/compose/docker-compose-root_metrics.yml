@@ -1,4 +1,16 @@
 services:
+  ### ["create_service", "visualizer", 1],
+  visualizer:
+    image: dockersamples/visualizer
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    ports:
+      - "8080:8080/tcp"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
   ### ["create_service_telegraf_on_master", "docker"],
   telegraf_docker:
     image: ((docker-dz_telegraf-repository)):((docker-dz_telegraf-tag))((docker-additional-tag))
