@@ -93,7 +93,7 @@ jobs:
   public: ((concourse-public))
   serial: ((concourse-serial))
   plan:
-  - get: docker-dz_templater
+  - get: docker-dz_compose
     trigger: ((concourse-compose-trigger))
   - get: github-repo-int_compose
     trigger: ((concourse-compose-trigger))
