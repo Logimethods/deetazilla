@@ -1,9 +1,7 @@
 github-uri: git@github.com:Logimethods/deetazilla.git
-#github-branch: master
-github-branch: integration_app
+github-branch: master
 
-#docker-additional-tag: "-SNAPSHOT"
-docker-additional-tag: "-dev"
+docker-additional-tag: "-SNAPSHOT"
 
 concourse-trigger: false
 concourse-compose-trigger: true
