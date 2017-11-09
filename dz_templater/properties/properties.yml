@@ -1,15 +1,3 @@
-github-uri: git@github.com:Logimethods/deetazilla.git
-#github-branch: master
-github-branch: integration_app
-
-#docker-additional-tag: "-SNAPSHOT"
-docker-additional-tag: "-dev"
-
-concourse-trigger: false
-concourse-compose-trigger: true
-concourse-serial: true
-concourse-public: true
-
 github-dz_templater-path: dz_templater
 docker-dz_templater-dockerfile-path: dz_templater
 docker-dz_templater-repository: logimethods/dz_templater
