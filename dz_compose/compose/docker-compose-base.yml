@@ -1,0 +1,8 @@
+version: "3.1"
+
+### create_network,
+#### docker ${remote} network create --driver overlay --attachable ${NETWORK_NAME}
+networks:
+  default:
+    external:
+      name: ${NETWORK_NAME}

@@ -11,7 +11,7 @@ streaming_metrics="streaming_metrics streaming_metrics-${SECRET_MODE} $streaming
 
 monitoring="monitoring monitoring-${SECRET_MODE} $root"
 
-test="test test-${SECRET_MODE}"
+test="base test test-${SECRET_MODE}"
 
 integration_app="$inject $streaming $monitoring"
 integration_app_monitoring="$inject_monitoring $streaming_monitoring $monitoring_monitoring"
