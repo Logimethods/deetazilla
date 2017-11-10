@@ -4,6 +4,7 @@ jobs:
 - name: build-docker-dz_templater
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-compose-serial_groups))
   plan:
   - get: github-repo-dz_templater
     trigger: ((concourse-compose-trigger))
@@ -14,6 +15,7 @@ jobs:
 - name: build-docker-dz_compose
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-compose-serial_groups))
   plan:
   - get: github-repo-dz_compose
     trigger: ((concourse-compose-trigger))
@@ -48,6 +50,7 @@ jobs:
 - name: build-docker-dz_images
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
   plan:
   - get: docker-dz_templater
     trigger: ((concourse-trigger))
@@ -92,6 +95,7 @@ jobs:
 - name: build-docker-int_compose
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-compose-serial_groups))
   plan:
   - get: docker-dz_compose
     trigger: ((concourse-compose-trigger))
@@ -124,6 +128,7 @@ jobs:
 - name: build-docker-int_inject
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: github-repo-int_inject
     trigger: ((concourse-trigger))
@@ -165,6 +170,7 @@ jobs:
 - name: build-docker-int_cassandra
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: github-repo-int_cassandra
     trigger: ((concourse-trigger))
@@ -195,6 +201,7 @@ jobs:
 - name: build-docker-int_cassandra_inject
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: github-repo-int_cassandra_inject
     trigger: ((concourse-trigger))
@@ -205,6 +212,7 @@ jobs:
 - name: build-docker-int_streaming
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: docker-int_compose
     trigger: ((concourse-trigger))
@@ -237,6 +245,7 @@ jobs:
 - name: build-docker-int_monitor
   public: ((concourse-public))
   serial: ((concourse-serial))
+  serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: docker-int_compose
     trigger: ((concourse-trigger))

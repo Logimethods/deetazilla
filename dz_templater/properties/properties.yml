@@ -1,3 +1,7 @@
+concourse-compose-serial_groups: [compose_group]
+concourse-dz-serial_groups: [compose_group, dz_group]
+concourse-int-serial_groups: [compose_group,int_group]
+
 github-dz_templater-path: dz_templater
 docker-dz_templater-dockerfile-path: dz_templater
 docker-dz_templater-repository: logimethods/dz_templater
