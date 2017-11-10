@@ -4,9 +4,7 @@ services:
     image: ((docker-int_inject-repository)):((docker-int_inject-tag))((docker-additional-tag))
     environment:
       - DEPENDS_ON=${NATS_NAME}
-      - WAIT_FOR=${METRICS_GRAPHITE_NAME}
       - GATLING_TO_NATS_SUBJECT=smartmeter.voltage.raw
-      # - NATS_URI=nats://${NATS_USERNAME}:${NATS_PASSWORD}@nats:4222
       - NATS_NAME=${NATS_NAME}
       - GATLING_USERS_PER_SEC=${GATLING_USERS_PER_SEC}
       - GATLING_DURATION=${GATLING_DURATION}
