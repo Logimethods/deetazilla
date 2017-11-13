@@ -4,4 +4,6 @@ COPY *.sh ./
 COPY compose/*.yml ./
 COPY properties/* ./properties/
 
-RUN cat ./properties/configuration.properties ./properties/configuration-additional.properties >> ./properties/configuration.properties
+RUN mv ./properties/configuration.properties ./properties/configuration.properties.TMP
+RUN cat ./properties/configuration.properties.TMP ./properties/configuration-additional.properties >> ./properties/configuration.properties
+RUN rm ./properties/configuration.properties.TMP
