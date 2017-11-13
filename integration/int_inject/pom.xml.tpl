@@ -13,6 +13,15 @@
 
   <dependencies>
     <dependency>
+      <!-- https://mvnrepository.com/artifact/org.scalanlp/breeze_2.11 -->
+      <groupId>org.scalanlp</groupId>
+      <artifactId>breeze_2.11</artifactId>
+      <version>${breeze_version}</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
       <groupId>com.logimethods</groupId>
       <artifactId>nats-connector-gatling_2.11</artifactId>
       <version>${nats_connector_gatling_version}</version>
