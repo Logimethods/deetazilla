@@ -22,9 +22,10 @@ import io.nats.client.Constants.PROP_URL
 class NatsInjection extends Simulation {
 
   val properties = new Properties()
+  println("System properties: " + System.getenv())
+
   val natsUrl = System.getenv("NATS_URI")
   properties.setProperty(PROP_URL, natsUrl)
-  println("System properties: " + System.getenv())
 
   var subject = System.getenv("GATLING_TO_NATS_SUBJECT")
   if (subject == null) {
