@@ -18,9 +18,7 @@
       <artifactId>breeze_2.11</artifactId>
       <version>${breeze_version}</version>
     </dependency>
-  </dependencies>
 
-  <dependencies>
     <dependency>
       <groupId>com.logimethods</groupId>
       <artifactId>nats-connector-gatling_2.11</artifactId>
