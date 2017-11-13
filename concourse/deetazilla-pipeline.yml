@@ -143,7 +143,7 @@ jobs:
           repository: ((docker-int_compose-repository))
           tag: ((docker-int_compose-tag))((docker-additional-tag))
       inputs:
-      - name: github-repo-int_cassandra
+      - name: github-repo-int_inject
       outputs:
       - name: complete_dockerfiles
       run:
