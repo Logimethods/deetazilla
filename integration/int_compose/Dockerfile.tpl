@@ -3,3 +3,5 @@ FROM ((docker-dz_compose-repository)):((docker-dz_compose-tag))((docker-addition
 COPY *.sh ./
 COPY compose/*.yml ./
 COPY properties/* ./properties/
+
+RUN cat ./properties/configuration.properties ./properties/configuration-additional.properties >> ./properties/configuration.properties
