@@ -16,13 +16,14 @@ import com.logimethods.connector.gatling.to_nats._
 
 import scala.concurrent.duration._
 import java.util.Properties
-import io.nats.client.Nats._
+import io.nats.client.Constants.PROP_URL
+// import io.nats.client.Nats.PROP_URL
 
 class NatsInjection extends Simulation {
 
   val properties = new Properties()
   val natsUrl = System.getenv("NATS_URI")
-  properties.setProperty(io.nats.client.Constants.PROP_URL, natsUrl)
+  properties.setProperty(PROP_URL, natsUrl)
   println("System properties: " + System.getenv())
 
   var subject = System.getenv("GATLING_TO_NATS_SUBJECT")
