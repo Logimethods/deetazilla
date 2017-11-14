@@ -37,7 +37,7 @@
     <!-- https://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging -->
     <dependency>
         <groupId>com.typesafe.scala-logging</groupId>
-        <artifactId>scala-logging_2.12</artifactId>
+        <artifactId>scala-logging_2.11</artifactId>
         <version>3.7.2</version>
     </dependency>
 

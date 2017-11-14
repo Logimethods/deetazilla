@@ -5,7 +5,8 @@ RUN mvn dependency:copy-dependencies -DoutputDirectory=/libs
 # https://github.com/Logimethods/docker-eureka
 FROM logimethods/eureka:entrypoint as entrypoint
 
-FROM ${gatling_image}:${gatling_version}
+FROM ${gatling_image}:2.2.5
+###--- ${gatling_version}
 
 COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY --from=entrypoint entrypoint.sh /entrypoint.sh
