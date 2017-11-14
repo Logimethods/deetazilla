@@ -13,13 +13,13 @@
 
   <dependencies>
 <!--    <dependency>
-      <!-- https://mvnrepository.com/artifact/org.scalanlp/breeze_2.12 ->
+      <!- https://mvnrepository.com/artifact/org.scalanlp/breeze_2.12 ->
       <groupId>org.scalanlp</groupId>
       <artifactId>breeze_2.12</artifactId>
       <version>${breeze_version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.scalactic/scalactic ->
+    <!- https://mvnrepository.com/artifact/org.scalactic/scalactic ->
     <dependency>
         <groupId>org.scalactic</groupId>
         <artifactId>scalactic_2.12</artifactId>
