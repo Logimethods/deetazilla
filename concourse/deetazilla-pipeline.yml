@@ -17,10 +17,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-compose-serial_groups))
   plan:
-  - get: github-repo-dz_compose
-    trigger: ((concourse-compose-trigger))
-  - get: docker-dz_templater
-    trigger: ((concourse-compose-trigger))
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-compose-trigger))
+    - get: github-repo-dz_compose
+      trigger: ((concourse-compose-trigger))
   - task: add_properties
     config:
       platform: linux
@@ -52,10 +54,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-dz-serial_groups))
   plan:
-  - get: docker-dz_templater
-    trigger: ((concourse-trigger))
-  - get: github-repo-dz_images
-    trigger: ((concourse-trigger))
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_images
+      trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -97,10 +101,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-compose-serial_groups))
   plan:
-  - get: docker-dz_compose
-    trigger: ((concourse-compose-trigger))
-  - get: github-repo-int_compose
-    trigger: ((concourse-compose-trigger))
+  - aggregate:
+    - get: docker-dz_compose
+      passed: [build-docker-dz_compose]
+      trigger: ((concourse-compose-trigger))
+    - get: github-repo-int_compose
+      trigger: ((concourse-compose-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -130,10 +136,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: github-repo-int_inject
-    trigger: ((concourse-trigger))
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
+  - aggregate:
+    - get: docker-int_compose
+      passed: [build-docker-int_compose]
+      trigger: ((concourse-trigger))
+    - get: github-repo-int_inject
+      trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -163,10 +171,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: github-repo-int_cassandra
-    trigger: ((concourse-trigger))
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
+  - aggregate:
+    - get: docker-int_compose
+      passed: [build-docker-int_compose]
+      trigger: ((concourse-trigger))
+    - get: github-repo-int_cassandra
+      trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -196,21 +206,24 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: github-repo-int_cassandra_inject
-    trigger: ((concourse-trigger))
-  - put: docker-int_cassandra_inject
-    params:
-      build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
+  - aggregate:
+    - get: github-repo-int_cassandra_inject
+      trigger: ((concourse-trigger))
+    - put: docker-int_cassandra_inject
+      params:
+        build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
 
 - name: build-docker-int_streaming
   public: ((concourse-public))
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: github-repo-int_streaming
-    trigger: ((concourse-trigger))
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
+  - aggregate:
+    - get: docker-int_compose
+      passed: [build-docker-int_compose]
+      trigger: ((concourse-trigger))
+    - get: github-repo-int_streaming
+      trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -240,10 +253,12 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: github-repo-int_monitor
-    trigger: ((concourse-trigger))
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
+  - aggregate:
+    - get: docker-int_compose
+      passed: [build-docker-int_compose]
+      trigger: ((concourse-trigger))
+    - get: github-repo-int_monitor
+      trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
