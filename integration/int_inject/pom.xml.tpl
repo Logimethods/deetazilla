@@ -12,18 +12,12 @@
   <name>int_inject</name>
 
   <dependencies>
+    
+    <!-- https://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging -->
     <dependency>
-      <!-- https://mvnrepository.com/artifact/org.scalanlp/breeze_2.12 -->
-      <groupId>org.scalanlp</groupId>
-      <artifactId>breeze_2.12</artifactId>
-      <version>${breeze_version}</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.scalactic/scalactic -->
-    <dependency>
-        <groupId>org.scalactic</groupId>
-        <artifactId>scalactic_2.12</artifactId>
-        <version>${scalactic_version}</version>
+        <groupId>com.typesafe.scala-logging</groupId>
+        <artifactId>scala-logging_2.12</artifactId>
+        <version>3.7.2</version>
     </dependency>
 
     <dependency>
