@@ -12,33 +12,11 @@
   <name>int_inject</name>
 
   <dependencies>
-<!--    <dependency>
-      <!- https://mvnrepository.com/artifact/org.scalanlp/breeze_2.12 ->
-      <groupId>org.scalanlp</groupId>
-      <artifactId>breeze_2.12</artifactId>
-      <version>${breeze_version}</version>
-    </dependency>
-
-    <!- https://mvnrepository.com/artifact/org.scalactic/scalactic ->
-    <dependency>
-        <groupId>org.scalactic</groupId>
-        <artifactId>scalactic_2.12</artifactId>
-        <version>${scalactic_version}</version>
-    </dependency> -->
-
-    <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
-    <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.2.3</version>
-        <scope>test</scope>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging -->
     <dependency>
         <groupId>com.typesafe.scala-logging</groupId>
         <artifactId>scala-logging_2.11</artifactId>
-        <version>3.7.2</version>
+        <version>${gatling_scala_logging_version}</version>
     </dependency>
 
     <dependency>
