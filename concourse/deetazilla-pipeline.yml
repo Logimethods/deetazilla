@@ -132,40 +132,31 @@ jobs:
   plan:
   - get: github-repo-int_inject
     trigger: ((concourse-trigger))
-  - task: set-up_dockerfile_inject
+  - get: docker-int_compose
+    trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
     config:
       platform: linux
       image_resource:
         type: docker-image
         source:
-          repository: hseeberger/scala-sbt
-          tag: "latest"
+          repository: ((docker-int_compose-repository))
+          tag: ((docker-int_compose-tag))((docker-additional-tag))
       inputs:
       - name: github-repo-int_inject
       outputs:
-      - name: dockerfile_integration
+      - name: complete_dockerfiles
       run:
-        path: bash
+        path: sh
         args:
         - -exc
         - |
-          echo "---------------------- INJECT ----------------------"
-          pushd github-repo-int_inject/((github-int_inject-path))/
-          echo "q" | sbt --info clean assembly dockerFileTask
-          pushd target/docker
-          mv Dockerfile Dockerfile_middle
-          cp ../../entrypoint_insert.sh .
-          cat ../../Dockerfile_pre Dockerfile_middle ../../Dockerfile_post >> Dockerfile
-          popd
-          rm -Rf ./docker
-          mv target/docker .
-          popd
-          echo "---------------------- FINAL COPY ----------------------"
-          cp -R github-repo-int_inject/((github-integration-path))/* dockerfile_integration/
-          # ls -als dockerfile_integration/*/*
+          cp -R github-repo-int_inject/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_inject
     params:
-      build: dockerfile_integration/((docker-int_inject-dockerfile-path))
+      build: complete_dockerfiles/((docker-int_inject-dockerfile-path))
 
 - name: build-docker-int_cassandra
   public: ((concourse-public))
@@ -173,6 +164,8 @@ jobs:
   serial_groups: ((concourse-int-serial_groups))
   plan:
   - get: github-repo-int_cassandra
+    trigger: ((concourse-trigger))
+  - get: docker-int_compose
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -214,9 +207,9 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
   - get: github-repo-int_streaming
+    trigger: ((concourse-trigger))
+  - get: docker-int_compose
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -247,9 +240,9 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
   - get: github-repo-int_monitor
+    trigger: ((concourse-trigger))
+  - get: docker-int_compose
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -329,8 +322,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_inject-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -341,8 +332,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_cassandra-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -353,8 +342,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_cassandra_inject-path))/**
-#      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -365,8 +352,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_streaming-path))/**
-#      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -377,8 +362,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_monitor-path))/**
-      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
