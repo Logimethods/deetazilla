@@ -165,6 +165,8 @@ jobs:
   plan:
   - get: github-repo-int_cassandra
     trigger: ((concourse-trigger))
+  - get: docker-int_compose
+    trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
       platform: linux
@@ -205,9 +207,9 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
   - get: github-repo-int_streaming
+    trigger: ((concourse-trigger))
+  - get: docker-int_compose
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -238,9 +240,9 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - get: docker-int_compose
-    trigger: ((concourse-trigger))
   - get: github-repo-int_monitor
+    trigger: ((concourse-trigger))
+  - get: docker-int_compose
     trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -330,8 +332,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_cassandra-path))/**
-      - ((github-dz_templater-path))/properties/**
-      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -342,8 +342,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_cassandra_inject-path))/**
-#      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -354,8 +352,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_streaming-path))/**
-#      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -366,8 +362,6 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-int_monitor-path))/**
-      - ((github-dz_templater-path))/properties/**
-#      - ((github-int_compose-path))/properties/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
