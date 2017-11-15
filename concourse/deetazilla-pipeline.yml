@@ -222,12 +222,11 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-int-serial_groups))
   plan:
-  - aggregate:
-    - get: github-repo-int_cassandra_inject
-      trigger: ((concourse-trigger))
-    - put: docker-int_cassandra_inject
-      params:
-        build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
+  - get: github-repo-int_cassandra_inject
+    trigger: ((concourse-trigger))
+  - put: docker-int_cassandra_inject
+    params:
+      build: github-repo-int_cassandra_inject/((docker-int_cassandra_inject-dockerfile-path))
 
 - name: build-docker-int_streaming
   public: ((concourse-public))
