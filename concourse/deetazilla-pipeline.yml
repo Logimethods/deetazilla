@@ -1,5 +1,21 @@
 ###### JOBS #######
 
+## https://concourse.ci/configuring-groups.html
+groups:
+- name: deetazilla
+  jobs:
+  - build-docker-dz_templater
+  - build-docker-dz_compose
+  - build-docker-dz_images
+- name: integration
+  jobs:
+  - build-docker-int_compose
+  - build-docker-int_inject
+  - build-docker-int_cassandra
+  - build-docker-int_cassandra_inject
+  - build-docker-int_streaming
+  - build-docker-int_monitor
+
 jobs:
 - name: build-docker-dz_templater
   public: ((concourse-public))
