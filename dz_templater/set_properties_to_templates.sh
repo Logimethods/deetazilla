@@ -1,7 +1,17 @@
 #!/bin/bash
 
+# https://stackoverflow.com/questions/10735574/include-source-script-if-it-exists-in-bash
+include () {
+    #  [ -f "$1" ] && source "$1" WILL EXIT...
+    if [ -f $1 ]; then
+        echo "source $1"
+        source $1
+    fi
+}
+
 set -a # turn on auto-export
-. properties/configuration.properties
+include properties/configuration.properties
+include properties/configuration-application.properties
 set -a # turn off auto-export
 
 while IFS= read -r -d '' filename; do

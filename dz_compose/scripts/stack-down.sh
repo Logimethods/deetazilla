@@ -10,9 +10,19 @@ location="$1"
 
 echo "location: $location"
 
-source properties/configuration.properties
-source "properties/configuration-location-${location}.properties"
-source "properties/configuration-location-${location}-debug.properties"
+# https://stackoverflow.com/questions/10735574/include-source-script-if-it-exists-in-bash
+include () {
+    #  [ -f "$1" ] && source "$1" WILL EXIT...
+    if [ -f $1 ]; then
+        echo "# source $1"
+        source $1
+    fi
+}
+
+include properties/configuration.properties
+include "properties/configuration-application.properties"
+include "properties/configuration-location-${location}.properties"
+include "properties/configuration-location-${location}-debug.properties"
 set +a
 
 docker ${remote} stack rm "${STACK_NAME}"
