@@ -6,7 +6,11 @@ groups:
   jobs:
   - build-docker-dz_templater
   - build-docker-dz_compose
-  - build-docker-dz_images
+  - build-docker-dz_cassandra
+  - build-docker-dz_nats-client
+  - build-docker-dz_nats-server
+  - build-docker-dz_prometheus
+  - build-docker-dz_telegraf
 - name: integration
   jobs:
   - build-docker-int_compose
@@ -65,7 +69,7 @@ jobs:
     params:
       build: added_properties/((docker-dz_compose-dockerfile-path))
 
-- name: build-docker-dz_images
+- name: build-docker-dz_cassandra
   public: ((concourse-public))
   serial: ((concourse-serial))
   serial_groups: ((concourse-dz-serial_groups))
@@ -74,7 +78,7 @@ jobs:
     - get: docker-dz_templater
       passed: [build-docker-dz_templater]
       trigger: ((concourse-trigger))
-    - get: github-repo-dz_images
+    - get: github-repo-dz_cassandra
       trigger: ((concourse-trigger))
   - task: complete_dockerfiles
     config:
@@ -85,7 +89,7 @@ jobs:
           repository: ((docker-dz_templater-repository))
           tag: ((docker-dz_templater-tag))((docker-additional-tag))
       inputs:
-      - name: github-repo-dz_images
+      - name: github-repo-dz_cassandra
       outputs:
       - name: complete_dockerfiles
       run:
@@ -93,21 +97,149 @@ jobs:
         args:
         - -exc
         - |
-          cp -R github-repo-dz_images/* complete_dockerfiles/
+          cp -R github-repo-dz_cassandra/* complete_dockerfiles/
           cd /templater/
           ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
     params:
       build: complete_dockerfiles/((docker-dz_cassandra-dockerfile-path))
+
+- name: build-docker-dz_nats-client
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_nats-client
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_nats-client
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_nats-client/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-client
     params:
       build: complete_dockerfiles/((docker-dz_nats-client-dockerfile-path))
+
+- name: build-docker-dz_nats-server
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_nats-server
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_nats-server
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_nats-server/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-server
     params:
       build: complete_dockerfiles/((docker-dz_nats-server-dockerfile-path))
+
+- name: build-docker-dz_prometheus
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_prometheus
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_prometheus
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_prometheus/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_prometheus
     params:
       build: complete_dockerfiles/((docker-dz_prometheus-dockerfile-path))
+
+- name: build-docker-dz_telegraf
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_telegraf
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_telegraf
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_telegraf/* complete_dockerfiles/
+          cd /templater/
+          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_telegraf
     params:
       build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
@@ -190,6 +322,9 @@ jobs:
   - aggregate:
     - get: docker-int_compose
       passed: [build-docker-int_compose]
+      trigger: ((concourse-trigger))
+    - get: docker-dz_cassandra
+      passed: [build-docker-dz_cassandra]
       trigger: ((concourse-trigger))
     - get: github-repo-int_cassandra
       trigger: ((concourse-trigger))
@@ -321,17 +456,53 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
-- name: github-repo-dz_images
+- name: github-repo-dz_cassandra
   type: git
   source:
     uri: ((github-uri))
     branch: ((github-branch))
-    ignore_paths:
-      - integration/**
-      - ((github-dz_compose-path))/**
-      - ((github-dz_templater-path))/**
-      - concourse/**
-      - README.md
+    paths:
+      - ((github-dz_cassandra-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_nats-client
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_nats-client-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_nats-server
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_nats-server-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_prometheus
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_prometheus-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_telegraf
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_telegraf-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
