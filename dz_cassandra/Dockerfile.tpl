@@ -46,7 +46,7 @@ FROM cassandra:${cassandra_version}
 
 # https://github.com/nabto/cassandra-prometheus
 COPY --from=maven /app/target/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar /usr/share/cassandra/lib/
-RUN echo 'JVM_OPTS="\$JVM_OPTS -javaagent:\"/usr/share/cassandra/lib/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar\"=7400"' >> /etc/cassandra/cassandra-env.sh
+RUN echo 'JVM_OPTS="$JVM_OPTS -javaagent:/usr/share/cassandra/lib/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar=7400"' >> /etc/cassandra/cassandra-env.sh
 
 ### EUREKA ###
 
