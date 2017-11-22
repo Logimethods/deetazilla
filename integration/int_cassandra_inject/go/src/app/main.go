@@ -80,6 +80,8 @@ func main() {
   cluster.Keyspace = "smartmeter"
   //// https://github.com/gocql/gocql/issues/538
   cluster.ProtoVersion = 4
+  //// https://github.com/gocql/gocql/issues/946
+  cluster.DisableInitialHostLookup = true
 
   cluster_consistency := os.Getenv("CASSANDRA_INJECT_CONSISTENCY")
   //// https://github.com/gocql/gocql/commit/939af06b39e61c17b91b7c11720213246ece9b80#diff-38a0fa12b0c511105c3a411f0df3e318
