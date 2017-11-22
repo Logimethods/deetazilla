@@ -48,7 +48,7 @@ const query = "INSERT INTO raw_data (" +
 const increment = "UPDATE raw_data_count SET count = count + 1 WHERE slot = ?"
 
 var Session *gocql.Session
-var cluster *gocql.clusterConfig
+var cluster *gocql.ClusterConfig
 
 func main() {
   log.Print("Welcome to the NATS to Cassandra Bridge")
@@ -76,7 +76,7 @@ func main() {
   log.Print("TASK SLOT: ", task_slot)
 
   // connect to the cluster
-  cluster = gocql.Newcluster(cassandra_url)
+  cluster = gocql.NewCluster(cassandra_url)
   cluster.Keyspace = "smartmeter"
   //// https://github.com/gocql/gocql/issues/538
   cluster.ProtoVersion = 4
