@@ -36,12 +36,16 @@ object SparkProcessor extends App {
   val targets = scala.util.Properties.envOrElse("TARGETS", "DEFAULT")
   println("TARGETS = " + targets)
 
+  val cassandraUrl = System.getenv("CASSANDRA_URL")
+  println("CASSANDRA_URL = " + cassandraUrl)
+
   val conf = new SparkConf()
                 .setAppName(args(2))
+                .set("spark.cassandra.connection.host", cassandraUrl);
   val sc = new SparkContext(conf);
   val ssc = new StreamingContext(sc, new Duration(2000));
 
-  println("===================== v19")
+  println("===================== v20")
 
   val properties = new Properties();
   val natsUrl = System.getenv("NATS_URI")
@@ -77,6 +81,10 @@ object SparkProcessor extends App {
   if (targets.contains("MAX")) {
     println(">>> MAX")
     max.map(_.toString).print()
+  }
+
+  if (targets.contains("CASSANDRA")) {
+    max.saveToCassandra("smartmeter", "max_voltage")
   }
 
   if (outputStreaming) {
