@@ -8,5 +8,7 @@ CREATE KEYSPACE IF NOT EXISTS smartmeter WITH REPLICATION = { 'class' : 'SimpleS
 USE smartmeter;
 
 CREATE TABLE IF NOT EXISTS max_voltage (
-      voltage float
+      epoch bigint,
+      voltage float,
+      PRIMARY KEY (epoch)
 );

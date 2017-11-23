@@ -85,7 +85,13 @@ object SparkProcessor extends App {
   }
 
   if (targets.contains("CASSANDRA")) {
-    max.saveToCassandra("smartmeter", "max_voltage")
+    import java.time.Instant
+    val maxByEpoch = max.map((Instant.now().toEpochMilli(), _))
+    if (targets.contains("MAXbyEPOCH")) {
+      println(">>> MAXbyEPOCH")
+      maxByEpoch.map(_.toString).print()
+    }
+    maxByEpoch.saveToCassandra("smartmeter", "max_voltage")
   }
 
   if (outputStreaming) {
