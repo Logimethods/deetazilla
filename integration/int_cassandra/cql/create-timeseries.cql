@@ -12,3 +12,9 @@ CREATE TABLE IF NOT EXISTS max_voltage (
       voltage float,
       PRIMARY KEY (epoch)
 );
+
+// http://docs.datastax.com/en/cql/3.3/cql/cql_using/useCounters.html
+CREATE TABLE IF NOT EXISTS raw_data_count (
+      slot ascii PRIMARY KEY,
+      count counter
+);
