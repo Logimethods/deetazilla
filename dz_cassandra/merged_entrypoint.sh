@@ -21,7 +21,7 @@ if [ $(whoami) = 'root' ]; then
   (infinite_setup_check $cmdpid) &
   infinite_monitor $cmdpid ;
   include /entrypoint_prepare.sh ;
-  enable_availability ;
+  ## enable_availability ;
 
   setup_local_containers ; # To make sure that the local URL are all set
 
