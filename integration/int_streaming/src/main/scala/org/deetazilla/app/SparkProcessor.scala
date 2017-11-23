@@ -16,6 +16,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.streaming.Duration
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.storage.StorageLevel;
+import com.datastax.spark.connector.streaming._
 import io.nats.client.Nats._
 //import io.nats.client.Constants.PROP_URL
 
