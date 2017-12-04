@@ -43,6 +43,8 @@ jobs:
       trigger: ((concourse-compose-trigger))
     - get: github-repo-dz_compose
       trigger: ((concourse-compose-trigger))
+    - get: docker-eureka
+      trigger: ((concourse-compose-trigger))
   - task: add_properties
     config:
       platform: linux
@@ -567,6 +569,15 @@ resources:
     private_key: ((github-private-key))
 
 ## Deetazilla Docker Images ##
+
+- name: docker-eureka
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-eureka-repository))
+    tag: ((docker-eureka-tag))
 
 - name: docker-dz_templater
   type: docker-image
