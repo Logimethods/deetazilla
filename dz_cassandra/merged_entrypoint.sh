@@ -3,6 +3,8 @@ set -e
 
 #### EUREKA ###
 
+source /eureka_utils.sh
+
 if [ $(whoami) = 'root' ]; then
   # https://stackoverflow.com/questions/39162846/what-does-set-e-and-set-a-do-in-bash-what-are-other-options-that-i-can-use-wit
   if [ -n "${EUREKA_DEBUG}" ]; then
@@ -10,8 +12,6 @@ if [ $(whoami) = 'root' ]; then
   else
     set -e
   fi
-
-  source /eureka_utils.sh
 
   cmdpid=$BASHPID ;
   include /entrypoint_insert.sh
@@ -97,6 +97,8 @@ fi
 ### EXEC CMD ###
 
 if [ -n "${READY_WHEN}" ] || [ -n "${FAILED_WHEN}" ]; then
+  cmdpid=$BASHPID ;
+
   log 'info' "Ready/Failed Monitoring Started"
   ## https://stackoverflow.com/questions/4331309/shellscript-to-monitor-a-log-file-if-keyword-triggers-then-execute-a-command
   exec "$@" | \
