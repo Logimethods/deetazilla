@@ -59,6 +59,8 @@ COPY merged_entrypoint.sh /merged_entrypoint.sh
 RUN chmod +x /merged_entrypoint.sh
 ENTRYPOINT ["/merged_entrypoint.sh"]
 
+HEALTHCHECK --interval=5s --timeout=1s --retries=1 CMD test -f /availability.lock
+
 ENV READY_WHEN="Created default superuser role"
 
 ## !!! ENTRYPOINT generates CMD amnesia !!!

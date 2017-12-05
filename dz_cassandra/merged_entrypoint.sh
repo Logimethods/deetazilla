@@ -15,15 +15,13 @@ if [ $(whoami) = 'root' ]; then
 
   cmdpid=$BASHPID ;
   include /entrypoint_insert.sh
-  desable_availability ;
-  setup_local_containers ;
-  initial_check $cmdpid ;
-  (infinite_setup_check $cmdpid) &
-  infinite_monitor $cmdpid ;
-  include /entrypoint_prepare.sh ;
-  ## enable_availability ;
 
-  setup_local_containers ; # To make sure that the local URL are all set
+  run_tasks 'INIT'
+  (run_tasks "CONTINUOUS_CHECK_INIT#$cmdpid") &
+  include /entrypoint_prepare.sh ;
+  if [ -z "${READY_WHEN}" ]; then
+    enable_availability;
+  fi ;
 
   if [[ $PROVIDED_CASSANDRA_SEEDS = \$* ]]; then # If CASSANDRA_SEEDS starts with a $
     export CASSANDRA_SEEDS=$(eval echo "$PROVIDED_CASSANDRA_SEEDS")
@@ -98,9 +96,20 @@ fi
 
 ### EXEC CMD ###
 
-exec "$@" 2>&1
+if [ -n "${READY_WHEN}" ] || [ -n "${FAILED_WHEN}" ]; then
+  log 'info' "Ready/Failed Monitoring Started"
+  ## https://stackoverflow.com/questions/4331309/shellscript-to-monitor-a-log-file-if-keyword-triggers-then-execute-a-command
+  exec "$@" | \
+    while read line ; do
+      echo "${EUREKA_LINE_START}${line}"
+      monitor_output "$line" $cmdpid
+    done
+else
+  log 'info' "Started without Monitoring"
+  exec "$@"
+fi
 
-if [ -n "${EUREKA_DEBUG}" ]; then
-  echo "sleep infinity"
-  while true; do sleep 10000; done
+if [[ $EUREKA_DEBUG = *stay* ]]; then
+  log 'info' "STAY FOREVER!!!"
+  while true; do sleep 100000 ; done
 fi
