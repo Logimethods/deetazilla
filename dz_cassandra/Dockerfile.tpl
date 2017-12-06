@@ -44,10 +44,11 @@ FROM cassandra:${cassandra_version}
 
 ### Cassandra prometheus exporter ###
 
-## Warning: Cannot create directory at `/home/cassandra/.cassandra`. Command history will not be saved.
-RUN mkdir -p /home/cassandra/.cassandra
+##! Warning: Cannot create directory at `/home/cassandra/.cassandra`. Command history will not be saved.
+RUN chown cassandra /home/cassandra/
 
-## /eureka_utils.sh: line 412: /availability.lock: Permission denied
+##! /eureka_utils.sh: line 412: /availability.lock: Permission denied
+ENV AVAILABILITY_LOCK_PATH=/home/cassandra
 
 # https://github.com/nabto/cassandra-prometheus
 COPY --from=maven /app/target/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar /usr/share/cassandra/lib/
@@ -64,7 +65,7 @@ COPY merged_entrypoint.sh /merged_entrypoint.sh
 RUN chmod +x /merged_entrypoint.sh
 ENTRYPOINT ["/merged_entrypoint.sh"]
 
-HEALTHCHECK --interval=5s --timeout=1s --retries=1 CMD test -f /availability.lock
+HEALTHCHECK --interval=5s --timeout=1s --retries=1 CMD test -f /home/cassandra/availability.lock
 
 ENV READY_WHEN="Created default superuser role"
 
