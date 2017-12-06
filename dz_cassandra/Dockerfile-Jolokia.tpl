@@ -20,18 +20,6 @@
 ## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ## SOFTWARE.
 
-###
-# https://blog.frankel.ch/dockerfile-maven-based-github-projects/#gsc.tab=0
-
-FROM alpine/git as github
-WORKDIR /app
-RUN git clone https://github.com/nabto/cassandra-prometheus.git
-
-FROM maven:3-jdk-8-alpine as maven
-WORKDIR /app
-COPY --from=github /app/cassandra-prometheus /app
-RUN mvn package
-
 # https://docs.docker.com/engine/userguide/eng-image/multistage-build/#use-multi-stage-builds
 # https://github.com/Logimethods/docker-eureka
 FROM logimethods/eureka:entrypoint as entrypoint
@@ -42,14 +30,24 @@ FROM logimethods/eureka:entrypoint as entrypoint
 # https://hub.docker.com/_/cassandra/
 FROM cassandra:${cassandra_version}
 
-### Cassandra prometheus exporter ###
+### JOLOKIA ###
 
-##! /eureka_utils.sh: line 412: /availability.lock: Permission denied
-ENV AVAILABILITY_LOCK_PATH=/home/cassandra
+# https://community.wavefront.com/docs/DOC-1210
+# https://docs.wavefront.com/integrations_jmx.html
+# https://hub.docker.com/r/fourstacks/cassandra/~/dockerfile/
+# ENV CASSANDRA_OPTIONS=-R
 
-# https://github.com/nabto/cassandra-prometheus
-COPY --from=maven /app/target/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar /usr/share/cassandra/lib/
-RUN echo 'JVM_OPTS="$JVM_OPTS -javaagent:/usr/share/cassandra/lib/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar=7400"' >> /etc/cassandra/cassandra-env.sh
+RUN mkdir -p /opt/jolokia/
+COPY libs/jolokia-jvm-1.3.5-agent.jar /opt/jolokia/
+RUN echo "JVM_OPTS=\"\\\$JVM_OPTS -javaagent:/opt/jolokia/jolokia-jvm-1.3.5-agent.jar=port=${JOLOKIA_PORT},host=*\"" >> /etc/cassandra/cassandra-env.sh
+
+### JMX ###
+
+# https://support.datastax.com/hc/en-us/articles/204226179-Step-by-step-instructions-for-securing-JMX-authentication-for-nodetool-utility-OpsCenter-and-JConsole
+COPY ./jmxremote.password /etc/cassandra/jmxremote.password
+RUN chown cassandra:cassandra /etc/cassandra/jmxremote.password && \
+    chmod 400 /etc/cassandra/jmxremote.password && \
+    echo "cassandra readwrite" >> /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
 
 ### EUREKA ###
 
@@ -61,8 +59,6 @@ COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY merged_entrypoint.sh /merged_entrypoint.sh
 RUN chmod +x /merged_entrypoint.sh
 ENTRYPOINT ["/merged_entrypoint.sh"]
-
-HEALTHCHECK --interval=5s --timeout=1s --retries=1 CMD test -f /home/cassandra/availability.lock
 
 ENV READY_WHEN="Created default superuser role"
 

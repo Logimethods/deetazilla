@@ -55,3 +55,5 @@ integration/int_streaming/pom.xml.tmp
 integration/int_streaming/pom.xml
 
 integration/int_monitor/pom.xml
+
+dz_cassandra/Dockerfile
