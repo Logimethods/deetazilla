@@ -44,6 +44,11 @@ FROM cassandra:${cassandra_version}
 
 ### Cassandra prometheus exporter ###
 
+## Warning: Cannot create directory at `/home/cassandra/.cassandra`. Command history will not be saved.
+RUN mkdir -p /home/cassandra/.cassandra
+
+## /eureka_utils.sh: line 412: /availability.lock: Permission denied
+
 # https://github.com/nabto/cassandra-prometheus
 COPY --from=maven /app/target/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar /usr/share/cassandra/lib/
 RUN echo 'JVM_OPTS="$JVM_OPTS -javaagent:/usr/share/cassandra/lib/cassandra-prometheus-${cassandra_prometheus_version}-jar-with-dependencies.jar=7400"' >> /etc/cassandra/cassandra-env.sh
