@@ -42,7 +42,9 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = 'cassandra' -a "$(id -u)" = '0' ]; then
-	chown -R cassandra /var/lib/cassandra /var/log/cassandra "$CASSANDRA_CONFIG"
+  ##! Warning: Cannot create directory at `/home/cassandra/.cassandra`. Command history will not be saved.
+  mkdir -p /home/cassandra/
+  chown -R cassandra /home/cassandra /var/lib/cassandra /var/log/cassandra "$CASSANDRA_CONFIG"
   exec gosu cassandra "$BASH_SOURCE" "$@" 2>&1
 fi
 

@@ -44,9 +44,6 @@ FROM cassandra:${cassandra_version}
 
 ### Cassandra prometheus exporter ###
 
-##! Warning: Cannot create directory at `/home/cassandra/.cassandra`. Command history will not be saved.
-RUN chown cassandra /home/cassandra/
-
 ##! /eureka_utils.sh: line 412: /availability.lock: Permission denied
 ENV AVAILABILITY_LOCK_PATH=/home/cassandra
 
