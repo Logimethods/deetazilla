@@ -100,13 +100,7 @@ fi
 
 if [ -n "${READY_WHEN}" ] || [ -n "${FAILED_WHEN}" ]; then
   cmdpid=$BASHPID ;
-
-echo "================="
-whoami
-echo "AVAILABLE" > /availability.lock
-cat /availability.lock
-echo "================="
-
+  
   log 'info' "Ready/Failed Monitoring Started"
   ## https://stackoverflow.com/questions/4331309/shellscript-to-monitor-a-log-file-if-keyword-triggers-then-execute-a-command
   exec "$@" | \
