@@ -26,8 +26,11 @@ jobs:
   serial: ((concourse-serial))
   serial_groups: ((concourse-compose-serial_groups))
   plan:
-  - get: github-repo-dz_templater
-    trigger: ((concourse-compose-trigger))
+  - aggregate:
+    - get: github-repo-dz_templater
+      trigger: ((concourse-compose-trigger))
+    - get: docker-eureka
+      trigger: ((concourse-compose-trigger))
   - put: docker-dz_templater
     params:
       build: github-repo-dz_templater/((docker-dz_templater-dockerfile-path))
@@ -42,8 +45,6 @@ jobs:
       passed: [build-docker-dz_templater]
       trigger: ((concourse-compose-trigger))
     - get: github-repo-dz_compose
-      trigger: ((concourse-compose-trigger))
-    - get: docker-eureka
       trigger: ((concourse-compose-trigger))
   - task: add_properties
     config:
