@@ -14,5 +14,3 @@ VOLUME ["./devsecrets"]
 COPY *.sh scripts/*.sh ./
 COPY compose/*.yml ./
 COPY properties/* ./properties/
-
-ENTRYPOINT ["./entrypoint.sh"]

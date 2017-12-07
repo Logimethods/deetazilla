@@ -66,7 +66,7 @@ jobs:
           mkdir added_properties/dz_compose/
           cp -R github-repo-dz_compose/dz_compose/* added_properties/dz_compose/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/added_properties
+          ./complete_templates.sh /tmp/build/*/added_properties
           ls /tmp/build/*/added_properties/dz_compose/
   - put: docker-dz_compose
     params:
@@ -102,7 +102,7 @@ jobs:
         - |
           cp -R github-repo-dz_cassandra/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
     params:
       build: complete_dockerfiles/((docker-dz_cassandra-dockerfile-path))
@@ -137,7 +137,7 @@ jobs:
         - |
           cp -R github-repo-dz_nats-client/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-client
     params:
       build: complete_dockerfiles/((docker-dz_nats-client-dockerfile-path))
@@ -172,7 +172,7 @@ jobs:
         - |
           cp -R github-repo-dz_nats-server/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-server
     params:
       build: complete_dockerfiles/((docker-dz_nats-server-dockerfile-path))
@@ -207,7 +207,7 @@ jobs:
         - |
           cp -R github-repo-dz_prometheus/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_prometheus
     params:
       build: complete_dockerfiles/((docker-dz_prometheus-dockerfile-path))
@@ -242,7 +242,7 @@ jobs:
         - |
           cp -R github-repo-dz_telegraf/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_telegraf
     params:
       build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
@@ -277,7 +277,7 @@ jobs:
         - |
           cp -R github-repo-int_compose/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_compose
     params:
       build: complete_dockerfiles/((docker-int_compose-dockerfile-path))
@@ -312,7 +312,7 @@ jobs:
         - |
           cp -R github-repo-int_inject/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_inject
     params:
       build: complete_dockerfiles/((docker-int_inject-dockerfile-path))
@@ -350,7 +350,7 @@ jobs:
         - |
           cp -R github-repo-int_cassandra/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_cassandra
     params:
       build: complete_dockerfiles/((docker-int_cassandra-dockerfile-path))
@@ -396,7 +396,7 @@ jobs:
         - |
           cp -R github-repo-int_streaming/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_streaming
     params:
       build: complete_dockerfiles/((docker-int_streaming-dockerfile-path))
@@ -431,7 +431,7 @@ jobs:
         - |
           cp -R github-repo-int_monitor/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_monitor
     params:
       build: complete_dockerfiles/((docker-int_monitor-dockerfile-path))
