@@ -11,6 +11,7 @@ groups:
   - build-docker-dz_nats-server
   - build-docker-dz_prometheus
   - build-docker-dz_telegraf
+  - build-docker-dz_spark-onbuild
 - name: integration
   jobs:
   - build-docker-int_compose

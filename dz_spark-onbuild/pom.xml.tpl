@@ -8,8 +8,8 @@
   <groupId>org.deetazilla.app</groupId>
   <artifactId>app_streaming</artifactId>
   <packaging>jar</packaging>
-  <name>${APP_STREAMING_NAME}</name>
-  <version>${APP_STREAMING_VERSION}</version>
+  <name>dz_spark-onbuild</name>
+  <version>${spark_version}</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -58,7 +58,6 @@
       <version>${nats_connector_spark_version}</version>
     </dependency>
   </dependencies>
-
   <repositories>
       <repository>
           <id>browserid-snapshots</id>
