@@ -44,28 +44,27 @@ dependency-reduced-pom.xml
 
 # Generated Files
 
-Dockerfile.tmp
-integration/int_streaming/Dockerfile
-integration/compose/Dockerfile
-integration/int_compose/Dockerfile
+*.tmp
+dz_cassandra/Dockerfile
+dz_cassandra/Dockerfile-Jolokia
+dz_compose/Dockerfile
+dz_spark-onbuild/_docker_build.sh
+dz_spark-onbuild/Dockerfile
+dz_spark-onbuild/pom.xml
+dz_nats-server/Dockerfile
+dz_prometheus/Dockerfile
+dz_prometheus/Dockerfile
+dz_prometheus/Dockerfile
+dz_telegraf/Dockerfile
 dz-cassandra/Dockerfile
 dz-nats-server/Dockerfile
 dz-telegraf/Dockerfile
-integration/int_monitor/pom.xml
-dz_cassandra/Dockerfile
-dz_compose/Dockerfile
-dz_nats-server/Dockerfile
-dz_prometheus/Dockerfile
-dz_telegraf/Dockerfile
+integration/compose/Dockerfile
 integration/int_cassandra/Dockerfile
+integration/int_compose/Dockerfile
 integration/int_inject/Dockerfile
 integration/int_inject/pom.xml
-integration/int_inject/pom.xml.tmp
 integration/int_monitor/Dockerfile
-dz_prometheus/Dockerfile
-integration/int_streaming/pom.xml.tmp
+integration/int_monitor/pom.xml
+integration/int_streaming/Dockerfile
 integration/int_streaming/pom.xml
-integration/int_monitor/pom.xml.tmp
-dz_cassandra/Dockerfile-Jolokia.tmp
-dz_cassandra/Dockerfile-Jolokia
-dz_prometheus/Dockerfile

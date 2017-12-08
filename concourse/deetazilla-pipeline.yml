@@ -247,6 +247,41 @@ jobs:
     params:
       build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
 
+- name: build-docker-dz_spark-onbuild
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_spark-onbuild
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_spark-onbuild
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_spark-onbuild/* complete_dockerfiles/
+          cd /templater/
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
+  - put: docker-dz_spark-onbuild
+    params:
+      build: complete_dockerfiles/((docker-dz_spark-onbuild-dockerfile-path))
+
 - name: build-docker-int_compose
   public: ((concourse-public))
   serial: ((concourse-serial))
@@ -509,6 +544,16 @@ resources:
     git_user: ((github-username))
     private_key: ((github-private-key))
 
+- name: github-repo-dz_spark-onbuild
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_spark-onbuild-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
 - name: github-repo-int_compose
   type: git
   source:
@@ -642,6 +687,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-dz_telegraf-repository))
     tag: ((docker-dz_telegraf-tag))((docker-additional-tag))
+
+- name: docker-dz_spark-onbuild
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-dz_spark-onbuild-repository))
+    tag: ((docker-dz_spark-onbuild-tag))((docker-additional-tag))
 
 ## Integration Docker Images ##
 

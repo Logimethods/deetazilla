@@ -35,6 +35,11 @@ docker-dz_telegraf-dockerfile-path: dz_telegraf
 docker-dz_telegraf-repository: logimethods/dz_telegraf
 docker-dz_telegraf-tag: "1.0"
 
+github-dz_spark-onbuild-path: dz_spark-onbuild
+docker-dz_spark-onbuild-dockerfile-path: dz_spark-onbuild
+docker-dz_spark-onbuild-repository: logimethods/dz_spark-onbuild
+docker-dz_spark-onbuild-tag: "1.0"
+
 github-dz_prometheus-path: dz_prometheus
 docker-dz_prometheus-dockerfile-path: dz_prometheus
 docker-dz_prometheus-repository: logimethods/dz_prometheus
