@@ -10,9 +10,8 @@ RUN chmod 777 /templater
 
 VOLUME /files
 
-COPY *.yml *.sh ./
 COPY python/templater.py ./python/
+COPY *.sh scripts/*.sh *.yml ./
 COPY properties/* ./properties/
-COPY *.sh scripts/*.sh ./
 
 ENTRYPOINT ["./entrypoint.sh"]
