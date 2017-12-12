@@ -1,5 +1,6 @@
 root="base root root-${CLUSTER_MODE} root-${SECRET_MODE} root-${SECRET_MODE}-${CLUSTER_MODE}"
-root_metrics="root_metrics $root"
+metrics="metrics"
+root_metrics="root_metrics $root $metrics"
 root_debug="root_debug root_debug-${SECRET_MODE} $root"
 root_metrics_debug="root_metrics root_debug $root"
 
