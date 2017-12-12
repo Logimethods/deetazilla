@@ -64,7 +64,7 @@ ENTRYPOINT ["/merged_entrypoint.sh"]
 
 HEALTHCHECK --interval=5s --timeout=1s --retries=1 CMD test -f /home/cassandra/availability.lock
 
-ENV READY_WHEN="Created default superuser role"
+ENV READY_WHEN=${CASSANDRA_READY_WHEN}
 
 ## !!! ENTRYPOINT generates CMD amnesia !!!
 CMD ["cassandra", "-f"]
