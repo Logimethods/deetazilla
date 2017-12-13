@@ -1,7 +1,7 @@
 services:
   ### run_metrics,
   #### run_metrics_graphite
-  metrics:
+  graphite:
     image: hopsoft/graphite-statsd:${graphite_statsd_tag}
     ports:
       - "81:80"
