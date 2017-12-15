@@ -20,7 +20,7 @@ services:
         constraints:
           - node.role == manager
     environment:
-      - SETUP_LOCAL_CONTAINERS=true
+##-      - SETUP_LOCAL_CONTAINERS=true
       - EUREKA_URL=${EUREKA_NAME}
       - NODE_ID={{.Node.ID}}
       - SERVICE_ID={{.Service.ID}}
