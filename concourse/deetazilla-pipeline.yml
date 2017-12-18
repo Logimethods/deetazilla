@@ -64,8 +64,9 @@ jobs:
         args:
         - -exc
         - |
-          mkdir added_properties/dz_compose/
-          cp -R github-repo-dz_compose/dz_compose/* added_properties/dz_compose/
+          mkdir added_properties/((github-dz_compose-path))/
+          cp -R github-repo-dz_compose/((github-dz_compose-path))/* added_properties/dz_compose/
+          cp github-repo-dz_compose/((github-dz_compose-path))/properties/*.yml /templater/properties/
           cd /templater/
           ./complete_templates.sh /tmp/build/*/added_properties
           ls /tmp/build/*/added_properties/dz_compose/

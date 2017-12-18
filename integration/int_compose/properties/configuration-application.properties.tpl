@@ -107,6 +107,8 @@ CASSANDRA_INJECT_CONSISTENCY=ONE
 # ANY ONE TWO THREE QUORUM ALL LOCAL_QUORUM" EACH_QUORUM LOCAL_ONE
 
 # See https://github.com/nats-io/prometheus-nats-exporter
+prometheus_image='((docker-dz_prometheus-repository))'
+prometheus_tag='((docker-dz_prometheus-tag))((docker-additional-tag))'
 PROMETHEUS_NAME="prometheus"
 PROMETHEUS_NATS_EXPORTER_NAME="prometheus_nats_exporter"
 PROMETHEUS_NATS_EXPORTER_FLAGS="-varz -connz -routez -subz"
