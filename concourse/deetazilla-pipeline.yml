@@ -66,7 +66,6 @@ jobs:
         - |
           mkdir added_properties/((github-dz_compose-path))/
           cp -R github-repo-dz_compose/((github-dz_compose-path))/* added_properties/dz_compose/
-          cp github-repo-dz_compose/((github-dz_compose-path))/properties/*.yml /templater/properties/
           cd /templater/
           ./complete_templates.sh /tmp/build/*/added_properties
           ls /tmp/build/*/added_properties/dz_compose/
@@ -312,7 +311,9 @@ jobs:
         args:
         - -exc
         - |
-          cp -R github-repo-int_compose/* complete_dockerfiles/
+          mkdir -p complete_dockerfiles/((github-int_compose-path))
+          cp -R github-repo-int_compose/((github-int_compose-path))/* complete_dockerfiles/((github-int_compose-path))/
+          cp github-repo-int_compose/((github-int_compose-path))/properties/*.yml /templater/properties/
           cd /templater/
           ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_compose
