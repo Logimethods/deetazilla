@@ -11,20 +11,20 @@ docker network create --attachable --driver overlay deetazilla
     * Free Properties
       * When Docker Secrets are provided:    
       ```
-      > docker run --rm logimethods/int_compose combine_services "[single|cluster]" "secrets" root_metrics spark > docker-compose-merge.yml
+      > docker run --rm logimethods/int_compose:1.0 combine_services "[single|cluster]" "secrets" root_metrics spark > docker-compose-merge.yml
       ```
       * When Docker Secrets are NOT provided:    
       ```
-      > docker run --rm logimethods/int_compose combine_services "[single|cluster]" "no_secrets" root_metrics spark > docker-compose-merge.yml
+      > docker run --rm logimethods/int_compose:1.0 combine_services "[single|cluster]" "no_secrets" root_metrics spark > docker-compose-merge.yml
       ```
     * Making use of Properties Files
       * When Docker Secrets are provided:    
       ```
-      > docker run --rm logimethods/int_compose combine_services -e "local" "[single|cluster]" "secrets" root_metrics spark > docker-compose-merge.yml
+      > docker run --rm logimethods/int_compose:1.0 combine_services -e "local" "[single|cluster]" "secrets" root_metrics spark > docker-compose-merge.yml
       ```
       * When Docker Secrets are NOT provided:    
       ```
-      > docker run --rm logimethods/int_compose combine_services -e "local" "[single|cluster]" "no_secrets" root_metrics spark > docker-compose-merge.yml
+      > docker run --rm logimethods/int_compose:1.0 combine_services -e "local" "[single|cluster]" "no_secrets" root_metrics spark > docker-compose-merge.yml
       ```
       * To enforce Additional Properties (here located in `alt_properties`):
       ```
