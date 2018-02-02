@@ -14,3 +14,4 @@ VOLUME ["./devsecrets"]
 COPY *.sh scripts/*.sh ./
 COPY compose/*.yml ./
 COPY properties/* ./properties/
+COPY runtime_properties/* ./runtime_properties/
