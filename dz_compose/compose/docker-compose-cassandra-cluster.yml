@@ -2,7 +2,7 @@ services:
 services:
   ### TODO: ["create_volume", "cassandra"],
   ### create_service_cassandra,
-  cassandra_cluster_main:
+  cassandra-cluster-main:
     deploy:
       placement:
         constraints:
@@ -10,7 +10,7 @@ services:
 
   ### TODO: ["create_volume", "cassandra"],
   ### create_service_cassandra,
-  cassandra_cluster_node:
+  cassandra-cluster-node:
     image: ((docker-dz_cassandra-repository)):((docker-dz_cassandra-tag))((docker-additional-tag))
     deploy:
       mode: global
