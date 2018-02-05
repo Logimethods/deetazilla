@@ -21,7 +21,7 @@ services:
 #        parallelism: 1
 #        delay: 10s
     environment:
-      - READY_WHEN=\"Server is ready\"
+      - READY_WHEN=Server is ready
       - NATS_NAME=${NATS_NAME}
     ports:
       - "4222:4222"
