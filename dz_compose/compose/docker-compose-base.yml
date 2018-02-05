@@ -1,4 +1,4 @@
-version: "${DOCKER_COMPOSE_YAML_VERSION}"
+version: "\"${DOCKER_COMPOSE_YAML_VERSION}\""
 
 ### create_network,
 #### docker ${remote} network create --driver overlay --attachable ${NETWORK_NAME}
