@@ -68,3 +68,4 @@ integration/int_monitor/Dockerfile
 integration/int_monitor/pom.xml
 integration/int_streaming/Dockerfile
 integration/int_streaming/pom.xml
+integration/int_compose/properties/configuration-additional.properties
