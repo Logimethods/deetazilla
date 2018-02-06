@@ -5,7 +5,7 @@ All you need to build your own (Big) Data &amp; IOT oriented application
 docker network create --attachable --driver overlay deetazilla
 ```
 
-## Docker Compose
+## Docker Compose File
 
 * To create your `docker-compose-merge.yml` file thanks to [combine_services.sh](./dz_compose/scripts/combine_services.sh), which makes use of [yamlreader](https://github.com/ImmobilienScout24/yamlreader):
     * Free Properties
@@ -59,3 +59,10 @@ docker network create --attachable --driver overlay deetazilla
       docker run --rm -v /var/run/docker.sock:/var/run/docker.sock logimethods/int_compose:1.0 \
          remote-down "stack_name"
       ```
+
+## "Docker Compose" Script
+
+```
+cd scripts
+./compose_classic.sh
+```
