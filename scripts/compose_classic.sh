@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker_tag="1.5-dev"
+docker_tag="1.5"
 
 docker pull logimethods/int_compose:${docker_tag}
 docker pull logimethods/int_inject:${docker_tag}
