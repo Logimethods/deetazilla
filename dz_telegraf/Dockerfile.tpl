@@ -39,3 +39,5 @@ COPY --from=entrypoint eureka_utils.sh /eureka_utils.sh
 COPY --from=entrypoint entrypoint.sh /entrypoint.sh
 COPY entrypoint_insert.sh /entrypoint_insert.sh
 ENTRYPOINT ["/entrypoint.sh"]
+
+COPY conf/ /etc/telegraf/

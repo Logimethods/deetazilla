@@ -16,8 +16,7 @@ import com.logimethods.connector.gatling.to_nats._
 
 import scala.concurrent.duration._
 import java.util.Properties
-import io.nats.client.Constants.PROP_URL
-// import io.nats.client.Nats.PROP_URL
+import io.nats.client.Nats.PROP_URL
 
 class NatsInjection extends Simulation {
 

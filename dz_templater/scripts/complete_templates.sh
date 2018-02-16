@@ -14,6 +14,8 @@ include properties/configuration.properties
 include properties/configuration-application.properties
 set -a # turn off auto-export
 
+ls properties/properties*.yml
+
 while IFS= read -r -d '' filename; do
 echo "-------------- $filename --------------"
 if [[ ${filename} == */Dockerfile.tpl || ${filename} == *.sh.tpl ]]; then

@@ -1,2 +1,4 @@
 docker-ek_telegraf-repository: test-company/ek_telegraf
 docker-ek_telegraf-tag: "1.0"
+concourse-public: true
+

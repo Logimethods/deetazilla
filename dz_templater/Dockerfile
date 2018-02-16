@@ -8,10 +8,10 @@ WORKDIR /templater
 
 RUN chmod 777 /templater
 
-COPY *.yml *.sh ./
+VOLUME /files
+
 COPY python/templater.py ./python/
+COPY *.sh scripts/*.sh *.yml ./
 COPY properties/* ./properties/
 
-## VOLUME /files
-
-ENTRYPOINT ["yamlreader"]
+ENTRYPOINT ["./entrypoint.sh"]

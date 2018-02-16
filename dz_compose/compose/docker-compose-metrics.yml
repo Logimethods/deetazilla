@@ -1,13 +1,13 @@
 services:
   ### run_metrics,
   #### run_metrics_graphite
-  metrics:
+  graphite:
     image: hopsoft/graphite-statsd:${graphite_statsd_tag}
     ports:
       - "81:80"
   #### run_metrics_prometheus
   prometheus:
-    image: ((docker-dz_prometheus-repository)):((docker-dz_prometheus-tag))((docker-additional-tag))
+    image: ${prometheus_image}:${prometheus_tag}
     deploy:
       placement:
         constraints:

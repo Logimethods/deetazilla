@@ -24,7 +24,7 @@ popd
 clear
 echo "-----------------------------------------"
 echo "dz_nats-server"
-pushd dz-nats-server
+pushd dz_nats-server
 docker build -t logimethods/dz_nats-server .
 docker push logimethods/dz_nats-server
 popd
@@ -32,7 +32,7 @@ popd
 clear
 echo "-----------------------------------------"
 echo "dz_nats-client"
-pushd dz-nats-client
+pushd dz_nats-client
 #go get github.com/nats-io/go-nats
 #env GOOS=linux GOARCH=amd64 go build main.go
 #file main

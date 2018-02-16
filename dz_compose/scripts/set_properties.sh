@@ -25,13 +25,13 @@ include "${properties_path}/configuration.properties"
 include "properties/configuration-application.properties"
 include "${properties_path}/configuration-application.properties"
 
-include "properties/configuration-location-${location}-debug.properties"
+include "runtime_properties/configuration-location-${location}-debug.properties"
 include "${properties_path}/configuration-location-${location}-debug.properties"
 
-include "properties/configuration-mode-${cluster_mode}.properties"
+include "runtime_properties/configuration-mode-${cluster_mode}.properties"
 include "${properties_path}/configuration-mode-${cluster_mode}.properties"
 
-include "properties/configuration-mode-${cluster_mode}-debug.properties"
+include "runtime_properties/configuration-mode-${cluster_mode}-debug.properties"
 include "${properties_path}/configuration-mode-${cluster_mode}-debug.properties"
 
 # TODO Include ALL configuration-telegraf[...].properties Files

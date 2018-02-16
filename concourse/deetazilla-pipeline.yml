@@ -11,6 +11,7 @@ groups:
   - build-docker-dz_nats-server
   - build-docker-dz_prometheus
   - build-docker-dz_telegraf
+  - build-docker-dz_spark-onbuild
 - name: integration
   jobs:
   - build-docker-int_compose
@@ -63,10 +64,10 @@ jobs:
         args:
         - -exc
         - |
-          mkdir added_properties/dz_compose/
-          cp -R github-repo-dz_compose/dz_compose/* added_properties/dz_compose/
+          mkdir added_properties/((github-dz_compose-path))/
+          cp -R github-repo-dz_compose/((github-dz_compose-path))/* added_properties/dz_compose/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/added_properties
+          ./complete_templates.sh /tmp/build/*/added_properties
           ls /tmp/build/*/added_properties/dz_compose/
   - put: docker-dz_compose
     params:
@@ -102,7 +103,7 @@ jobs:
         - |
           cp -R github-repo-dz_cassandra/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_cassandra
     params:
       build: complete_dockerfiles/((docker-dz_cassandra-dockerfile-path))
@@ -137,7 +138,7 @@ jobs:
         - |
           cp -R github-repo-dz_nats-client/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-client
     params:
       build: complete_dockerfiles/((docker-dz_nats-client-dockerfile-path))
@@ -172,7 +173,7 @@ jobs:
         - |
           cp -R github-repo-dz_nats-server/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_nats-server
     params:
       build: complete_dockerfiles/((docker-dz_nats-server-dockerfile-path))
@@ -207,7 +208,7 @@ jobs:
         - |
           cp -R github-repo-dz_prometheus/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_prometheus
     params:
       build: complete_dockerfiles/((docker-dz_prometheus-dockerfile-path))
@@ -242,10 +243,45 @@ jobs:
         - |
           cp -R github-repo-dz_telegraf/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-dz_telegraf
     params:
       build: complete_dockerfiles/((docker-dz_telegraf-dockerfile-path))
+
+- name: build-docker-dz_spark-onbuild
+  public: ((concourse-public))
+  serial: ((concourse-serial))
+  serial_groups: ((concourse-dz-serial_groups))
+  plan:
+  - aggregate:
+    - get: docker-dz_templater
+      passed: [build-docker-dz_templater]
+      trigger: ((concourse-trigger))
+    - get: github-repo-dz_spark-onbuild
+      trigger: ((concourse-trigger))
+  - task: complete_dockerfiles
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: ((docker-dz_templater-repository))
+          tag: ((docker-dz_templater-tag))((docker-additional-tag))
+      inputs:
+      - name: github-repo-dz_spark-onbuild
+      outputs:
+      - name: complete_dockerfiles
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cp -R github-repo-dz_spark-onbuild/* complete_dockerfiles/
+          cd /templater/
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
+  - put: docker-dz_spark-onbuild
+    params:
+      build: complete_dockerfiles/((docker-dz_spark-onbuild-dockerfile-path))
 
 - name: build-docker-int_compose
   public: ((concourse-public))
@@ -275,9 +311,11 @@ jobs:
         args:
         - -exc
         - |
-          cp -R github-repo-int_compose/* complete_dockerfiles/
+          mkdir -p complete_dockerfiles/((github-int_compose-path))
+          cp -R github-repo-int_compose/((github-int_compose-path))/* complete_dockerfiles/((github-int_compose-path))/
+          cp github-repo-int_compose/((github-int_compose-path))/properties/*.yml /templater/properties/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_compose
     params:
       build: complete_dockerfiles/((docker-int_compose-dockerfile-path))
@@ -312,7 +350,7 @@ jobs:
         - |
           cp -R github-repo-int_inject/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_inject
     params:
       build: complete_dockerfiles/((docker-int_inject-dockerfile-path))
@@ -350,7 +388,7 @@ jobs:
         - |
           cp -R github-repo-int_cassandra/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_cassandra
     params:
       build: complete_dockerfiles/((docker-int_cassandra-dockerfile-path))
@@ -396,7 +434,7 @@ jobs:
         - |
           cp -R github-repo-int_streaming/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_streaming
     params:
       build: complete_dockerfiles/((docker-int_streaming-dockerfile-path))
@@ -431,7 +469,7 @@ jobs:
         - |
           cp -R github-repo-int_monitor/* complete_dockerfiles/
           cd /templater/
-          ./set_properties_to_templates.sh /tmp/build/*/complete_dockerfiles
+          ./complete_templates.sh /tmp/build/*/complete_dockerfiles
   - put: docker-int_monitor
     params:
       build: complete_dockerfiles/((docker-int_monitor-dockerfile-path))
@@ -506,6 +544,16 @@ resources:
     branch: ((github-branch))
     paths:
       - ((github-dz_telegraf-path))/**
+    git_user: ((github-username))
+    private_key: ((github-private-key))
+
+- name: github-repo-dz_spark-onbuild
+  type: git
+  source:
+    uri: ((github-uri))
+    branch: ((github-branch))
+    paths:
+      - ((github-dz_spark-onbuild-path))/**
     git_user: ((github-username))
     private_key: ((github-private-key))
 
@@ -642,6 +690,15 @@ resources:
     password: ((docker-hub-password))
     repository: ((docker-dz_telegraf-repository))
     tag: ((docker-dz_telegraf-tag))((docker-additional-tag))
+
+- name: docker-dz_spark-onbuild
+  type: docker-image
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: ((docker-dz_spark-onbuild-repository))
+    tag: ((docker-dz_spark-onbuild-tag))((docker-additional-tag))
 
 ## Integration Docker Images ##
 

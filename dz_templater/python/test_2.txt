@@ -1,3 +1,7 @@
+jobs:
+- name: build-docker-app_compose
+  public: ((concourse-public))
+
 services:
   ### ["create_service_telegraf", "cassandra_count"],
   telegraf_cassandra_count:
