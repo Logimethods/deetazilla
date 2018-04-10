@@ -69,3 +69,11 @@ docker network create --attachable --driver overlay deetazilla
 cd scripts
 ./compose_classic.sh
 ```
+
+## Concourse Continuous Build Process
+
+See [Concourse Pipeline](concourse/deetazilla-pipeline.yml).
+
+![deetazilla_concourse_main.png](images/deetazilla_concourse_main.png "Concourse Main Build")
+
+![deetazilla_concourse_integration.png](images/deetazilla_concourse_integration.png "Concourse Integration Build")
